@@ -1,5 +1,5 @@
 {
-  "name": "smoggy-solstice",
+  "name": "derslik",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -7,11 +7,15 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "pnpm build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",
     "astro": "^7.2.10",
     "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.131.1"
   }
 }

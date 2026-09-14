@@ -1,40 +1,38 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: تەلىم – تەربىيە پىروگراممىسى
+description: شەرقىي تۈركىستان ئۆلىمالار بىرلىكى تەرىپىدىن ھازىرلانغان سىستېمىلىق ئۆگىنىش يېتەكچىسى.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
+  title: ئۇيغۇر ياشلىرى ئۈچۈن دىنىي ۋە مىللىي تەلىم – تەربىيە پىروگراممىسى
+  tagline: شەرقىي تۈركىستان ئۆلىمالار بىرلىكى تەتقىقات گۇرۇپپىسى تەرىپىدىن تۈزۈپ چىقىلغان ئالتە باسقۇچتىن ئىبارەت سىستېمىلىق تەلىم-تەربىيە يېتەكچىسى
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: كىرىش سۆزنى ئوقۇش
+      link: /introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
 
-## Next steps
+## تەلىم – تەربىيە باسقۇچلىرى
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+	<StageCard title="1. ئۆسمۈرلەر باسقۇچى (12 – 16 ياش)" href="/1-osmurler/01-heqqide/" icon="open-book">
+		ئىمان ئاساسلىرى، گۈزەل ئەخلاق، زۆرۈر شەرئى بىلىملەر، قۇرئان تىلاۋىتى ۋە ئانا تىل ساۋاتى.
+	</StageCard>
+	<StageCard title="2. ياشلار باسقۇچى (17 – 21 ياش)" href="/2-yashlar/01-heqqide/" icon="notes">
+		پىكرى ۋە سىياسىي ئاڭ، ئىسلام تارىخى، ئاخبارات ئېڭى، ئۇيغۇر تىل-ئەدەبىياتى ۋە ئىبادەت پىروگراممىسى.
+	</StageCard>
+	<StageCard title="3. تەييارلىق باسقۇچى" href="/3-tayyarliqs/01-heqqide/" icon="pencil">
+		ئىسلام مەنپەئەتى ئۈچۈن خىزمەت قىلىشقا تەييارلىق، فىقھى ئۇسۇلى، جەمئىيەت مۇناسىۋەتلىرى.
+	</StageCard>
+	<StageCard title="4. تەشكىللەش باسقۇچى" href="/4-tashkillash/01-heqqide/" icon="list-format">
+		كوللېكتىپ خىزمەت، تەشكىللەش ۋە باشقۇرۇش بىلىملىرى، ئىستراتېگىيە ۋە جامائەتچىلىك ئېڭى.
+	</StageCard>
+	<StageCard title="5. دەۋەتچى يېتىلدۈرۈش باسقۇچى" href="/5-dawatchi/01-heqqide/" icon="comment-alt">
+		دەۋەت ئۇسۇللىرى، چوڭقۇرلاشتۇرۇلغان قۇرئان-ھەدىس تەتقىقاتى، سىياسەت ۋە جەمئىيەت ئاخباراتى.
+	</StageCard>
+	<StageCard title="6. يېتەكچى ئۇستاز يېتىلدۈرۈش باسقۇچى" href="/6-yetakchi/01-heqqide/" icon="star">
+		باشقۇرۇش ۋە رەھبەرلىك ماھارىتى، مائارىپ تەزكىرىلىرى، ئىستراتېگىيەلىك پىلانلاش ۋە يېتەكچىلىك.
+	</StageCard>
 </CardGrid>

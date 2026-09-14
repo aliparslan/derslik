@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+/*
+  Keep Starlight theme defaults for LTR/English.
+  Only load an Arabic-script stack for the RTL (Uyghur) locale.
+*/
+[dir='rtl'] {
+	--sl-font: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
+}
+
+/*
+  Accent: Kök Bayraq sky blue (~#0099FF), hue ≈ 249.
+  Tuned for readable accents on both light and dark Starlight themes.
+*/
+:root {
+	--sl-color-accent-low: oklch(0.28 0.08 249);
+	--sl-color-accent: oklch(0.72 0.14 249);
+	--sl-color-accent-high: oklch(0.84 0.09 249);
+	--sl-color-text-accent: var(--sl-color-accent-high);
+	--sl-color-bg-accent: var(--sl-color-accent-high);
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-high: oklch(0.42 0.14 249);
+	--sl-color-accent: oklch(0.58 0.16 249);
+	--sl-color-accent-low: oklch(0.93 0.035 249);
+	--sl-color-text-accent: var(--sl-color-accent);
+	--sl-color-bg-accent: var(--sl-color-accent);
+}
+
+/* Light hero tweaks so splash title/tagline scale stays balanced without a mascot */
+.hero {
+	padding-block: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero .title {
+	text-wrap: balance;
+}
+
+.hero .tagline {
+	text-wrap: pretty;
+	max-width: 40rem;
+}
+
+/* Terbiye book mark beside the site title — keep tall enough to read */
+.site-title img {
+	height: 2.4rem;
+	width: auto;
+	max-height: calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y));
+	object-fit: contain;
+	flex-shrink: 0;
+}

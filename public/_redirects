@@ -1,0 +1,7 @@
+# Phantom locale prefixes from Astro i18n mapping root lang "uy" → path "uy"
+/uy / 301
+/uy/ / 301
+/uy/* /:splat 301
+/en/uy /en 301
+/en/uy/ /en/ 301
+/en/uy/* /en/:splat 301

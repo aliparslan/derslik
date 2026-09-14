@@ -1,0 +1,79 @@
+---
+import uicLogo from '../assets/uic-logo.png';
+
+interface Props {
+	/** When true, use a larger treatment suited to the homepage. */
+	featured?: boolean;
+}
+
+const { featured = false } = Astro.props;
+const href = 'https://www.uyghurislamiccenter.org';
+const isUy = Astro.locals.starlightRoute.lang === 'uy';
+const label = isUy
+	? 'ئۇيغۇر ئىسلام مەركىزى تەرىپىدىن تەقدىم قىلىنغان'
+	: 'Brought to you by Uyghur Islamic Center';
+---
+
+<div class:list={['brought-by', { featured }]}>
+	<a class="brought-by__label" href={href} rel="noopener noreferrer">
+		{label}
+	</a>
+	<a class="brought-by__logo" href={href} rel="noopener noreferrer">
+		<img
+			src={uicLogo.src}
+			width={uicLogo.width}
+			height={uicLogo.height}
+			alt="Uyghur Islamic Center"
+			loading="lazy"
+			decoding="async"
+		/>
+	</a>
+</div>
+
+<style>
+	.brought-by {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		margin-block: 1.5rem 0;
+		text-align: center;
+	}
+	.brought-by.featured {
+		margin-block: 2.5rem 1rem;
+		gap: 1rem;
+	}
+	.brought-by__label {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+		text-decoration: none;
+	}
+	.brought-by.featured .brought-by__label {
+		font-size: var(--sl-text-base);
+	}
+	.brought-by__label:hover {
+		color: var(--sl-color-white);
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+	}
+	.brought-by__logo {
+		display: block;
+		line-height: 0;
+		border-radius: 0.25rem;
+		outline-offset: 0.35rem;
+	}
+	.brought-by__logo img {
+		display: block;
+		width: auto;
+		height: 9rem;
+		max-width: min(26rem, 100%);
+		object-fit: contain;
+	}
+	.brought-by.featured .brought-by__logo img {
+		height: 10rem;
+		max-width: min(28rem, 100%);
+	}
+	.brought-by__logo:hover {
+		opacity: 0.92;
+	}
+</style>
