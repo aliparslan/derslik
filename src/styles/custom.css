@@ -6,6 +6,19 @@
 */
 [dir='rtl'] {
 	--sl-font: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
+	--sl-font-mono: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
+	--sl-font-system-mono: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
+}
+
+[dir='rtl'] .sl-badge {
+	font-family: var(--sl-font) !important;
+	font-weight: 500;
+}
+
+[dir='rtl'] code,
+[dir='rtl'] kbd,
+[dir='rtl'] samp {
+	font-family: var(--sl-font) !important;
 }
 
 /*

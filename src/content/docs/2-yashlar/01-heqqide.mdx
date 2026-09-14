@@ -6,7 +6,8 @@ sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
+import { CardGrid, Badge } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
 
 <Badge text="قورام: 17 – 21 ياش" variant="note" /> <Badge text="مۇددىتى: 3 يىل" variant="success" />
 
@@ -27,16 +28,16 @@ import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
 ## ئاساسىي دەرسلىك ساھەلىرى
 
 <CardGrid>
-	<Card title="1. قۇرئان ۋە ھەدىس" icon="open-book">
+	<StageCard title="1. قۇرئان ۋە ھەدىس" href="/2-yashlar/02-dersler/#1-قۇرئان-كەرىم" icon="open-book">
 		29-پارىنى يادلاش، نۇقتىلىق ئايەتلەر (مائىدە، نۇر، ئەھزاب، لوقمان) تەپسىرى ۋە «قىرىق ھەدىس» شەرھى.
-	</Card>
-	<Card title="2. سىياسىي ۋە ئاخبارات ئېڭى" icon="laptop">
+	</StageCard>
+	<StageCard title="2. سىياسىي ۋە ئاخبارات ئېڭى" href="/2-yashlar/02-dersler/" icon="laptop">
 		مەملىكەت ئىچى ۋە خەلقئارا سىياسىي ئاخباراتلارنى تەھلىل قىلىش، تەتۈر تەشۋىقاتلاردىن ساقلىنىش.
-	</Card>
-	<Card title="3. ئىسلام تارىخى ۋە ئىلمىي ئېقىملار" icon="sun">
+	</StageCard>
+	<StageCard title="3. ئىسلام تارىخى ۋە ئىلمىي ئېقىملار" href="/2-yashlar/02-dersler/#6-ئىسلام-تارىخى" icon="sun">
 		تۆت خەلىپە، ئەمەۋى، ئابباسى، قاراخانىيلار، سەئىدىيە خانلىقى تارىخى ۋە ئىصلاھاتچىلار ئىدىيەسى.
-	</Card>
-	<Card title="4. ئۇيغۇر تىل – ئەدەبىياتى" icon="pencil">
+	</StageCard>
+	<StageCard title="4. ئۇيغۇر تىل – ئەدەبىياتى" href="/2-yashlar/02-dersler/" icon="pencil">
 		ئۇيغۇر تىلى گرامماتىكىسى، لېكسىكولوگىيە، ئىستىلىستىكا ۋە يېزىقچىلىق ماھارىتى.
-	</Card>
+	</StageCard>
 </CardGrid>

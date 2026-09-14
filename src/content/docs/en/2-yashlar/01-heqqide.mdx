@@ -6,7 +6,8 @@ sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
+import { CardGrid, Badge } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
 
 <Badge text="Target Age: 17 – 21" variant="note" /> <Badge text="Duration: 3 Years" variant="success" />
 
@@ -27,16 +28,16 @@ This stage is designed for high school seniors, university students, and young a
 ## Curriculum Focus
 
 <CardGrid>
-	<Card title="1. Quran & Hadith" icon="open-book">
+	<StageCard title="1. Quran & Hadith" href="/en/2-yashlar/02-dersler/#1-quran" icon="open-book">
 		Memorize Juz 29, study key thematic verses (Al-Ma'idah, An-Nur, Al-Ahzab, Luqman), and Imam Nawawi's 40 Hadiths.
-	</Card>
-	<Card title="2. Media & Political Literacy" icon="laptop">
+	</StageCard>
+	<StageCard title="2. Media & Political Literacy" href="/en/2-yashlar/02-dersler/" icon="laptop">
 		Analyze news propaganda, evaluate international affairs, and develop critical media consumption habits.
-	</Card>
-	<Card title="3. History & Civilization" icon="sun">
+	</StageCard>
+	<StageCard title="3. History & Civilization" href="/en/2-yashlar/02-dersler/#6-islamic-history" icon="sun">
 		Study the Four Caliphs, Umayyad, Abbasid, Andalusian, Ottoman, Qarakhanid, and Yarkent Khanate histories.
-	</Card>
-	<Card title="4. Language & Literature" icon="pencil">
+	</StageCard>
+	<StageCard title="4. Language & Literature" href="/en/2-yashlar/02-dersler/" icon="pencil">
 		Uyghur linguistics, grammar, stylistic prose, and composition.
-	</Card>
+	</StageCard>
 </CardGrid>

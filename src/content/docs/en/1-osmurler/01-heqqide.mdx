@@ -6,7 +6,8 @@ sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
+import { CardGrid, Badge } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
 
 <Badge text="Target Age: 12 – 16" variant="note" /> <Badge text="Duration: 4 Years (or condensed 2 Years)" variant="success" />
 
@@ -27,22 +28,22 @@ This initial stage targets middle school and high school students between the ag
 ## Core Subject Areas
 
 <CardGrid>
-	<Card title="1. Quranic Studies" icon="open-book">
+	<StageCard title="1. Quranic Studies" href="/en/1-osmurler/02-dersler/#1-quranic-studies--recitation" icon="open-book">
 		Memorization of Juz 30 (Juz Amma) and reflection on Quranic narratives (The Cave, The Trench, Pharaoh, etc.).
-	</Card>
-	<Card title="2. Hadith & Daily Supplications" icon="document">
+	</StageCard>
+	<StageCard title="2. Hadith & Daily Supplications" href="/en/1-osmurler/02-dersler/#2-hadith--daily-supplications-duas" icon="document">
 		Memorize 20 core Hadiths, daily Sunnah supplications (eating, sleeping, travel, mosque), and Imam Nawawi's 40 Hadith.
-	</Card>
-	<Card title="3. Islamic Creed (Aqidah)" icon="star">
+	</StageCard>
+	<StageCard title="3. Islamic Creed (Aqidah)" href="/en/1-osmurler/02-dersler/#3-islamic-creed-aqidah" icon="star">
 		Love for Allah, God-consciousness (Taqwa), and understanding faith in daily actions.
-	</Card>
-	<Card title="4. Islamic Rulings (Fiqh)" icon="approve-check">
+	</StageCard>
+	<StageCard title="4. Islamic Rulings (Fiqh)" href="/en/1-osmurler/02-dersler/#4-practical-jurisprudence-fiqh" icon="approve-check">
 		Practical rulings for purification (Taharah), prayer (Salah), and fasting (Sawm).
-	</Card>
-	<Card title="5. Stories of the Prophets" icon="heart">
+	</StageCard>
+	<StageCard title="5. Stories of the Prophets" href="/en/1-osmurler/02-dersler/#5-biographies-of-the-prophets-seerah" icon="heart">
 		Biographies of Prophets Adam, Noah, Abraham, Joseph, and Jesus (peace be upon them all).
-	</Card>
-	<Card title="6. Uyghur Language & Literature" icon="pencil">
+	</StageCard>
+	<StageCard title="6. Uyghur Language & Literature" href="/en/1-osmurler/02-dersler/#6-uyghur-language--literature" icon="pencil">
 		Native language literacy, orthography rules, and reading classic Uyghur literature.
-	</Card>
+	</StageCard>
 </CardGrid>

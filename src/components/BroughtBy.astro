@@ -10,14 +10,11 @@ const { featured = false } = Astro.props;
 const href = 'https://www.uyghurislamiccenter.org';
 const isUy = Astro.locals.starlightRoute.lang === 'uy';
 const label = isUy
-	? 'ئۇيغۇر ئىسلام مەركىزى تەرىپىدىن تەقدىم قىلىنغان'
+	? 'ئۇيغۇر ئىسلام مەركىزى تەييارلىدى'
 	: 'Brought to you by Uyghur Islamic Center';
 ---
 
 <div class:list={['brought-by', { featured }]}>
-	<a class="brought-by__label" href={href} rel="noopener noreferrer">
-		{label}
-	</a>
 	<a class="brought-by__logo" href={href} rel="noopener noreferrer">
 		<img
 			src={uicLogo.src}
@@ -27,6 +24,9 @@ const label = isUy
 			loading="lazy"
 			decoding="async"
 		/>
+	</a>
+	<a class="brought-by__label" href={href} rel="noopener noreferrer">
+		{label}
 	</a>
 </div>
 
@@ -65,13 +65,13 @@ const label = isUy
 	.brought-by__logo img {
 		display: block;
 		width: auto;
-		height: 9rem;
-		max-width: min(26rem, 100%);
+		height: 6.75rem;
+		max-width: min(19.5rem, 100%);
 		object-fit: contain;
 	}
 	.brought-by.featured .brought-by__logo img {
-		height: 10rem;
-		max-width: min(28rem, 100%);
+		height: 7.5rem;
+		max-width: min(21rem, 100%);
 	}
 	.brought-by__logo:hover {
 		opacity: 0.92;

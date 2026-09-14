@@ -1,6 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "terbiye",
+	"account_id": "2ccea50bf7117629e17438c808dfd907",
 	"compatibility_date": "2026-09-12",
 	"workers_dev": true,
 	"assets": {

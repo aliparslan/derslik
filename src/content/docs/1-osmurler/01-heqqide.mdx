@@ -6,7 +6,8 @@ sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
+import { CardGrid, Badge } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
 
 <Badge text="قورام: 12 – 16 ياش" variant="note" /> <Badge text="مۇددىتى: 4 يىل (ياكى 2 يىل)" variant="success" />
 
@@ -27,22 +28,22 @@ import { Card, CardGrid, Badge } from '@astrojs/starlight/components';
 ## بۇ باسقۇچتا ئۆتىلىدىغان ئاساسىي دەرسلەر
 
 <CardGrid>
-	<Card title="1. قۇرئان كەرىم" icon="open-book">
+	<StageCard title="1. قۇرئان كەرىم" href="/1-osmurler/02-dersler/#1-قۇرئان-كەرىم-ۋە-قۇرئان-ئىلمى" icon="open-book">
 		30-پارە (ئەممە پارىسى) نى يادلاش، قۇرئان قىسسىلىرى (خەندەك، ئەسھابۇلكەھف، پىرئەۋن قاتارلىقلار) نى ئۆگىنىش.
-	</Card>
-	<Card title="2. ھەدىس شەرىپ" icon="document">
+	</StageCard>
+	<StageCard title="2. ھەدىس شەرىپ" href="/1-osmurler/02-dersler/#2-ھەدىس-شەرىپ-ۋە-كۈندىلىك-دۇئالار" icon="document">
 		20 ھەدىس يادلاش، ئىمام نەۋەۋىنىڭ «قىرىق ھەدىس» كىتابى ۋە كۈندىلىك دۇئالار.
-	</Card>
-	<Card title="3. ئىسلام ئەقىدىسى" icon="star">
+	</StageCard>
+	<StageCard title="3. ئىسلام ئەقىدىسى" href="/1-osmurler/02-dersler/#3-ئىسلام-ئەقىدىسى" icon="star">
 		ئاللاھنى سۆيۈش، ئىتائەت روھى، ئاللاھنىڭ كۆزىتىپ تۇرىدىغانلىقىغا ئىشىنىش.
-	</Card>
-	<Card title="4. شەرىئەت ئەھكاملىرى" icon="approve-check">
+	</StageCard>
+	<StageCard title="4. شەرىئەت ئەھكاملىرى" href="/1-osmurler/02-dersler/#4-شەرىئەت-ئەھكاملىرى-فىقھى" icon="approve-check">
 		تاھارەت، ناماز ۋە روزا ئەھكاملىرىنى پۇختا ئۆگىنىش.
-	</Card>
-	<Card title="5. پەيغەمبەرلەر قىسسىسى" icon="heart">
+	</StageCard>
+	<StageCard title="5. پەيغەمبەرلەر قىسسىسى" href="/1-osmurler/02-dersler/#5-پەيغەمبەرلەرنىڭ-تەرجىمىھالى-سېيرەت" icon="heart">
 		ئادەم، نۇھ، ئىبراھىم، يۇسۇف ۋە ئىسا ئەلەيھىسسالاملارنىڭ تەرجىمىھالى.
-	</Card>
-	<Card title="6. ئۇيغۇر تىل – ئەدەبىياتى" icon="pencil">
+	</StageCard>
+	<StageCard title="6. ئۇيغۇر تىل – ئەدەبىياتى" href="/1-osmurler/02-dersler/#6-ئۇيغۇر-تىل--ئەدەبىياتى" icon="pencil">
 		ئانا تىلنى پۇختا ئۆزلەشتۈرۈش، ئىملا قائىدىلىرى ۋە ئۇيغۇر ئەدىبلىرىنىڭ ئەسەرلىرى.
-	</Card>
+	</StageCard>
 </CardGrid>
