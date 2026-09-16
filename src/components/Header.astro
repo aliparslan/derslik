@@ -15,6 +15,7 @@ const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
+const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 ---
 
 <div class="header">
@@ -28,7 +29,7 @@ const isDua = id.startsWith('dua') || pathname.includes('/dua');
 				<SocialIcons />
 			</div>
 			<ThemeSelect />
-			{!is2000 && !is40hedis && !isDua && <LanguageSelect />}
+			{!is2000 && !is40hedis && !isDua && !isPeyghemberler && <LanguageSelect />}
 		</div>
 	</div>
 </div>

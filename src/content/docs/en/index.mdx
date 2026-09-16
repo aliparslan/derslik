@@ -21,6 +21,10 @@ hero:
       link: /dua/
       icon: heart
       variant: secondary
+    - text: History of Prophets
+      link: /peyghemberler/
+      icon: list-format
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
@@ -71,5 +75,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="Read Invocations"
 		icon="heart"
 		tags={['131 Duas', 'Arabic Text', 'Translations', 'Morning & Evening', 'Prayer Duas', 'Daily Life']}
+	/>
+
+	<PortalCard
+		title="History of the Prophets (3 Volumes)"
+		badge="3 Volumes"
+		subtitle="By Osman Nuri Topbaş"
+		description="A masterwork on the History of the Prophets under the light of the Quran — covering all prophetic stories from Adam (AS) to Isa (AS), their calls to Tawheed, spiritual lessons, and complete 3-volume PDF downloads."
+		href="/peyghemberler/"
+		buttonText="Explore Prophets History"
+		icon="list-format"
+		tags={['3 Volumes (982 Pages)', 'Adam to Isa (AS)', 'Osman Nuri Topbaş', 'Erkam Publishing', 'Full PDF Editions']}
 	/>
 </CardGrid>

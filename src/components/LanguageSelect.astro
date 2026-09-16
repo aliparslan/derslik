@@ -4,6 +4,10 @@ import Default from '@astrojs/starlight/components/LanguageSelect.astro';
 const id = Astro.locals.starlightRoute.id || '';
 const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const isDua = id.startsWith('dua') || pathname.includes('/dua');
+const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
+const hideLanguage = is2000 || is40hedis || isDua || isPeyghemberler;
 ---
 
-{!is2000 && <Default {...Astro.props}><slot /></Default>}
+{!hideLanguage && <Default {...Astro.props}><slot /></Default>}

@@ -303,6 +303,49 @@ export default defineConfig({
 						},
 					],
 				},
+				{
+					label: 'پەيغەمبەرلەر تارىخى',
+					translations: {
+						en: 'History of Prophets',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/peyghemberler/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: 'peyghemberler/00-muqeddimu' } }],
+						},
+						{
+							label: '1-توم: ئادەم ئەلەيھىسسالامدىن لۇت ئەلەيھىسسالامغىچە',
+							translations: {
+								en: 'Volume 1: Adam to Lut (AS)',
+							},
+							items: [{ autogenerate: { directory: 'peyghemberler/01-1-tom' } }],
+						},
+						{
+							label: '2-توم: زۇلقەرنەين ئەلەيھىسسالامدىن مۇسا ئەلەيھىسسالامغىچە',
+							translations: {
+								en: 'Volume 2: Zulqarnayn to Musa (AS)',
+							},
+							items: [{ autogenerate: { directory: 'peyghemberler/02-2-tom' } }],
+						},
+						{
+							label: '3-توم: داۋۇد ئەلەيھىسسالامدىن ئىسا ئەلەيھىسسالامغىچە',
+							translations: {
+								en: 'Volume 3: Dawud to Isa (AS)',
+							},
+							items: [{ autogenerate: { directory: 'peyghemberler/03-3-tom' } }],
+						},
+					],
+				},
 			],
 			customCss: [
 				'./src/styles/custom.css',

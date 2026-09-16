@@ -6,6 +6,7 @@ const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
+const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 
 if (is2000 && Astro.locals.starlightRoute.pagination) {
 	if (
@@ -55,6 +56,24 @@ if (isDua && Astro.locals.starlightRoute.pagination) {
 		Astro.locals.starlightRoute.pagination.next &&
 		(!Astro.locals.starlightRoute.pagination.next.href ||
 			!Astro.locals.starlightRoute.pagination.next.href.includes('/dua'))
+	) {
+		Astro.locals.starlightRoute.pagination.next = undefined;
+	}
+}
+
+if (isPeyghemberler && Astro.locals.starlightRoute.pagination) {
+	if (
+		Astro.locals.starlightRoute.pagination.prev &&
+		(!Astro.locals.starlightRoute.pagination.prev.href ||
+			!Astro.locals.starlightRoute.pagination.prev.href.includes('/peyghemberler') ||
+			pathname === '/peyghemberler/' || pathname === '/peyghemberler')
+	) {
+		Astro.locals.starlightRoute.pagination.prev = undefined;
+	}
+	if (
+		Astro.locals.starlightRoute.pagination.next &&
+		(!Astro.locals.starlightRoute.pagination.next.href ||
+			!Astro.locals.starlightRoute.pagination.next.href.includes('/peyghemberler'))
 	) {
 		Astro.locals.starlightRoute.pagination.next = undefined;
 	}

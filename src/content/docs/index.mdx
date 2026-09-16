@@ -21,6 +21,10 @@ hero:
       link: /dua/
       icon: heart
       variant: secondary
+    - text: پەيغەمبەرلەر تارىخى
+      link: /peyghemberler/
+      icon: list-format
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
@@ -71,5 +75,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="دۇئالارنى ئوقۇش"
 		icon="heart"
 		tags={['131 دۇئا', 'ئەرەبچە تېكىست', 'ئۇيغۇرچە تەرجىمە', 'كۈندىلىك زىكىرلەر', 'ئەتىگەن-ئاخشام', 'ناماز دۇئالىرى']}
+	/>
+
+	<PortalCard
+		title="پەيغەمبەرلەر تارىخى (3 توم)"
+		badge="3 توملۇق قامۇس"
+		subtitle="ئاپتور: ئوسمان نۇرى توپباش"
+		description="قۇرئان كەرىم نۇرى ئاستىدا پەيغەمبەرلەر تارىخى — ھەزرىتى ئادەم ئەلەيھىسسالامدىن ئىسا ئەلەيھىسسالامغىچە بولغان بارلىق پەيغەمبەرلەر قىسسىلىرى، تەۋھىد دەۋىتى، چوڭقۇر روھىي ئىبرەتلەر ۋە تولۇق PDF كىتاب نۇسخىلىرى."
+		href="/peyghemberler/"
+		buttonText="پەيغەمبەرلەر قىسسىلىرىنى كۆرۈش"
+		icon="list-format"
+		tags={['3 توم (982 بەت)', 'ئادەم - ئىسا (ئە.س)', 'ئوسمان نۇرى توپباش', 'ئەركام نەشرىياتى', 'PDF تولۇق نەشر']}
 	/>
 </CardGrid>

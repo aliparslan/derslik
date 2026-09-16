@@ -15,6 +15,7 @@ const isLandingPage =
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
+const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isDerslik =
 	id.startsWith('derslik') ||
 	pathname.includes('/derslik') ||
@@ -37,6 +38,11 @@ if (is2000) {
 } else if (isDua) {
 	sectionTitle = isEn ? 'Hisnul Muslim (Dua)' : 'ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)';
 	sectionHref = isEn ? '/en/dua/' : '/dua/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (isPeyghemberler) {
+	sectionTitle = isEn ? 'History of Prophets' : 'پەيغەمبەرلەر تارىخى';
+	sectionHref = isEn ? '/en/peyghemberler/' : '/peyghemberler/';
 	Astro.locals.starlightRoute.siteTitle = sectionTitle;
 	Astro.locals.starlightRoute.siteTitleHref = landingHref;
 } else if (isDerslik) {
