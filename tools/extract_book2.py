@@ -270,6 +270,9 @@ def clean_span_chars(chars):
     while i < len(chars):
         c = chars[i]["c"]
         w = chars[i]["bbox"][2] - chars[i]["bbox"][0]
+        if c == "\u0640":
+            i += 1
+            continue
         if c == "ا":
             if w < 0.5:
                 # zero-width alef before lam
@@ -376,12 +379,22 @@ def extract_book2_questions(all_lines):
                         break
 
         if q_num and q_num == expected_q:
+            # Check if answer was accidentally captured inside q_title (e.g. embedded ':جاۋاب')
+            jawabb_pattern = re.compile(r'(?:جاۋ[^\s\w]*[الله]*[^\s\w]*ب|:?جاۋاب:?|ج\s*:\s*اۋاب|جاۋا\s*:\s*ب|جاۋ\s*:\s*اب|جاۋاب\s*:|\(\s*جاۋاب\s*\))')
+            m_jawabb = jawabb_pattern.search(q_title)
+            embedded_ans = ""
+            if m_jawabb:
+                clean_q = q_title[:m_jawabb.start()].strip()
+                embedded_ans = q_title[m_jawabb.end():].strip()
+                q_title = clean_q
+
             questions[q_num] = {
                 "number": q_num,
                 "question": q_title,
                 "part": part,
                 "page": pnum,
                 "answer_start": i + consumed,
+                "embedded_ans": embedded_ans,
                 "answer_lines": []
             }
             expected_q += 1
@@ -397,12 +410,38 @@ def extract_book2_questions(all_lines):
     else:
         print("PERFECT: All 683 questions (1318 through 2000) are present!")
 
+    def clean_text_typography(p: str) -> str:
+        # Strip tatweel / kashida
+        p = p.replace("\u0640", "")
+
+        # Punctuation & misplaced symbols
+        p = re.sub(r'(\b[\u0600-\u06ff]+)\s*،\s*([ىيۇۈوۆاە]\w*)', r'\1\2', p)
+        p = re.sub(r'(\b[\u0600-\u06ff]{2,}):([نلداە]\b)', r'\1\2', p)
+        p = re.sub(r'\bئا للاھ\b', 'ئاللاھ', p)
+
+        # Suffix and word reconnection
+        suffixes = r'(دۇ|دى|گە|قا|دا|دە|تى|تىگە|سى|سىگە|نىڭ|نى|لار|لەر|دىن|تىن|غان|گەن|لىق|لىك|لىقى|تلەردە|لاردىن|لەردىن|منىڭ|لىرى|ىدىغان|ىدۇ|ىش|غا)'
+        p = re.sub(r'(\b[\u0600-\u06ff]{2,}) ' + suffixes + r'\b', r'\1\2', p)
+        p = re.sub(r'(\b[\u0600-\u06ff]{2,}) ([ىنەادرتيى])\b', r'\1\2', p)
+        p = re.sub(r'\b([ئك]) ([\u0600-\u06ff]{2,}\b)', r'\1\2', p)
+
+        # Punctuation spacing
+        p = re.sub(r'\s+،', '،', p)
+        p = re.sub(r'،(?=[^\s])', '، ', p)
+        p = re.sub(r'\s+:', ':', p)
+        p = re.sub(r':(?=[^\s\d])', ': ', p)
+        p = re.sub(r' +', ' ', p)
+        return p.strip()
+
     # Populate answer lines for each question
     for idx, num in enumerate(sorted_nums):
         q = questions[num]
         start_line = q["answer_start"]
-        end_line = questions[sorted_nums[idx+1]]["answer_start"] - 2 if idx + 1 < len(sorted_nums) else len(all_lines)
-        ans_lines = []
+        end_line = questions[sorted_nums[idx+1]]["answer_start"] - 1 if idx + 1 < len(sorted_nums) else len(all_lines)
+        raw_lines = []
+        if q.get("embedded_ans"):
+            raw_lines.append(q["embedded_ans"])
+
         for l_idx in range(start_line, min(end_line + 1, len(all_lines))):
             part, pnum, l_str = all_lines[l_idx]
             # Stop if we hit the next question number line
@@ -413,18 +452,56 @@ def extract_book2_questions(all_lines):
                 continue
             if re.match(r"^\d{1,3}$", l_str):
                 continue
+            # Filter reverse running headers or corrupted header artifacts
+            if any(w in l_str for w in ['ەۋ اغرلاۇئ', 'كىلتەۋىسانۇم', 'رەلىلىسەم', 'للااھ–ماراھ']):
+                continue
             # Clean answer prefix
             clean_l = l_str
-            for k in [":جاۋاب", "جاۋاب:", "جاۋاب"]:
+            for k in [":جاۋاب", "جاۋاب:", "جاۋاب", "ج:اۋاب", "جاۋا :ب", "جاۋ:اب", "جاۋاللهب"]:
                 if clean_l.startswith(k):
                     clean_l = clean_l[len(k):].strip()
                     break
             if clean_l:
-                ans_lines.append(clean_l)
-        q["answer"] = "\n\n".join(ans_lines).strip()
+                raw_lines.append(clean_l)
+
+        # Separate trailing standalone subtopic headings that leaked into previous question answer
+        while len(raw_lines) > 1:
+            last = raw_lines[-1]
+            words = last.split()
+            if len(words) <= 3 and not any(last.endswith(p) for p in ['.', '،', ':', '؟', '!', '»', ')', '—', '–']):
+                if any(k in last for k in ['ھالال', 'ھارام', 'مەسىلىلەر', 'ھەققىدە', 'ئەھمىيىتى', 'زۆرۈرلىكى', 'شەرتلىرى']):
+                    raw_lines.pop()
+                    continue
+            break
+
+        # Group lines into paragraphs and list items
+        paragraphs = []
+        curr_p = []
+        for l in raw_lines:
+            is_item_start = bool(re.match(r'^\(?\s*\d+\s*[\)\.\:\-–]', l))
+            if is_item_start:
+                if curr_p:
+                    paragraphs.append(' '.join(curr_p))
+                curr_p = [l]
+            else:
+                curr_p.append(l)
+        if curr_p:
+            paragraphs.append(' '.join(curr_p))
+
+        # Format paragraphs and repair word breaks
+        cleaned_paragraphs = []
+        for p in paragraphs:
+            cleaned_p = clean_text_typography(p)
+            if cleaned_p:
+                cleaned_paragraphs.append(cleaned_p)
+
+        q["answer"] = "\n\n".join(cleaned_paragraphs).strip()
+
         # Clean question title
-        if not q["question"]:
-            q["question"] = f"{num}-سوئال"
+        q_title_cleaned = clean_text_typography(q["question"])
+        if not q_title_cleaned:
+            q_title_cleaned = f"{num}-سوئال"
+        q["question"] = q_title_cleaned
 
     return [questions[num] for num in sorted_nums]
 
@@ -437,10 +514,6 @@ def format_card(q):
     if not q_text.endswith("؟") and not q_text.endswith("?"):
         q_text += "؟"
 
-    # Convert footnotes/lists if needed
-    lines = [l.strip() for l in ans_text.split("\n\n") if l.strip()]
-    formatted_ans = "\n\n".join(lines)
-
     card_html = f"""<div class="qa-card" id="q{num}">
   <div class="qa-question">
     <a href="#q{num}" class="qa-number-link" title="سوئال {num} گە بىۋاسىتە ئۇلىنىش"><span class="qa-number">{num}</span></a>
@@ -449,7 +522,7 @@ def format_card(q):
     <a href="#q{num}" class="qa-anchor" aria-label="سوئال {num} نىڭ بىۋاسىتە ئۇلىنىشى" title="بىۋاسىتە ئۇلىنىش">#</a>
   </div>
   <div class="qa-answer">
-    <span class="qa-label">جاۋاب:</span> {formatted_ans}
+    <span class="qa-label">جاۋاب:</span> {ans_text}
   </div>
 </div>"""
     return card_html
