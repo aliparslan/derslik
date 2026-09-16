@@ -146,8 +146,16 @@ const landingTooltip = isEn ? 'Go to Landing Page' : 'باش بەتكە قايت
 		width: auto;
 		max-height: calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y));
 		object-fit: contain;
-		display: block;
 	}
+
+	:global([data-theme='light']) .site-logo-link img.light\:sl-hidden {
+		display: none !important;
+	}
+
+	:global([data-theme='dark']) .site-logo-link img.dark\:sl-hidden {
+		display: none !important;
+	}
+
 
 	.site-main-title {
 		font-size: var(--sl-text-h4);

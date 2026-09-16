@@ -17,6 +17,10 @@ hero:
       link: /en/40hedis/
       icon: star
       variant: secondary
+    - text: Hisnul Muslim (Dua)
+      link: /dua/
+      icon: heart
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
@@ -56,5 +60,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="Read Forty Hadith"
 		icon="star"
 		tags={['42 Hadiths', 'Arabic Text', 'Commentary', 'Faith & Intention', 'Piety', 'Ethics']}
+	/>
+
+	<PortalCard
+		title="Hisnul Muslim (Dua & Azkar)"
+		badge="Dua Collection"
+		subtitle="Shaykh Sa'id Al-Qahtani"
+		description="A complete compilation of 131 essential invocations and daily supplications from the Holy Quran and authentic Sunnah, with Arabic texts and complete Uyghur translations."
+		href="/dua/"
+		buttonText="Read Invocations"
+		icon="heart"
+		tags={['131 Duas', 'Arabic Text', 'Translations', 'Morning & Evening', 'Prayer Duas', 'Daily Life']}
 	/>
 </CardGrid>

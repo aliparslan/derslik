@@ -435,7 +435,7 @@ table.names-table tr:hover,
 
 .hadith-arabic,
 .dua-arabic {
-	font-family: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+	font-family: var(--sl-font, 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif);
 	font-size: 1.35rem;
 	line-height: 2.2;
 	background-color: rgba(0, 153, 255, 0.05);
