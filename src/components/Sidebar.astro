@@ -1,0 +1,87 @@
+---
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+
+const { sidebar } = Astro.locals.starlightRoute;
+const id = Astro.locals.starlightRoute.id || '';
+const pathname = Astro.url.pathname || '';
+const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+
+let displaySidebar = sidebar;
+
+if (is2000) {
+	// On /2000 pages: Remove root level course navigation (1. ئۆسمۈرلەر ... 6. يېتەكچى)
+	// and generate its own dedicated panel for /2000!
+	const group2000 = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('2000') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/2000'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب',
+		href: '/2000/',
+		isCurrent: pathname === '/2000/' || pathname === '/2000',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filter2000Entries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				// Don't duplicate /2000/ since topHeader already links to /2000/
+				if (e.href === '/2000/' || e.href === '/2000') return false;
+				return e.href.includes('/2000');
+			}
+			return true;
+		});
+	};
+
+	if (group2000 && group2000.type === 'group') {
+		displaySidebar = [topHeader, ...filter2000Entries(group2000.entries)];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/2000/' || entry.href === '/2000') return false;
+					return entry.href.includes('/2000');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('2000') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/2000')) || (e.type === 'group' && e.label.includes('2000')))
+					);
+				}
+				return false;
+			}),
+		];
+	}
+} else {
+	// On root course pages: show course stages, and keep 2000 as a single clean entry
+	displaySidebar = sidebar.map((entry) => {
+		if (entry.type === 'group' && entry.label.includes('2000')) {
+			return {
+				type: 'link' as const,
+				label: '2000 سوئال-جاۋاب',
+				href: '/2000/',
+				isCurrent: false,
+				badge: undefined,
+				attrs: {},
+			};
+		}
+		return entry;
+	});
+}
+---
+
+<SidebarPersister>
+	<SidebarSublist sublist={displaySidebar} />
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+	<MobileMenuFooter />
+</div>

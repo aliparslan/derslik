@@ -9,6 +9,10 @@ import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
 
 const shouldRenderSearch =
 	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+
+const id = Astro.locals.starlightRoute.id || '';
+const pathname = Astro.url.pathname || '';
+const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 ---
 
 <div class="header">
@@ -22,7 +26,7 @@ const shouldRenderSearch =
 				<SocialIcons />
 			</div>
 			<ThemeSelect />
-			<LanguageSelect />
+			{!is2000 && <LanguageSelect />}
 		</div>
 	</div>
 </div>

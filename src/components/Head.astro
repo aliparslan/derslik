@@ -1,0 +1,39 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const id = Astro.locals.starlightRoute.id || '';
+const pathname = Astro.url.pathname || '';
+const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+
+if (is2000 && Astro.locals.starlightRoute.head) {
+	Astro.locals.starlightRoute.head = Astro.locals.starlightRoute.head.map((item) => {
+		if (item.tag === 'title' && item.content) {
+			return {
+				...item,
+				content: item.content.replace(/تەربىيە/g, 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب'),
+			};
+		}
+		if (item.attrs && item.attrs.property === 'og:title' && item.attrs.content) {
+			return {
+				...item,
+				attrs: {
+					...item.attrs,
+					content: item.attrs.content.replace(/تەربىيە/g, 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب'),
+				},
+			};
+		}
+		if (item.attrs && item.attrs.name === 'twitter:title' && item.attrs.content) {
+			return {
+				...item,
+				attrs: {
+					...item.attrs,
+					content: item.attrs.content.replace(/تەربىيە/g, 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب'),
+				},
+			};
+		}
+		return item;
+	});
+}
+---
+
+<Default {...Astro.props}><slot /></Default>

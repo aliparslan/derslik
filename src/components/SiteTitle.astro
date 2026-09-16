@@ -1,0 +1,14 @@
+---
+import Default from '@astrojs/starlight/components/SiteTitle.astro';
+
+const id = Astro.locals.starlightRoute.id || '';
+const pathname = Astro.url.pathname || '';
+const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+
+if (is2000) {
+	Astro.locals.starlightRoute.siteTitle = 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب';
+	Astro.locals.starlightRoute.siteTitleHref = '/2000/';
+}
+---
+
+<Default {...Astro.props}><slot /></Default>

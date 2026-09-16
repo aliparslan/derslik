@@ -63,3 +63,248 @@
 	object-fit: contain;
 	flex-shrink: 0;
 }
+
+/* ==========================================================================
+   Option B: Continuous Reading QA Cards Layout (RTL Logical Properties)
+   ========================================================================== */
+
+.qa-card {
+	position: relative;
+	margin-block-end: 1.5rem;
+	border-radius: 0.625rem;
+	border: 1px solid var(--sl-color-gray-5);
+	background-color: var(--sl-color-gray-6, #16181d);
+	padding: 1.25rem 1.5rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	scroll-margin-top: calc(var(--sl-nav-height) + 1.5rem);
+}
+
+:root[data-theme='light'] .qa-card {
+	background-color: var(--sl-color-gray-7, #f8f9fa);
+	border-color: var(--sl-color-gray-5, #e2e8f0);
+}
+
+.qa-card:hover {
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme='light'] .qa-card:hover {
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.qa-question {
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	font-size: var(--sl-text-h4, 1.2rem);
+	font-weight: 700;
+	color: var(--sl-color-white);
+	line-height: var(--sl-line-height-headings, 1.5);
+	border-inline-start: 4px solid var(--sl-color-accent);
+	padding-inline-start: 0.75rem;
+	margin-block-end: 0.85rem;
+}
+
+:root[data-theme='light'] .qa-question {
+	color: var(--sl-color-gray-1, #1e2329);
+}
+
+.qa-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.25rem;
+	height: 1.85rem;
+	padding-inline: 0.5rem;
+	margin-inline-end: 0.5rem;
+	border-radius: 9999px;
+	background-color: var(--sl-color-accent-low);
+	color: var(--sl-color-accent-high);
+	font-weight: 700;
+	font-size: var(--sl-text-sm, 0.875rem);
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.qa-number-link {
+	text-decoration: none;
+	display: inline-flex;
+	color: inherit;
+	flex-shrink: 0;
+}
+
+.qa-number-link:hover .qa-number {
+	background-color: var(--sl-color-accent);
+	color: var(--sl-color-text-invert, #ffffff);
+	transform: scale(1.08);
+	transition: all 0.15s ease;
+}
+
+.qa-anchor {
+	opacity: 0;
+	margin-inline-start: auto;
+	padding-inline: 0.5rem;
+	color: var(--sl-color-gray-4);
+	text-decoration: none;
+	font-size: 1.1rem;
+	font-weight: 500;
+	transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.qa-card:hover .qa-anchor,
+.qa-anchor:focus {
+	opacity: 1;
+}
+
+.qa-anchor:hover {
+	color: var(--sl-color-accent);
+}
+
+.qa-card:target {
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 0 0 2px var(--sl-color-accent), 0 8px 24px rgba(0, 153, 255, 0.25);
+	background-color: var(--sl-color-accent-low);
+}
+
+:root[data-theme='light'] .qa-card:target {
+	background-color: oklch(0.96 0.03 249);
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 0 0 2px var(--sl-color-accent), 0 8px 24px rgba(0, 153, 255, 0.15);
+}
+
+.qa-text {
+	flex-grow: 1;
+	font-weight: 700;
+	color: var(--sl-color-white);
+}
+
+:root[data-theme='light'] .qa-text {
+	color: var(--sl-color-gray-1, #1e2329);
+}
+
+.qa-label {
+	color: var(--sl-color-accent);
+	font-weight: 700;
+	margin-inline-end: 0.25rem;
+}
+
+.qa-answer {
+	font-size: var(--sl-text-body, 1.05rem);
+	line-height: 1.85;
+	color: var(--sl-color-gray-2, #d0d7de);
+	padding-inline-start: calc(0.75rem + 4px);
+}
+
+:root[data-theme='light'] .qa-answer {
+	color: var(--sl-color-gray-2, #374151);
+}
+
+.qa-answer p {
+	margin-block-end: 0.75rem;
+}
+
+.qa-answer p:last-child {
+	margin-block-end: 0;
+}
+
+/* Quranic verses, Hadiths, and quotes within answers */
+.qa-answer blockquote {
+	margin-block: 1rem;
+	padding-inline-start: 1.25rem;
+	border-inline-start: 3px solid var(--sl-color-accent);
+	font-style: normal;
+	color: var(--sl-color-text-accent);
+	background-color: var(--sl-color-gray-6, rgba(255, 255, 255, 0.03));
+	border-radius: 0 0.375rem 0.375rem 0;
+	padding-block: 0.5rem;
+}
+
+/* ==========================================================================
+   Responsive Table Styling for 99 Names of Allah & Tables
+   ========================================================================== */
+
+.names-table-container,
+.responsive-table-wrapper {
+	width: 100%;
+	overflow-x: auto;
+	margin-block: 1.75rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.625rem;
+	background-color: var(--sl-color-gray-6, #16181d);
+	-webkit-overflow-scrolling: touch;
+}
+
+:root[data-theme='light'] .names-table-container,
+:root[data-theme='light'] .responsive-table-wrapper {
+	background-color: var(--sl-color-gray-7, #ffffff);
+	border-color: var(--sl-color-gray-5, #e2e8f0);
+}
+
+table.names-table,
+.sl-markdown-content table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: start;
+	font-size: var(--sl-text-body, 0.95rem);
+}
+
+table.names-table th,
+.sl-markdown-content table th {
+	background-color: var(--sl-color-gray-6, #1c1e24);
+	color: var(--sl-color-white);
+	font-weight: 700;
+	padding: 0.85rem 1.1rem;
+	border-block-end: 2px solid var(--sl-color-accent);
+	white-space: nowrap;
+}
+
+:root[data-theme='light'] table.names-table th,
+:root[data-theme='light'] .sl-markdown-content table th {
+	background-color: var(--sl-color-gray-6, #f1f3f5);
+	color: var(--sl-color-gray-1, #1e2329);
+	border-block-end-color: var(--sl-color-accent);
+}
+
+table.names-table td,
+.sl-markdown-content table td {
+	padding: 0.85rem 1.1rem;
+	border-block-end: 1px solid var(--sl-color-gray-5);
+	vertical-align: top;
+	line-height: 1.8;
+}
+
+:root[data-theme='light'] table.names-table td,
+:root[data-theme='light'] .sl-markdown-content table td {
+	border-block-end-color: var(--sl-color-gray-5, #e2e8f0);
+}
+
+table.names-table tr:hover,
+.sl-markdown-content table tr:hover {
+	background-color: var(--sl-color-accent-low);
+}
+
+/* Vocalized Arabic Name in 99 Names Table */
+.arabic-name {
+	font-family: 'Noto Sans Arabic', 'Noto Naskh Arabic', 'Amiri', serif;
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: var(--sl-color-accent-high);
+	white-space: nowrap;
+	line-height: 1.4;
+}
+
+:root[data-theme='light'] .arabic-name {
+	color: var(--sl-color-accent-high, #0056b3);
+}
+
+/* Transliteration and meaning styling */
+.uyghur-name {
+	font-weight: 600;
+	white-space: nowrap;
+	color: var(--sl-color-text-accent);
+}
+
+.name-meaning {
+	color: var(--sl-color-gray-2);
+}
