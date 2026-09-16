@@ -357,8 +357,11 @@ def extract_book2_questions(all_lines):
                                 q_title = t.strip()
                                 consumed = j + 1
                                 # Gather remaining title lines until :جاۋاب
+                                jawabb_pattern = re.compile(r'(?:جاۋ[^\s\w]*[الله]*[^\s\w]*ب|:?جاۋاب:?|ج\s*:\s*اۋاب|جاۋا\s*:\s*ب|جاۋ\s*:\s*اب|جاۋاب\s*:|:?\s*ج\s*ا+\s*ۋ\s*(?:[الله]*)\s*ا*\s*ب\s*:?|\(\s*جاۋاب\s*\))')
                                 while i + consumed < len(all_lines):
                                     f_line = all_lines[i+consumed][2]
+                                    if jawabb_pattern.search(f_line):
+                                        break
                                     if any(f_line.startswith(k) for k in [":جاۋاب", "جاۋاب:", "جاۋاب"]):
                                         break
                                     if q_num_re.match(f_line) or "بۆلۈم" in f_line:
@@ -379,8 +382,7 @@ def extract_book2_questions(all_lines):
                         break
 
         if q_num and q_num == expected_q:
-            # Check if answer was accidentally captured inside q_title (e.g. embedded ':جاۋاب')
-            jawabb_pattern = re.compile(r'(?:جاۋ[^\s\w]*[الله]*[^\s\w]*ب|:?جاۋاب:?|ج\s*:\s*اۋاب|جاۋا\s*:\s*ب|جاۋ\s*:\s*اب|جاۋاب\s*:|\(\s*جاۋاب\s*\))')
+            jawabb_pattern = re.compile(r'(?:جاۋ[^\s\w]*[الله]*[^\s\w]*ب|:?جاۋاب:?|ج\s*:\s*اۋاب|جاۋا\s*:\s*ب|جاۋ\s*:\s*اب|جاۋاب\s*:|:?\s*ج\s*ا+\s*ۋ\s*(?:[الله]*)\s*ا*\s*ب\s*:?|\(\s*جاۋاب\s*\))')
             m_jawabb = jawabb_pattern.search(q_title)
             embedded_ans = ""
             if m_jawabb:
@@ -433,6 +435,80 @@ def extract_book2_questions(all_lines):
         p = re.sub(r' +', ' ', p)
         return p.strip()
 
+    def format_q1887_custom(raw_lines, clean_fn):
+        filtered = []
+        for l in raw_lines:
+            if any(w in l for w in ['ەۋ اغرلاۇئ', 'كىلتەۋىسانۇم', 'رەلىلىسەم', 'للااھ–ماراھ', 'رۇغيۇئ ىكىدىرايىد', 'ملاسىئ ىكىدىساينۇد']):
+                continue
+            if any(l.startswith(k) for k in ["بۆلۈم", "-بۆلۈم", ":بۆلۈم", "مۇندەرىجە", "پايدىلىنىلغان"]):
+                continue
+            if any(k in l for k in ["ئىسالمدىكى", "ئىسلامدىكى", "ۇقەددەس", "ھىجرىيە يىلنامىسى", "قىسقىچە چۈشەنچە"]):
+                continue
+            if l.strip() in ['-', '–', '—']:
+                continue
+            if re.match(r"^\d{1,3}$", l.strip()):
+                continue
+            filtered.append(l)
+
+        full_text = " ".join(filtered)
+        full_text = clean_fn(full_text)
+
+        subs = [
+            ("كۆيۈپ كۈل بولغان", "كۆيۈپ كۈل بولغان\n\n---\n\n### 1. ئۇيغۇر دىيارىدىكى ئالاھىدە ئۈچ مەسجىد\n\n"),
+            ("ئۇيغۇر دىيارىدىكى ئالاھىدە ئۈچ مە سجىد ئەڭ دەسلەپ سېلىنغان مەسجىد-ئاتۇش جامەسى", "#### 1) ئەڭ دەسلەپ سېلىنغان مەسجىد — ئاتۇش جامەسى\n\n"),
+            ("تۇنجى مەسجىدنى سالىدۇ كالا تېرىسى پىلانى ئاتۇشتا مەسجىد سېلىشنى", "تۇنجى مەسجىدنى سالىدۇ.\n\n##### كالا تېرىسى پىلانى\n\nئاتۇشتا مەسجىد سېلىشنى"),
+            ("ئەڭ مەشھۇر مەسجىد-قەشقەر ھېيت گاھ جامەسى", "\n\n#### 2) ئەڭ مەشھۇر مەسجىد — قەشقەر ھېيتگاھ جامەسى\n\n"),
+            ("ئەڭ مەشھۇر مەسجىد-قەشقەر ھېيتگاھ جامەسى", "\n\n#### 2) ئەڭ مەشھۇر مەسجىد — قەشقەر ھېيتگاھ جامەسى\n\n"),
+            ("ئەڭ چوڭ مەسجىد-كېرىيە جامەسى", "\n\n#### 3) ئەڭ چوڭ مەسجىد — كېرىيە جامەسى\n\n"),
+            ("ئىسلام دۇنياسىدىكى بەزى مەشھۇر بىلىم يۇرتلىرى", "\n\n---\n\n### 2. ئىسلام دۇنياسىدىكى بەزى مەشھۇر بىلىم يۇرتلىرى\n\n"),
+            ("بەيتۇل ھېكمەت(بيت ال كمس)", "\n\n#### 1) بەيتۇلھېكمەت (بيت الحكمة)\n\n"),
+            ("قەرەۋىيىن ئۇنىۋېرستېتى(جاممس القروين)", "\n\n#### 2) قەرەۋىيىن ئۇنىۋېرستېتى (جامعة القرويين)\n\n"),
+            ("ئەڭ قەدىمى ئىسلام ئالىي بىلىمگاھى -ئەزھەر بىلىم يۇرتى(جاممس األزھر الشريف)", "\n\n#### 3) ئەڭ قەدىمىي ئىسلام ئالىي بىلىمگاھى — ئەزھەر بىلىم يۇرتى (جامعة الأزهر الشريف)\n\n"),
+            ("نىزامىيە مەدرەسەسى(المدرسس النظاميس)", "\n\n#### 4) نىزامىيە مەدرەسەسى (المدرسة النظامية)\n\n"),
+            ("نىَامىيە مەدرەسەسى(المدرسس النظاميس)", "\n\n#### 4) نىزامىيە مەدرەسەسى (المدرسة النظامية)\n\n"),
+            ("مەدرەسە مۇستەنسىرىيە(المدرسس المستنصريس)", "\n\n#### 5) مەدرەسە مۇستەنسىرىيە (المدرسة المستنصرية)\n\n"),
+            ("دارۇلھەدىس خەيرىيەت بىلىمگاھى(دار ال ديث الخيريس)", "\n\n#### 6) دارۇلھەدىس خەيرىيەت بىلىمگاھى (دار الحديث الخيرية)\n\n"),
+            ("دارۇلھەدىس بىلىمگاھىنىڭد ە رسلىكلىرى", "\n\n**دارۇلھەدىس بىلىمگاھىنىڭ دەرسلىكلىرى:**\n\n"),
+            ("دارۇلھەدىس بىلىمگاھىنىڭ دەرسلىكلىرى", "\n\n**دارۇلھەدىس بىلىمگاھىنىڭ دەرسلىكلىرى:**\n\n"),
+            ("دارۇلھەدىس بىلىمگاھىنىڭ سىنىپلىرى", "\n\n**دارۇلھەدىس بىلىمگاھىنىڭ سىنىپلىرى:**\n\n"),
+            ("دارۇلھەدىس بىلىمگاھىغا قوبۇل قىلىش شەرتلىرى دارۇلھەدىس بىلىمگاھى: غا قوبۇل قىلىش شەرتلىرى تۆۋەندىكىچە", "\n\n**دارۇلھەدىس بىلىمگاھىغا قوبۇل قىلىش شەرتلىرى:**\n\n"),
+            ("دارۇلھەدىس بىلىمگاھىغا قوبۇل قىلىش شەرتلىرى", "\n\n**دارۇلھەدىس بىلىمگاھىغا قوبۇل قىلىش شەرتلىرى:**\n\n"),
+            ("ئۇممۇلقۇرا ئۇنىۋېرستېتى(جاممس أم القرى)", "\n\n#### 7) ئۇممۇلقۇرا ئۇنىۋېرستېتى (جامعة أم القرى)\n\n"),
+            ("ئۇممۇلقۇرا ئۇنىۋېرستېتىنىڭ اكۇلتېتلىرى", "\n\n**ئۇممۇلقۇرا ئۇنىۋېرستېتىنىڭ فاكۇلتېتلىرى ۋە شارائىتلىرى:**\n\n"),
+            ("مۇھەممەد ئىبنى ئەلى سەنۇسى ئۇنىۋېرستېتى( جاممس م مد بن علي ال سنوسي)", "\n\n#### 8) مۇھەممەد ئىبنى ئەلى سەنۇسى ئۇنىۋېرستېتى (جامعة محمد بن علي السنوسي)\n\n"),
+            ("مۇھەممەد ئىبنى ئەلى سەنۇسى ئۇنىۋېرستېتى", "\n\n#### 8) مۇھەممەد ئىبنى ئەلى سەنۇسى ئۇنىۋېرستېتى (جامعة محمد بن علي السنوسي)\n\n"),
+            ("مەدىنە ئىسلام ئۇنىۋېرستېتى (الجاممس إلسلاميس بالمدينس المنورة)", "\n\n#### 9) مەدىنە ئىسلام ئۇنىۋېرستېتى (الجامعة الإسلامية بالمدينة المنورة)\n\n"),
+            ("مەدىنە ئىسلام ئۇنىۋېرستېتىنىڭ تەمىنلىشى", "\n\n**مەدىنە ئىسلام ئۇنىۋېرستېتىنىڭ تەمىنلىشى:**\n\n"),
+            ("مەدىنە ئىسلام ئۇنىۋېرستېتىغا قوبۇل قىلىش شەرتلىرى: مەدىنە ئىسلام ئۇنىۋېرستېتىغا قوبۇل قىلىش شەرتلىرى تۆۋەندىكىچە", "\n\n**مەدىنە ئىسلام ئۇنىۋېرستېتىغا قوبۇل قىلىش شەرتلىرى:**\n\n"),
+            ("مەدىنە ئىسلام ئۇنىۋېرستېتىغا قوبۇل قىلىش شەرتلىرى", "\n\n**مەدىنە ئىسلام ئۇنىۋېرستېتىغا قوبۇل قىلىش شەرتلىرى:**\n\n"),
+            ("تۈركىيىدىكى(ئىمام، خاتىب ئىنىستتوتىImam Hatip Lisesi )", "\n\n#### 10) تۈركىيىدىكى ئىمام-خاتىب ئىنىستىتۇتى (İmam Hatip Lisesi)\n\n"),
+            ("تۈرك ىيىدىكى ئىمام، خاتىب ئىنىستتوتىنىڭ دەرسلىكلىرى", "\n\n**تۈركىيىدىكى ئىمام-خاتىب ئىنىستىتۇتىنىڭ دەرسلىكلىرى:**\n\n"),
+            ("تۈركىيىدىكى ئىلاھىيات اك ۇ(لتېتلىرىIlahiyat fakulteleri )", "\n\n#### 11) تۈركىيىدىكى ئىلاھىيات فاكۇلتېتلىرى (İlahiyat Fakülteleri)\n\n"),
+            ("ئىلاھىيات اك ۇ لتېتلىر ىنىڭ دەرسلىكلىرى", "\n\n**ئىلاھىيات فاكۇلتېتلىرىنىڭ دەرسلىكلىرى:**\n\n"),
+            ("مالايشىيا خەلقئارا ئىسلام ئۇنىۋېرستېتى( International Islamic University Malaysia )", "\n\n#### 12) مالايشىيا خەلقئارا ئىسلام ئۇنىۋېرستېتى (International Islamic University Malaysia)\n\n"),
+            ("ئىسلام ئاباد خەلقئارا ئۇنىۋېرستېتى( International Islamic University Islamabad )", "\n\n#### 13) ئىسلام ئاباد خەلقئارا ئۇنىۋېرستېتى (International Islamic University Islamabad)\n\n"),
+            ("ئىسلام ئاباد خەلقئارا ئۇنىۋېرستېتىنىڭ فاكۇلتېتلىرى", "\n\n**ئىسلام ئاباد خەلقئارا ئۇنىۋېرستېتىنىڭ فاكۇلتېتلىرى:**\n\n"),
+            ("ئىمان ئۇنىۋېرستېتى(جاممس اإليمان)", "\n\n#### 14) ئىمان ئۇنىۋېرستېتى (جامعة الإيمان)\n\n"),
+            ("ئىمام مۇھەممەد ئىبنى سۇئۇد ئۇنىۋېرستېتى(جاممس نمام م مد بن سمود)", "\n\n#### 15) ئىمام مۇھەممەد ئىبنى سۇئۇد ئۇنىۋېرستېتى (جامعة الإمام محمد بن سعود)\n\n"),
+            ("ئىمام مۇھەممەد ئىبنى سۇ ئۇد ئۇنىۋېرستېتىگە قوبۇل قىلىش شەرتلىرى: ئىمام مۇھەممەد ئىبنى سۇئۇد ئۇنىۋېرستېتىگە قوبۇل قىلىش شەرتلىرى تۆۋەندىكىچە", "\n\n**ئىمام مۇھەممەد ئىبنى سۇئۇد ئۇنىۋېرستېتىگە قوبۇل قىلىش شەرتلىرى:**\n\n"),
+            ("ئامېرىكا ئوچۇق ئۇنىۋېرستېتى( the American Open Universty )", "\n\n#### 16) ئامېرىكا ئوچۇق ئۇنىۋېرستېتى (The American Open University)\n\n"),
+            ("ئۇيغۇر دىيار ىدىكى بەزى مەش ھۇر ئىلىم يۇرتلىرى", "\n\n---\n\n### 3. ئۇيغۇر دىيارىدىكى بەزى مەشھۇر ئىلىم يۇرتلىرى\n\n"),
+            ("خانلىق مەدرەسە قەشقەر«خانلىق مەدر ەسە »", "\n\n#### 1) خانلىق مەدرەسە (قەشقەر)\n\nقەشقەر «خانلىق مەدرەسە»"),
+            ("قەشقەر«ساچىيە »مەدرەسەسى", "\n\n#### 2) ساچىيە مەدرەسەسى (قەشقەر)\n\n"),
+            ("قەشقەر ساقىيە مەدرەسەسى", "\n\n#### 3) ساقىيە مەدرەسەسى (قەشقەر)\n\n"),
+            ("لۈكچۈن مەدرەسەسى", "\n\n#### 4) لۈكچۈن جاھاننامە مەدرەسەسى (تۇرپان)\n\n"),
+            ("دامىكۇ پۇناق مەدرەسەسى", "\n\n#### 5) دامىكۇ پۇناق مەدرەسەسى (چىرا)\n\n"),
+            ("كېرىيە دۆڭ مەدرەسە", "\n\n#### 6) كېرىيە دۆڭ مەدرەسە\n\n"),
+        ]
+        res = full_text
+        for orig, target in subs:
+            if orig in res:
+                res = res.replace(orig, target, 1)
+
+        res = re.sub(r'(\(\s*\d+\s*\))', r'\n\n\1 ', res)
+        res = re.sub(r'\n{3,}', '\n\n', res)
+        return res.strip()
+
     # Populate answer lines for each question
     for idx, num in enumerate(sorted_nums):
         q = questions[num]
@@ -457,10 +533,14 @@ def extract_book2_questions(all_lines):
                 continue
             # Clean answer prefix
             clean_l = l_str
-            for k in [":جاۋاب", "جاۋاب:", "جاۋاب", "ج:اۋاب", "جاۋا :ب", "جاۋ:اب", "جاۋاللهب"]:
-                if clean_l.startswith(k):
-                    clean_l = clean_l[len(k):].strip()
-                    break
+            m_j = jawabb_pattern.match(clean_l)
+            if m_j:
+                clean_l = clean_l[m_j.end():].lstrip(":").strip()
+            else:
+                for k in [":جاۋاب", "جاۋاب:", "جاۋاب", "ج:اۋاب", "جاۋا :ب", "جاۋ:اب", "جاۋاللهب"]:
+                    if clean_l.startswith(k):
+                        clean_l = clean_l[len(k):].strip()
+                        break
             if clean_l:
                 raw_lines.append(clean_l)
 
@@ -469,33 +549,36 @@ def extract_book2_questions(all_lines):
             last = raw_lines[-1]
             words = last.split()
             if len(words) <= 3 and not any(last.endswith(p) for p in ['.', '،', ':', '؟', '!', '»', ')', '—', '–']):
-                if any(k in last for k in ['ھالال', 'ھارام', 'مەسىلىلەر', 'ھەققىدە', 'ئەھمىيىتى', 'زۆرۈرلىكى', 'شەرتلىرى']):
+                if any(k in last for k in ['ھالال', 'ھارام', 'مەسىلىلەر', 'ھەققىدە', 'ئەھمىيىتى', 'زۆرۈرلىكى', 'شەرتلىرى', 'تاللىنىشى', 'ئۇسۇلى', 'يىلنامىسى']):
                     raw_lines.pop()
                     continue
             break
 
-        # Group lines into paragraphs and list items
-        paragraphs = []
-        curr_p = []
-        for l in raw_lines:
-            is_item_start = bool(re.match(r'^\(?\s*\d+\s*[\)\.\:\-–]', l))
-            if is_item_start:
-                if curr_p:
-                    paragraphs.append(' '.join(curr_p))
-                curr_p = [l]
-            else:
-                curr_p.append(l)
-        if curr_p:
-            paragraphs.append(' '.join(curr_p))
+        if num == 1887:
+            q["answer"] = format_q1887_custom(raw_lines, clean_text_typography)
+        else:
+            # Group lines into paragraphs and list items
+            paragraphs = []
+            curr_p = []
+            for l in raw_lines:
+                is_item_start = bool(re.match(r'^\(?\s*\d+\s*[\)\.\:\-–]', l))
+                if is_item_start:
+                    if curr_p:
+                        paragraphs.append(' '.join(curr_p))
+                    curr_p = [l]
+                else:
+                    curr_p.append(l)
+            if curr_p:
+                paragraphs.append(' '.join(curr_p))
 
-        # Format paragraphs and repair word breaks
-        cleaned_paragraphs = []
-        for p in paragraphs:
-            cleaned_p = clean_text_typography(p)
-            if cleaned_p:
-                cleaned_paragraphs.append(cleaned_p)
+            # Format paragraphs and repair word breaks
+            cleaned_paragraphs = []
+            for p in paragraphs:
+                cleaned_p = clean_text_typography(p)
+                if cleaned_p:
+                    cleaned_paragraphs.append(cleaned_p)
 
-        q["answer"] = "\n\n".join(cleaned_paragraphs).strip()
+            q["answer"] = "\n\n".join(cleaned_paragraphs).strip()
 
         # Clean question title
         q_title_cleaned = clean_text_typography(q["question"])
