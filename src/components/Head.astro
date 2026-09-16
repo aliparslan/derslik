@@ -4,10 +4,17 @@ import Default from '@astrojs/starlight/components/Head.astro';
 const id = Astro.locals.starlightRoute.id || '';
 const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+const is2000Root = id === '2000' || id === '2000/index' || pathname === '/2000/' || pathname === '/2000';
 
 if (is2000 && Astro.locals.starlightRoute.head) {
 	Astro.locals.starlightRoute.head = Astro.locals.starlightRoute.head.map((item) => {
 		if (item.tag === 'title' && item.content) {
+			if (is2000Root) {
+				return {
+					...item,
+					content: 'تەربىيە | دىن ۋە ھايات: 2000 سوئالغا جاۋاب',
+				};
+			}
 			return {
 				...item,
 				content: item.content.replace(/تەربىيە/g, 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب'),

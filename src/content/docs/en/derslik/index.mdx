@@ -1,0 +1,39 @@
+---
+title: Educational Program
+description: A systematic step-by-step curriculum framework designed by the East Turkistan Scholars Union.
+template: splash
+prev: false
+hero:
+  title: Religious & National Educational Curriculum for Uyghur Youth
+  tagline: A 6-stage structured educational roadmap prepared for youth, covering faith, language, history, management, and leadership.
+  actions:
+    - text: Read Introduction
+      link: /en/introduction/
+      icon: right-arrow
+---
+
+import { CardGrid } from '@astrojs/starlight/components';
+import StageCard from '~/components/StageCard.astro';
+
+## Curriculum Stages
+
+<CardGrid stagger>
+	<StageCard title="1. Adolescents Stage (Ages 12 – 16)" href="/en/1-osmurler/01-heqqide/" icon="open-book">
+		Foundations of faith (Aqidah), moral development, essential jurisprudence, Quran recitation, and native language literacy.
+	</StageCard>
+	<StageCard title="2. Youth Stage (Ages 17 – 21)" href="/en/2-yashlar/01-heqqide/" icon="notes">
+		Intellectual & political awareness, media literacy, Uyghur literature, and practical worship skills.
+	</StageCard>
+	<StageCard title="3. Preparatory Stage" href="/en/3-tayyarliqs/01-heqqide/" icon="pencil">
+		Preparation for community service, Usul al-Fiqh, historical analysis, and social organizational skills.
+	</StageCard>
+	<StageCard title="4. Organizational Stage" href="/en/4-tashkillash/01-heqqide/" icon="list-format">
+		Collective service, management principles, strategic planning, and institution-building knowledge.
+	</StageCard>
+	<StageCard title="5. Dawah Specialist Stage" href="/en/5-dawatchi/01-heqqide/" icon="comment-alt">
+		Methodologies of calling to faith, advanced Quran & Hadith studies, comparative religion, and social engagement.
+	</StageCard>
+	<StageCard title="6. Master Mentor Stage" href="/en/6-yetakchi/01-heqqide/" icon="star">
+		Educational leadership, administrative excellence, curriculum design, strategic visionary planning, and mentorship.
+	</StageCard>
+</CardGrid>

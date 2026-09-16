@@ -1,0 +1,215 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+	title: string;
+	badge?: string;
+	subtitle?: string;
+	description: string;
+	href: string;
+	buttonText?: string;
+	tags?: string[];
+	icon?: any;
+}
+
+const {
+	title,
+	badge,
+	subtitle,
+	description,
+	href,
+	buttonText = 'كىرىش',
+	tags = [],
+	icon = 'open-book',
+} = Astro.props;
+---
+
+<div class="portal-card">
+	<div class="portal-card-header">
+		<div class="portal-card-icon-badge">
+			{icon && <Icon name={icon} class="portal-icon" size="1.6rem" />}
+			{badge && <span class="portal-badge">{badge}</span>}
+		</div>
+		<h3 class="portal-title">
+			<a href={href}>{title}</a>
+		</h3>
+		{subtitle && <p class="portal-subtitle">{subtitle}</p>}
+	</div>
+
+	<p class="portal-description">{description}</p>
+
+	{tags && tags.length > 0 && (
+		<div class="portal-tags">
+			{tags.map((tag) => (
+				<span class="portal-tag">{tag}</span>
+			))}
+		</div>
+	)}
+
+	<div class="portal-card-footer">
+		<a href={href} class="portal-button">
+			<span>{buttonText}</span>
+			<span class="portal-arrow" aria-hidden="true">→</span>
+		</a>
+	</div>
+</div>
+
+<style>
+	.portal-card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		position: relative;
+		padding: 1.75rem;
+		border-radius: 0.875rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background-color: var(--sl-color-gray-6, #16181d);
+		transition: all 0.25s ease;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	:root[data-theme='light'] .portal-card {
+		background-color: var(--sl-color-gray-7, #ffffff);
+		border-color: var(--sl-color-gray-5, #e2e8f0);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+	}
+
+	.portal-card:hover {
+		border-color: var(--sl-color-accent);
+		transform: translateY(-4px);
+		box-shadow: 0 12px 28px rgba(0, 153, 255, 0.18);
+	}
+
+	.portal-card-header {
+		margin-block-end: 1rem;
+	}
+
+	.portal-card-icon-badge {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-block-end: 1rem;
+	}
+
+	.portal-icon {
+		color: var(--sl-color-accent);
+	}
+
+	.portal-badge {
+		display: inline-block;
+		font-size: var(--sl-text-xs, 0.75rem);
+		font-weight: 700;
+		padding: 0.2rem 0.65rem;
+		border-radius: 9999px;
+		background-color: var(--sl-color-accent-low);
+		color: var(--sl-color-accent-high);
+		border: 1px solid var(--sl-color-accent);
+	}
+
+	.portal-title {
+		font-size: 1.35rem;
+		font-weight: 700;
+		line-height: 1.4;
+		margin: 0 0 0.4rem 0;
+	}
+
+	.portal-title a {
+		color: var(--sl-color-white);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	:root[data-theme='light'] .portal-title a {
+		color: var(--sl-color-gray-1, #1e2329);
+	}
+
+	.portal-card:hover .portal-title a {
+		color: var(--sl-color-accent);
+	}
+
+	.portal-subtitle {
+		font-size: var(--sl-text-sm, 0.875rem);
+		color: var(--sl-color-accent-high);
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.portal-description {
+		font-size: 0.95rem;
+		line-height: 1.7;
+		color: var(--sl-color-gray-2, #d0d7de);
+		margin-block-end: 1.25rem;
+		flex-grow: 1;
+	}
+
+	:root[data-theme='light'] .portal-description {
+		color: var(--sl-color-gray-2, #4b5563);
+	}
+
+	.portal-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-block-end: 1.5rem;
+	}
+
+	.portal-tag {
+		font-size: 0.78rem;
+		padding: 0.2rem 0.5rem;
+		border-radius: 0.375rem;
+		background-color: rgba(255, 255, 255, 0.05);
+		color: var(--sl-color-gray-2);
+		border: 1px solid var(--sl-color-gray-5);
+	}
+
+	:root[data-theme='light'] .portal-tag {
+		background-color: #f1f5f9;
+		color: #475569;
+		border-color: #e2e8f0;
+	}
+
+	.portal-card-footer {
+		margin-block-start: auto;
+		padding-block-start: 1rem;
+		border-block-start: 1px solid var(--sl-color-gray-5);
+	}
+
+	.portal-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: 0.65rem 1.1rem;
+		border-radius: 0.5rem;
+		background-color: var(--sl-color-accent-low);
+		color: var(--sl-color-accent-high);
+		border: 1px solid var(--sl-color-accent);
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+		transition: all 0.2s ease;
+	}
+
+	.portal-button:hover {
+		background-color: var(--sl-color-accent);
+		color: var(--sl-color-text-invert, #ffffff);
+		box-shadow: 0 4px 14px rgba(0, 153, 255, 0.3);
+	}
+
+	.portal-arrow {
+		transition: transform 0.2s ease;
+		display: inline-block;
+	}
+
+	[dir='rtl'] .portal-arrow {
+		transform: rotate(180deg);
+	}
+
+	.portal-card:hover [dir='rtl'] .portal-arrow {
+		transform: rotate(180deg) translateX(4px);
+	}
+
+	.portal-card:hover [dir='ltr'] .portal-arrow {
+		transform: translateX(4px);
+	}
+</style>

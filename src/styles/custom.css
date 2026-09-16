@@ -308,3 +308,225 @@ table.names-table tr:hover,
 .name-meaning {
 	color: var(--sl-color-gray-2);
 }
+
+/* ==========================================================================
+   Forty Hadith (قىرىق ھەدىس) & Dua (ھىسنۇل مۇسلىم) Custom Styles
+   ========================================================================== */
+
+.hadith-card,
+.dua-card {
+	position: relative;
+	margin-block-end: 2.25rem;
+	border-radius: 0.75rem;
+	border: 1px solid var(--sl-color-gray-5);
+	background-color: var(--sl-color-gray-6, #16181d);
+	padding: 1.5rem 1.75rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	scroll-margin-top: calc(var(--sl-nav-height) + 1.5rem);
+}
+
+:root[data-theme='light'] .hadith-card,
+:root[data-theme='light'] .dua-card {
+	background-color: var(--sl-color-gray-7, #f8f9fa);
+	border-color: var(--sl-color-gray-5, #e2e8f0);
+}
+
+.hadith-card:hover,
+.dua-card:hover {
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme='light'] .hadith-card:hover,
+:root[data-theme='light'] .dua-card:hover {
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.hadith-card:target,
+.dua-card:target {
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 0 0 2px var(--sl-color-accent), 0 8px 24px rgba(0, 153, 255, 0.25);
+	background-color: var(--sl-color-accent-low);
+}
+
+:root[data-theme='light'] .hadith-card:target,
+:root[data-theme='light'] .dua-card:target {
+	background-color: oklch(0.96 0.03 249);
+	border-color: var(--sl-color-accent);
+	box-shadow: 0 0 0 2px var(--sl-color-accent), 0 8px 24px rgba(0, 153, 255, 0.15);
+}
+
+.hadith-header,
+.dua-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-block-end: 1.25rem;
+	padding-block-end: 0.85rem;
+	border-block-end: 1px solid var(--sl-color-gray-5);
+}
+
+.hadith-number,
+.dua-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.4rem;
+	height: 2rem;
+	padding-inline: 0.5rem;
+	border-radius: 9999px;
+	background-color: var(--sl-color-accent-low);
+	color: var(--sl-color-accent-high);
+	font-weight: 700;
+	font-size: 0.95rem;
+	line-height: 1;
+}
+
+.hadith-number-link,
+.dua-number-link {
+	text-decoration: none;
+	display: inline-flex;
+}
+
+.hadith-number-link:hover .hadith-number,
+.dua-number-link:hover .dua-number {
+	background-color: var(--sl-color-accent);
+	color: var(--sl-color-text-invert, #ffffff);
+	transform: scale(1.08);
+	transition: all 0.15s ease;
+}
+
+.hadith-title,
+.dua-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--sl-color-white);
+	flex-grow: 1;
+}
+
+:root[data-theme='light'] .hadith-title,
+:root[data-theme='light'] .dua-title {
+	color: var(--sl-color-gray-1, #1e2329);
+}
+
+.hadith-anchor,
+.dua-anchor {
+	opacity: 0;
+	margin-inline-start: auto;
+	padding-inline: 0.5rem;
+	color: var(--sl-color-gray-4);
+	text-decoration: none;
+	font-size: 1.2rem;
+	font-weight: 500;
+	transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.hadith-card:hover .hadith-anchor,
+.hadith-anchor:focus,
+.dua-card:hover .dua-anchor,
+.dua-anchor:focus {
+	opacity: 1;
+}
+
+.hadith-anchor:hover,
+.dua-anchor:hover {
+	color: var(--sl-color-accent);
+}
+
+.hadith-arabic,
+.dua-arabic {
+	font-family: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+	font-size: 1.35rem;
+	line-height: 2.2;
+	background-color: rgba(0, 153, 255, 0.05);
+	border-inline-start: 4px solid var(--sl-color-accent);
+	padding: 1.15rem 1.35rem;
+	border-radius: 0.5rem;
+	margin-block-end: 1.25rem;
+	color: var(--sl-color-white);
+}
+
+:root[data-theme='light'] .hadith-arabic,
+:root[data-theme='light'] .dua-arabic {
+	background-color: #f1f5f9;
+	color: #0f172a;
+}
+
+.hadith-translation,
+.dua-translation {
+	font-size: 1.05rem;
+	line-height: 1.95;
+	color: var(--sl-color-gray-2, #d0d7de);
+	margin-block-end: 1.25rem;
+}
+
+:root[data-theme='light'] .hadith-translation,
+:root[data-theme='light'] .dua-translation {
+	color: var(--sl-color-gray-2, #374151);
+}
+
+.hadith-translation p,
+.dua-translation p {
+	margin-block-end: 0.75rem;
+}
+
+.hadith-translation p:last-child,
+.dua-translation p:last-child {
+	margin-block-end: 0;
+}
+
+.hadith-section-label,
+.dua-section-label {
+	font-weight: 700;
+	color: var(--sl-color-accent);
+	margin-block-end: 0.5rem;
+	font-size: 1.05rem;
+}
+
+.hadith-sharh,
+.dua-note {
+	border-block-start: 1px dashed var(--sl-color-gray-5);
+	padding-block-start: 1.1rem;
+	margin-block-start: 1.1rem;
+	font-size: 1rem;
+	line-height: 1.9;
+	color: var(--sl-color-gray-2, #d0d7de);
+}
+
+:root[data-theme='light'] .hadith-sharh,
+:root[data-theme='light'] .dua-note {
+	color: var(--sl-color-gray-2, #374151);
+}
+
+.hadith-sharh-title,
+.dua-note-title {
+	font-weight: 700;
+	color: var(--sl-color-white);
+	margin-block-start: 1rem;
+	margin-block-end: 0.4rem;
+	font-size: 1.05rem;
+	border-inline-start: 3px solid var(--sl-color-accent);
+	padding-inline-start: 0.5rem;
+}
+
+:root[data-theme='light'] .hadith-sharh-title,
+:root[data-theme='light'] .dua-note-title {
+	color: var(--sl-color-gray-1, #1e2329);
+}
+
+.hadith-sharh-item,
+.dua-note-item {
+	padding-inline-start: 0.75rem;
+	margin-block-end: 0.5rem;
+}
+
+.hadith-sharh p,
+.dua-note p {
+	margin-block-end: 0.75rem;
+}
+
+.hadith-sharh p:last-child,
+.dua-note p:last-child {
+	margin-block-end: 0;
+}
+

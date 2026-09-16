@@ -13,6 +13,8 @@ const shouldRenderSearch =
 const id = Astro.locals.starlightRoute.id || '';
 const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const isDua = id.startsWith('dua') || pathname.includes('/dua');
 ---
 
 <div class="header">
@@ -26,7 +28,7 @@ const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 				<SocialIcons />
 			</div>
 			<ThemeSelect />
-			{!is2000 && <LanguageSelect />}
+			{!is2000 && !is40hedis && !isDua && <LanguageSelect />}
 		</div>
 	</div>
 </div>

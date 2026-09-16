@@ -1,38 +1,60 @@
 ---
-title: Educational Program
-description: A systematic step-by-step curriculum framework designed by the East Turkistan Scholars Union.
+title: Terbiye Knowledge Platform
+description: Comprehensive educational curriculum, 2000 Q&A Islamic encyclopedia, and Imam Nawawi's Forty Hadith with scholar commentaries.
 template: splash
 hero:
-  title: Religious & National Educational Curriculum for Uyghur Youth
-  tagline: A 6-stage structured educational roadmap prepared for youth, covering faith, language, history, management, and leadership.
+  title: Terbiye Knowledge Platform
+  tagline: A comprehensive educational, ethical, and Islamic knowledge repository prepared for Uyghur youth and readers worldwide.
   actions:
-    - text: Read Introduction
-      link: /en/introduction/
-      icon: right-arrow
+    - text: Educational Program
+      link: /en/derslik/
+      icon: open-book
+    - text: 2000 Q&A
+      link: /en/2000/
+      icon: document
+      variant: secondary
+    - text: Forty Hadith
+      link: /en/40hedis/
+      icon: star
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
-import StageCard from '~/components/StageCard.astro';
+import PortalCard from '~/components/PortalCard.astro';
 
-## Curriculum Stages
+## Main Portals & Resources
 
-<CardGrid stagger>
-	<StageCard title="1. Adolescents Stage (Ages 12 – 16)" href="/en/1-osmurler/01-heqqide/" icon="open-book">
-		Foundations of faith (Aqidah), moral development, essential jurisprudence, Quran recitation, and native language literacy.
-	</StageCard>
-	<StageCard title="2. Youth Stage (Ages 17 – 21)" href="/en/2-yashlar/01-heqqide/" icon="notes">
-		Intellectual & political awareness, media literacy, Uyghur literature, and practical worship skills.
-	</StageCard>
-	<StageCard title="3. Preparatory Stage" href="/en/3-tayyarliqs/01-heqqide/" icon="pencil">
-		Preparation for community service, Usul al-Fiqh, historical analysis, and social organizational skills.
-	</StageCard>
-	<StageCard title="4. Organizational Stage" href="/en/4-tashkillash/01-heqqide/" icon="list-format">
-		Collective service, management principles, strategic planning, and institution-building knowledge.
-	</StageCard>
-	<StageCard title="5. Dawah Specialist Stage" href="/en/5-dawatchi/01-heqqide/" icon="comment-alt">
-		Methodologies of calling to faith, advanced Quran & Hadith studies, comparative religion, and social engagement.
-	</StageCard>
-	<StageCard title="6. Master Mentor Stage" href="/en/6-yetakchi/01-heqqide/" icon="star">
-		Educational leadership, administrative excellence, curriculum design, strategic visionary planning, and mentorship.
-	</StageCard>
+<CardGrid>
+	<PortalCard
+		title="Educational Program (Derslik)"
+		badge="Curriculum"
+		subtitle="East Turkistan Scholars Union"
+		description="A structured 6-stage educational roadmap designed to cultivate Islamic faith, civic ethics, history, Uyghur language, leadership, and organizational competence."
+		href="/en/derslik/"
+		buttonText="Explore Curriculum"
+		icon="open-book"
+		tags={['1. Adolescents', '2. Youth', '3. Preparatory', '4. Organizational', '5. Specialist', '6. Mentor']}
+	/>
+
+	<PortalCard
+		title="Din & Hayat: 2000 Questions & Answers"
+		badge="2000 Q&A"
+		subtitle="By Ustaz Muhammad Yusuf"
+		description="A monumental 13-section Islamic knowledge encyclopedia answering 2000 comprehensive questions covering creed, worship, social ethics, Seerah, jurisprudence, and contemporary challenges."
+		href="/en/2000/"
+		buttonText="Browse 2000 Q&A"
+		icon="document"
+		tags={['Creed', 'Worship', 'Ethics', 'Seerah', 'Prohibitions', 'Refuting Doubts']}
+	/>
+
+	<PortalCard
+		title="Forty Hadith (Imam Nawawi)"
+		badge="Hadith Collection"
+		subtitle="With Authentic Scholar Commentaries"
+		description="Imam Nawawi's renowned collection of 42 fundamental prophetic traditions, featuring original Arabic vocalized texts, full translations, and detailed explanations from esteemed scholars."
+		href="/en/40hedis/"
+		buttonText="Read Forty Hadith"
+		icon="star"
+		tags={['42 Hadiths', 'Arabic Text', 'Commentary', 'Faith & Intention', 'Piety', 'Ethics']}
+	/>
 </CardGrid>

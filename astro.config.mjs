@@ -44,6 +44,7 @@ export default defineConfig({
 						en: 'Introduction',
 					},
 					items: [
+						{ label: 'ئومۇمىي بايان', link: '/derslik/', translations: { en: 'Overview' } },
 						{ label: 'كىرىش سۆز', slug: 'introduction', translations: { en: 'Foreword' } },
 					],
 				},
@@ -192,6 +193,113 @@ export default defineConfig({
 								en: '12-Islamic State & Caliphates (Q1959–2000)',
 							},
 							items: [{ autogenerate: { directory: '2000/12-islam-dowliti' } }],
+						},
+					],
+				},
+				{
+					label: 'قىرىق ھەدىس',
+					translations: {
+						en: 'Forty Hadith',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/40hedis/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: '40hedis/00-muqeddimu' } }],
+						},
+						{
+							label: '1–10-ھەدىسلەر: ئىسلام ۋە ئىمان ئاساسلىرى',
+							slug: '40hedis/01-hedis-01-10',
+							translations: {
+								en: 'Hadiths 1–10',
+							},
+						},
+						{
+							label: '11–20-ھەدىسلەر: تەقۋالىق، پاكلىق ۋە ئەخلاق',
+							slug: '40hedis/02-hedis-11-20',
+							translations: {
+								en: 'Hadiths 11–20',
+							},
+						},
+						{
+							label: '21–30-ھەدىسلەر: ئىستىقامەت، ياخشىلىق ۋە ئىبادەت',
+							slug: '40hedis/03-hedis-21-30',
+							translations: {
+								en: 'Hadiths 21–30',
+							},
+						},
+						{
+							label: '31–42-ھەدىسلەر: زۇھد، مەرھەمەت ۋە ئاللاھنىڭ كەڭ مەغپىرىتى',
+							slug: '40hedis/04-hedis-31-42',
+							translations: {
+								en: 'Hadiths 31–42',
+							},
+						},
+					],
+				},
+				{
+					label: 'ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)',
+					translations: {
+						en: 'Hisnul Muslim (Dua)',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/dua/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: 'dua/00-muqeddimu' } }],
+						},
+						{
+							label: '1. كۈندىلىك تۇرمۇش ۋە ناماز زىكىرلىرى',
+							slug: 'dua/01-kundilik-namaz',
+							translations: {
+								en: 'Daily & Prayer Azkar',
+							},
+						},
+						{
+							label: '2. ئەتىگەن-ئاخشام، ئۇيقۇ ۋە ۋىتىر دۇئالىرى',
+							slug: 'dua/02-etigen-axsham-uyqu',
+							translations: {
+								en: 'Morning, Evening & Sleep Duas',
+							},
+						},
+						{
+							label: '3. مۇسىبەت، كېسەللىك ۋە جىنازا دۇئالىرى',
+							slug: 'dua/03-musibet-kesel-jinaza',
+							translations: {
+								en: 'Hardship, Illness & Funeral Duas',
+							},
+						},
+						{
+							label: '4. تەبىئەت، تائام، سورۇن ۋە سەپەر دۇئالىرى',
+							slug: 'dua/04-tebiet-taam-seper',
+							translations: {
+								en: 'Nature, Meals & Travel Duas',
+							},
+						},
+						{
+							label: '5. ھەج-ئۆمرە، تەۋبە ۋە ئەدەپ-ئەخلاق',
+							slug: 'dua/05-hej-istiqpar-exlaq',
+							translations: {
+								en: 'Hajj, Repentance & Character',
+							},
 						},
 					],
 				},

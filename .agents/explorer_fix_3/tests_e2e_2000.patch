@@ -1,0 +1,87 @@
+--- a/tests/e2e_2000.py
++++ b/tests/e2e_2000.py
+@@ -404,6 +404,27 @@
+         msg = f"Section 02: {page_count}/14 pages, {len(sec02_questions)}/484 questions covered"
+         return TestCaseResult("Section 02 (Ibadet) 14 Pages & Q164-647 Boundaries", passed, msg, details)
+ 
++    def test_munderije_link_integrity(self) -> TestCaseResult:
++        """Verify that all markdown link targets in 00-muqeddimu/04-munderije.mdx exist on disk."""
++        munderije_path = self.docs_root / "00-muqeddimu" / "04-munderije.mdx"
++        details = []
++        if not munderije_path.exists():
++            return TestCaseResult("Table of Contents Link Integrity", False, "04-munderije.mdx missing")
++
++        content = munderije_path.read_text(encoding="utf-8")
++        links = re.findall(r'\[([^\]]+)\]\((/2000/[^\)]+)\)', content)
++        broken = []
++        for text, url in links:
++            rel = url.strip("/").removeprefix("2000/")
++            target_mdx = self.docs_root / f"{rel.rstrip('/')}.mdx"
++            target_idx = self.docs_root / rel / "index.mdx"
++            if not target_mdx.exists() and not target_idx.exists():
++                broken.append(f"{url} ('{text}')")
++
++        passed = len(broken) == 0
++        msg = f"04-munderije.mdx: {len(links)} links checked, {len(broken)} broken"
++        return TestCaseResult("Table of Contents Link Integrity", passed, msg, broken)
++
+     # =========================================================================
+     # TIER 2 - Boundary & Integrity Tests
+     # =========================================================================
+@@ -449,6 +470,25 @@
+         passed = len(matches) == 0
+         msg = f"Occurrences of \\u067b: {len(matches)} files affected"
+         return TestCaseResult("Zero Legacy Glyph \\u067b (Beeh with 2 dots below)", passed, msg, matches[:10])
++
++    def test_zero_farsi_yeh(self) -> TestCaseResult:
++        """Verify zero occurrences of \\u06cc (Farsi yeh) across docs/2000."""
++        farsi_yeh = "\u06cc"
++        matches = []
++
++        if self.docs_root.exists():
++            for f in self.docs_root.glob("**/*"):
++                if f.is_file() and f.suffix in (".mdx", ".md", ".json", ".html"):
++                    try:
++                        text = f.read_text(encoding="utf-8")
++                        count = text.count(farsi_yeh)
++                        if count > 0:
++                            matches.append(f"{f.relative_to(self.project_root)}: {count} occurrences")
++                    except Exception:
++                        pass
++
++        passed = len(matches) == 0
++        msg = f"Occurrences of \\u06cc: {len(matches)} files affected"
++        return TestCaseResult("Zero Legacy Glyph \\u06cc (Farsi Yeh)", passed, msg, matches[:10])
+ 
+     def test_zero_interior_tatweels(self) -> TestCaseResult:
+@@ -584,6 +624,14 @@
+         if unfilled_cells > 0:
+             details.append(f"Total rows with unfilled cells: {unfilled_cells}")
+ 
+-        passed = (row_count == 99) and (unfilled_cells == 0)
+-        msg = f"99 Names table verified: {row_count}/99 rows populated across all 3 columns"
++        # Check distinct Arabic names
++        arabic_names = [row[0] for row in data_rows]
++        distinct_arabic = set(arabic_names)
++        if len(distinct_arabic) != len(arabic_names):
++            dups = [n for n in arabic_names if arabic_names.count(n) > 1]
++            details.append(f"Duplicate names found in 99 Names table: {set(dups)}")
++
++        passed = (row_count == 99) and (unfilled_cells == 0) and (len(distinct_arabic) == 99)
++        msg = f"99 Names table verified: {row_count}/99 rows populated, {len(distinct_arabic)} unique names"
+         return TestCaseResult("99 Names of Allah Table Verification", passed, msg, details)
+@@ -700,6 +748,7 @@
+             self.test_section_00_pages(),
+             self.test_section_01_pages_and_boundaries(),
+             self.test_section_02_pages_and_boundaries(),
++            self.test_munderije_link_integrity(),
+         ]
+ 
+     def run_tier_2(self) -> List[TestCaseResult]:
+@@ -707,6 +756,7 @@
+             self.test_zero_dotless_beh(),
+             self.test_zero_beeh_two_dots_below(),
++            self.test_zero_farsi_yeh(),
+             self.test_zero_interior_tatweels(),
+             self.test_boundary_questions_integrity(),
+         ]
