@@ -417,7 +417,6 @@ def extract_book2_questions(all_lines):
         p = p.replace("\u0640", "")
 
         # Punctuation & misplaced symbols
-        p = re.sub(r'(\b[\u0600-\u06ff]+)\s*،\s*([ىيۇۈوۆاە]\w*)', r'\1\2', p)
         p = re.sub(r'(\b[\u0600-\u06ff]{2,}):([نلداە]\b)', r'\1\2', p)
         p = re.sub(r'\bئا للاھ\b', 'ئاللاھ', p)
 
@@ -426,6 +425,12 @@ def extract_book2_questions(all_lines):
         p = re.sub(r'(\b[\u0600-\u06ff]{2,}) ' + suffixes + r'\b', r'\1\2', p)
         p = re.sub(r'(\b[\u0600-\u06ff]{2,}) ([ىنەادرتيى])\b', r'\1\2', p)
         p = re.sub(r'\b([ئك]) ([\u0600-\u06ff]{2,}\b)', r'\1\2', p)
+
+        # Number & punctuation artifacts
+        uy_letter = r"[\u0621-\u064A\u0671-\u06D5]"
+        p = re.sub(r"(\d+)\s*[-–—]\s*،\s*(" + uy_letter + r")", r"\1-\2", p)
+        p = re.sub(r"(\d+)(" + uy_letter + r")", r"\1 \2", p)
+        p = re.sub(r"(" + uy_letter + r")(\d+)", r"\1 \2", p)
 
         # Punctuation spacing
         p = re.sub(r'\s+،', '،', p)
