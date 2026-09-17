@@ -14,8 +14,10 @@ const isLandingPage =
 // Check known sections
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
+const isAile = id.startsWith('aile') || pathname.includes('/aile');
 const isDerslik =
 	id.startsWith('derslik') ||
 	pathname.includes('/derslik') ||
@@ -35,6 +37,11 @@ if (is2000) {
 	sectionHref = isEn ? '/en/40hedis/' : '/40hedis/';
 	Astro.locals.starlightRoute.siteTitle = sectionTitle;
 	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (is100hedis) {
+	sectionTitle = isEn ? 'Selected 100 Hadiths' : 'تاللانغان 100 ھەدىس';
+	sectionHref = isEn ? '/en/100hedis/' : '/100hedis/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
 } else if (isDua) {
 	sectionTitle = isEn ? 'Hisnul Muslim (Dua)' : 'ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)';
 	sectionHref = isEn ? '/en/dua/' : '/dua/';
@@ -43,6 +50,11 @@ if (is2000) {
 } else if (isPeyghemberler) {
 	sectionTitle = isEn ? 'History of Prophets' : 'پەيغەمبەرلەر تارىخى';
 	sectionHref = isEn ? '/en/peyghemberler/' : '/peyghemberler/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (isAile) {
+	sectionTitle = isEn ? 'Family System in Islam' : 'ئىسلامدىكى ئائىلە تۈزۈمى';
+	sectionHref = isEn ? '/en/aile/' : '/aile/';
 	Astro.locals.starlightRoute.siteTitle = sectionTitle;
 	Astro.locals.starlightRoute.siteTitleHref = landingHref;
 } else if (isDerslik) {

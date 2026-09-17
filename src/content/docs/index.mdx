@@ -17,6 +17,10 @@ hero:
       link: /40hedis/
       icon: star
       variant: secondary
+    - text: 100 ھەدىس
+      link: /100hedis/
+      icon: puzzle
+      variant: secondary
     - text: دۇئا ۋە زىكىرلەر
       link: /dua/
       icon: heart
@@ -24,6 +28,10 @@ hero:
     - text: پەيغەمبەرلەر تارىخى
       link: /peyghemberler/
       icon: list-format
+      variant: secondary
+    - text: ئىسلامدىكى ئائىلە تۈزۈمى
+      link: /aile/
+      icon: open-book
       variant: secondary
 ---
 
@@ -67,6 +75,17 @@ import PortalCard from '~/components/PortalCard.astro';
 	/>
 
 	<PortalCard
+		title="تاللانغان 100 ھەدىس (نىجات يولى)"
+		badge="100 ھەدىس"
+		subtitle="ئاپتور: ئابدۇلئەھەد ھافىز"
+		description="سەھىھۇل بۇخارى ۋە سەھىھۇل مۇسلىمدىن تاللانغان 100 مۇبارەك ھەدىس شەرىفنىڭ ئۇيغۇرچە تەرجىمىسى، تەپسىلىي ئىزاھاتى، كۈندىلىك ئەخلاق، ئىبادەت ۋە ئىجتىمائىي تۇرمۇش يېتەكچىلىكى."
+		href="/100hedis/"
+		buttonText="100 ھەدىسنى ئوقۇش"
+		icon="puzzle"
+		tags={['100 ھەدىس', 'ئابدۇلئەھەد ھافىز', 'نىجات يولى', 'ئىخلاس ۋە نىيەت', 'ئائىلە ۋە ئەخلاق', 'سەھىھ ھەدىسلەر']}
+	/>
+
+	<PortalCard
 		title="ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)"
 		badge="دۇئا قامۇسى"
 		subtitle="شەيخ سەئىد ئەلقەھتانى"
@@ -86,5 +105,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="پەيغەمبەرلەر قىسسىلىرىنى كۆرۈش"
 		icon="list-format"
 		tags={['3 توم (982 بەت)', 'ئادەم - ئىسا (ئە.س)', 'ئوسمان نۇرى توپباش', 'ئەركام نەشرىياتى', 'PDF تولۇق نەشر']}
+	/>
+
+	<PortalCard
+		title="ئىسلامدىكى ئائىلە تۈزۈمى"
+		badge="ئائىلە قامۇسى"
+		subtitle="ئاپتور: مۇھەممەد يۈسۈپ"
+		description="ئىسلام شەرىئىتى بويىچە ئائىلە قۇرۇش، ئەر-ئاياللىق ھايات، جۈپ تاللاش، نىكاھ، تالاق، مەھرەم ۋە نامەھرەم چېگرالىرى، ئاتا-ئانا ۋە بالىلار تەربىيىسى، مىراس ھەمدە ئائىلىگە ئائىت 36 سوئال-جاۋاب."
+		href="/aile/"
+		buttonText="ئائىلە تۈزۈمىنى ئوقۇش"
+		icon="open-book"
+		tags={['ئائىلە قۇرۇش', 'نىكاھ ۋە تالاق', 'ئەر-ئايال ھەقلىرى', 'ئاتا-ئانا ھەققى', 'بالا تەربىيىسى', 'مۇھەممەد يۈسۈپ']}
 	/>
 </CardGrid>

@@ -5,8 +5,10 @@ const id = Astro.locals.starlightRoute.id || '';
 const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
+const isAile = id.startsWith('aile') || pathname.includes('/aile');
 
 if (is2000 && Astro.locals.starlightRoute.pagination) {
 	if (
@@ -43,6 +45,24 @@ if (is40hedis && Astro.locals.starlightRoute.pagination) {
 	}
 }
 
+if (is100hedis && Astro.locals.starlightRoute.pagination) {
+	if (
+		Astro.locals.starlightRoute.pagination.prev &&
+		(!Astro.locals.starlightRoute.pagination.prev.href ||
+			!Astro.locals.starlightRoute.pagination.prev.href.includes('/100hedis') ||
+			pathname === '/100hedis/' || pathname === '/100hedis')
+	) {
+		Astro.locals.starlightRoute.pagination.prev = undefined;
+	}
+	if (
+		Astro.locals.starlightRoute.pagination.next &&
+		(!Astro.locals.starlightRoute.pagination.next.href ||
+			!Astro.locals.starlightRoute.pagination.next.href.includes('/100hedis'))
+	) {
+		Astro.locals.starlightRoute.pagination.next = undefined;
+	}
+}
+
 if (isDua && Astro.locals.starlightRoute.pagination) {
 	if (
 		Astro.locals.starlightRoute.pagination.prev &&
@@ -74,6 +94,24 @@ if (isPeyghemberler && Astro.locals.starlightRoute.pagination) {
 		Astro.locals.starlightRoute.pagination.next &&
 		(!Astro.locals.starlightRoute.pagination.next.href ||
 			!Astro.locals.starlightRoute.pagination.next.href.includes('/peyghemberler'))
+	) {
+		Astro.locals.starlightRoute.pagination.next = undefined;
+	}
+}
+
+if (isAile && Astro.locals.starlightRoute.pagination) {
+	if (
+		Astro.locals.starlightRoute.pagination.prev &&
+		(!Astro.locals.starlightRoute.pagination.prev.href ||
+			!Astro.locals.starlightRoute.pagination.prev.href.includes('/aile') ||
+			pathname === '/aile/' || pathname === '/aile')
+	) {
+		Astro.locals.starlightRoute.pagination.prev = undefined;
+	}
+	if (
+		Astro.locals.starlightRoute.pagination.next &&
+		(!Astro.locals.starlightRoute.pagination.next.href ||
+			!Astro.locals.starlightRoute.pagination.next.href.includes('/aile'))
 	) {
 		Astro.locals.starlightRoute.pagination.next = undefined;
 	}

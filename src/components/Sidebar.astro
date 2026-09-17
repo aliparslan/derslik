@@ -8,8 +8,10 @@ const id = Astro.locals.starlightRoute.id || '';
 const pathname = Astro.url.pathname || '';
 const is2000 = id.startsWith('2000') || pathname.includes('/2000');
 const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
+const isAile = id.startsWith('aile') || pathname.includes('/aile');
 
 let displaySidebar = sidebar;
 
@@ -43,6 +45,14 @@ const otherPortalsFor2000 = {
 		},
 		{
 			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
 			label: 'دۇئا ۋە زىكىرلەر',
 			href: '/dua/',
 			isCurrent: pathname === '/dua/' || pathname === '/dua',
@@ -54,6 +64,79 @@ const otherPortalsFor2000 = {
 			label: 'پەيغەمبەرلەر تارىخى',
 			href: '/peyghemberler/',
 			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+	],
+	collapsed: true,
+	badge: undefined,
+};
+
+const otherPortalsFor100hedis = {
+	type: 'group' as const,
+	label: 'باشقا بۆلۈملەر',
+	entries: [
+		{
+			type: 'link' as const,
+			label: 'باش بەت (ئاساسىي كۆرۈنۈش)',
+			href: '/',
+			isCurrent: pathname === '/' || pathname === '',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تەلىم – تەربىيە دەرسلىكى',
+			href: '/derslik/',
+			isCurrent: pathname === '/derslik/' || pathname === '/derslik',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: '2000 سوئال-جاۋاب',
+			href: '/2000/',
+			isCurrent: pathname === '/2000/' || pathname === '/2000',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'قىرىق ھەدىس',
+			href: '/40hedis/',
+			isCurrent: pathname === '/40hedis/' || pathname === '/40hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'دۇئا ۋە زىكىرلەر',
+			href: '/dua/',
+			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'پەيغەمبەرلەر تارىخى',
+			href: '/peyghemberler/',
+			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
 			badge: undefined,
 			attrs: {},
 		},
@@ -92,6 +175,14 @@ const otherPortalsFor40hedis = {
 		},
 		{
 			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
 			label: 'دۇئا ۋە زىكىرلەر',
 			href: '/dua/',
 			isCurrent: pathname === '/dua/' || pathname === '/dua',
@@ -103,6 +194,14 @@ const otherPortalsFor40hedis = {
 			label: 'پەيغەمبەرلەر تارىخى',
 			href: '/peyghemberler/',
 			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
 			badge: undefined,
 			attrs: {},
 		},
@@ -149,9 +248,25 @@ const otherPortalsForDua = {
 		},
 		{
 			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
 			label: 'پەيغەمبەرلەر تارىخى',
 			href: '/peyghemberler/',
 			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
 			badge: undefined,
 			attrs: {},
 		},
@@ -198,9 +313,90 @@ const otherPortalsForPeyghemberler = {
 		},
 		{
 			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
 			label: 'دۇئا ۋە زىكىرلەر',
 			href: '/dua/',
 			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+	],
+	collapsed: true,
+	badge: undefined,
+};
+
+const otherPortalsForAile = {
+	type: 'group' as const,
+	label: 'باشقا بۆلۈملەر',
+	entries: [
+		{
+			type: 'link' as const,
+			label: 'باش بەت (ئاساسىي كۆرۈنۈش)',
+			href: '/',
+			isCurrent: pathname === '/' || pathname === '',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تەلىم – تەربىيە دەرسلىكى',
+			href: '/derslik/',
+			isCurrent: pathname === '/derslik/' || pathname === '/derslik',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: '2000 سوئال-جاۋاب',
+			href: '/2000/',
+			isCurrent: pathname === '/2000/' || pathname === '/2000',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'قىرىق ھەدىس',
+			href: '/40hedis/',
+			isCurrent: pathname === '/40hedis/' || pathname === '/40hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'دۇئا ۋە زىكىرلەر',
+			href: '/dua/',
+			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'پەيغەمبەرلەر تارىخى',
+			href: '/peyghemberler/',
+			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
 			badge: undefined,
 			attrs: {},
 		},
@@ -263,8 +459,7 @@ if (is2000) {
 	const group40hedis = sidebar.find(
 		(entry) =>
 			entry.type === 'group' &&
-			(entry.label.includes('ھەدىس') ||
-				entry.label.includes('40') ||
+			((entry.label.includes('قىرىق') || entry.label.includes('40')) && !entry.label.includes('100') ||
 				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/40hedis'))))
 	);
 
@@ -307,6 +502,55 @@ if (is2000) {
 				return false;
 			}),
 			otherPortalsFor40hedis,
+		];
+	}
+} else if (is100hedis) {
+	// On /100hedis pages: isolate /100hedis navigation panel completely
+	const group100hedis = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('100') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/100hedis'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'تاللانغان 100 ھەدىس (ئابدۇلئەھەد ھافىز)',
+		href: '/100hedis/',
+		isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filter100hedisEntries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				if (e.href === '/100hedis/' || e.href === '/100hedis') return false;
+				return e.href.includes('/100hedis');
+			}
+			return true;
+		});
+	};
+
+	if (group100hedis && group100hedis.type === 'group') {
+		displaySidebar = [topHeader, ...filter100hedisEntries(group100hedis.entries), otherPortalsFor100hedis];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/100hedis/' || entry.href === '/100hedis') return false;
+					return entry.href.includes('/100hedis');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('100') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/100hedis')) || (e.type === 'group' && e.label.includes('100hedis')))
+					);
+				}
+				return false;
+			}),
+			otherPortalsFor100hedis,
 		];
 	}
 } else if (isDua) {
@@ -413,6 +657,57 @@ if (is2000) {
 			otherPortalsForPeyghemberler,
 		];
 	}
+} else if (isAile) {
+	// On /aile pages: isolate /aile navigation panel completely
+	const groupAile = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('ئائىلە') ||
+				entry.label.includes('aile') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/aile'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'ئىسلامدىكى ئائىلە تۈزۈمى (مۇھەممەد يۈسۈپ)',
+		href: '/aile/',
+		isCurrent: pathname === '/aile/' || pathname === '/aile',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filterAileEntries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				if (e.href === '/aile/' || e.href === '/aile') return false;
+				return e.href.includes('/aile');
+			}
+			return true;
+		});
+	};
+
+	if (groupAile && groupAile.type === 'group') {
+		displaySidebar = [topHeader, ...filterAileEntries(groupAile.entries), otherPortalsForAile];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/aile/' || entry.href === '/aile') return false;
+					return entry.href.includes('/aile');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('ئائىلە') ||
+						entry.label.includes('aile') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/aile')) || (e.type === 'group' && e.label.includes('aile')))
+					);
+				}
+				return false;
+			}),
+			otherPortalsForAile,
+		];
+	}
 } else {
 	// On course pages (derslik): show course stages, and group supplementary resources under "پايدىلىق بۆلۈملەر"
 	const rootStages = sidebar.filter((entry) => {
@@ -421,11 +716,14 @@ if (is2000) {
 				!entry.label.includes('2000') &&
 				!entry.label.includes('ھەدىس') &&
 				!entry.label.includes('40') &&
+				!entry.label.includes('100') &&
 				!entry.label.includes('دۇئا') &&
 				!entry.label.includes('ھىسنۇل') &&
 				!entry.label.includes('dua') &&
 				!entry.label.includes('پەيغەمبەرلەر') &&
-				!entry.label.includes('peyghemberler')
+				!entry.label.includes('peyghemberler') &&
+				!entry.label.includes('ئائىلە') &&
+				!entry.label.includes('aile')
 			);
 		}
 		return true;
@@ -470,6 +768,14 @@ if (is2000) {
 			},
 			{
 				type: 'link' as const,
+				label: 'تاللانغان 100 ھەدىس',
+				href: '/100hedis/',
+				isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+				badge: undefined,
+				attrs: {},
+			},
+			{
+				type: 'link' as const,
 				label: 'دۇئا ۋە زىكىرلەر',
 				href: '/dua/',
 				isCurrent: pathname === '/dua/' || pathname === '/dua',
@@ -481,6 +787,14 @@ if (is2000) {
 				label: 'پەيغەمبەرلەر تارىخى',
 				href: '/peyghemberler/',
 				isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+				badge: undefined,
+				attrs: {},
+			},
+			{
+				type: 'link' as const,
+				label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+				href: '/aile/',
+				isCurrent: pathname === '/aile/' || pathname === '/aile',
 				badge: undefined,
 				attrs: {},
 			},

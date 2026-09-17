@@ -17,6 +17,10 @@ hero:
       link: /en/40hedis/
       icon: star
       variant: secondary
+    - text: Selected 100 Hadiths
+      link: /100hedis/
+      icon: puzzle
+      variant: secondary
     - text: Hisnul Muslim (Dua)
       link: /dua/
       icon: heart
@@ -24,6 +28,10 @@ hero:
     - text: History of Prophets
       link: /peyghemberler/
       icon: list-format
+      variant: secondary
+    - text: Family System in Islam
+      link: /aile/
+      icon: open-book
       variant: secondary
 ---
 
@@ -67,6 +75,17 @@ import PortalCard from '~/components/PortalCard.astro';
 	/>
 
 	<PortalCard
+		title="Selected 100 Hadiths (Path of Salvation)"
+		badge="100 Hadiths"
+		subtitle="By Abdulehed Hafiz"
+		description="100 authentic hadiths selected from Sahih al-Bukhari and Sahih Muslim with detailed commentary, covering intentions, worship, family life, social manners, and practical Islamic living."
+		href="/100hedis/"
+		buttonText="Read 100 Hadiths"
+		icon="puzzle"
+		tags={['100 Hadiths', 'Abdulehed Hafiz', 'Bukhari & Muslim', 'Ethics & Faith', 'Family Guidance']}
+	/>
+
+	<PortalCard
 		title="Hisnul Muslim (Dua & Azkar)"
 		badge="Dua Collection"
 		subtitle="Shaykh Sa'id Al-Qahtani"
@@ -86,5 +105,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="Explore Prophets History"
 		icon="list-format"
 		tags={['3 Volumes (982 Pages)', 'Adam to Isa (AS)', 'Osman Nuri Topbaş', 'Erkam Publishing', 'Full PDF Editions']}
+	/>
+
+	<PortalCard
+		title="Family System in Islam"
+		badge="Family Guide"
+		subtitle="By Muhammad Yusuf"
+		description="Comprehensive 505-page guide on Islamic family life — establishing a family, marital intimacy, rights and responsibilities, divorce rulings, parenting, filial piety, and 36 essential Q&A."
+		href="/aile/"
+		buttonText="Explore Family System"
+		icon="open-book"
+		tags={['505 Pages', 'Muhammad Yusuf', 'Marriage & Nikah', 'Parenting & Filial Piety', '36 Q&A', 'Full PDF Edition']}
 	/>
 </CardGrid>

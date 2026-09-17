@@ -247,6 +247,98 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'تاللانغان 100 ھەدىس',
+					translations: {
+						en: 'Selected 100 Hadiths',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/100hedis/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: '100hedis/00-muqeddimu' } }],
+						},
+						{
+							label: '1–10-ھەدىسلەر: ئىمان، ئىخلاس ۋە ئىسلام ئاساسلىرى',
+							slug: '100hedis/01-hedis-01-10',
+							translations: {
+								en: 'Hadiths 1–10',
+							},
+						},
+						{
+							label: '11–20-ھەدىسلەر: تەقۋالىق، پاكلىق ۋە ئەخلاق',
+							slug: '100hedis/02-hedis-11-20',
+							translations: {
+								en: 'Hadiths 11–20',
+							},
+						},
+						{
+							label: '21–30-ھەدىسلەر: ئىستىقامەت، ھەمكارلىق ۋە تەقۋالىق',
+							slug: '100hedis/03-hedis-21-30',
+							translations: {
+								en: 'Hadiths 21–30',
+							},
+						},
+						{
+							label: '31–40-ھەدىسلەر: ئاممىۋى ئەدەپلەر ۋە سەدىقە',
+							slug: '100hedis/04-hedis-31-40',
+							translations: {
+								en: 'Hadiths 31–40',
+							},
+						},
+						{
+							label: '41–50-ھەدىسلەر: ئەخلاق، زۇھد ۋە نەپسىنى تۇتۇۋېلىش',
+							slug: '100hedis/05-hedis-41-50',
+							translations: {
+								en: 'Hadiths 41–50',
+							},
+						},
+						{
+							label: '51–60-ھەدىسلەر: سەدىقە، قانائەت، ئىشلەش ۋە مەغپىرەت',
+							slug: '100hedis/06-hedis-51-60',
+							translations: {
+								en: 'Hadiths 51–60',
+							},
+						},
+						{
+							label: '61–70-ھەدىسلەر: ئىبادەت، مەسئۇلىيەت ۋە ئائىلە ئەخلاقى',
+							slug: '100hedis/07-hedis-61-70',
+							translations: {
+								en: 'Hadiths 61–70',
+							},
+						},
+						{
+							label: '71–80-ھەدىسلەر: ئائىلە، ئاتا-ئانا ۋە بالىلار تەربىيەسى',
+							slug: '100hedis/08-hedis-71-80',
+							translations: {
+								en: 'Hadiths 71–80',
+							},
+						},
+						{
+							label: '81–90-ھەدىسلەر: ئىجتىمائىي ئەدەپلەر ۋە نەسىھەت',
+							slug: '100hedis/09-hedis-81-90',
+							translations: {
+								en: 'Hadiths 81–90',
+							},
+						},
+						{
+							label: '91–100-ھەدىسلەر: تەن-تەربىيە، ھالال-ھارام ۋە تەۋبە',
+							slug: '100hedis/10-hedis-91-100',
+							translations: {
+								en: 'Hadiths 91–100',
+							},
+						},
+					],
+				},
+				{
 					label: 'ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)',
 					translations: {
 						en: 'Hisnul Muslim (Dua)',
@@ -343,6 +435,63 @@ export default defineConfig({
 								en: 'Volume 3: Dawud to Isa (AS)',
 							},
 							items: [{ autogenerate: { directory: 'peyghemberler/03-3-tom' } }],
+						},
+					],
+				},
+				{
+					label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+					translations: {
+						en: 'Family System in Islam',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/aile/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە ۋە ئاپتور',
+							translations: {
+								en: '00-Introduction & Author',
+							},
+							items: [{ autogenerate: { directory: 'aile/00-muqeddimu' } }],
+						},
+						{
+							label: '01-بىرىنچى بۆلۈم: ئائىلىنىڭ قۇرۇلۇشى',
+							translations: {
+								en: 'Part 1: Family Foundation',
+							},
+							items: [{ autogenerate: { directory: 'aile/01-qurulushi' } }],
+						},
+						{
+							label: '02-ئىككىنچى بۆلۈم: ئەر - ئاياللىق ھايات',
+							translations: {
+								en: 'Part 2: Marital Life',
+							},
+							items: [{ autogenerate: { directory: 'aile/02-er-ayalliq-hayat' } }],
+						},
+						{
+							label: '03-ئۈچىنچى بۆلۈم: ئائىلىنىڭ بۇزۇلۇشى',
+							translations: {
+								en: 'Part 3: Family Breakdown',
+							},
+							items: [{ autogenerate: { directory: 'aile/03-ailining-buzulushi' } }],
+						},
+						{
+							label: '04-تۆتىنچى بۆلۈم: ئاتا - ئانىلار ھەققىدە',
+							translations: {
+								en: 'Part 4: Concerning Parents',
+							},
+							items: [{ autogenerate: { directory: 'aile/04-ata-anilar-heqqide' } }],
+						},
+						{
+							label: '05-بەشىنچى بۆلۈم: بالىلار ھەققىدە',
+							translations: {
+								en: 'Part 5: Concerning Children',
+							},
+							items: [{ autogenerate: { directory: 'aile/05-balilar-heqqide' } }],
 						},
 					],
 				},
