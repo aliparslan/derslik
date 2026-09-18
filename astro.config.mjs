@@ -495,6 +495,49 @@ export default defineConfig({
 						},
 					],
 				},
+				{
+					label: 'ئەرەب تىلى گرامماتىكىسى',
+					translations: {
+						en: 'Arabic Language Grammar',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/ereb-tili/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە ۋە كىرىش سۆز',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: 'ereb-tili/00-muqeddimu' } }],
+						},
+						{
+							label: '01-1-قىسىم (1–23-دەرسلەر)',
+							translations: {
+								en: 'Part 1 (Lessons 1–23)',
+							},
+							items: [{ autogenerate: { directory: 'ereb-tili/01-1-qisim' } }],
+						},
+						{
+							label: '02-2-قىسىم (1–31-دەرسلەر)',
+							translations: {
+								en: 'Part 2 (Lessons 1–31)',
+							},
+							items: [{ autogenerate: { directory: 'ereb-tili/02-2-qisim' } }],
+						},
+						{
+							label: '03-3-قىسىم (مۇقەددىمە، 1–32-دەرسلەر ۋە خاتىمە)',
+							translations: {
+								en: 'Part 3 (Lessons 1–32 & Appendix)',
+							},
+							items: [{ autogenerate: { directory: 'ereb-tili/03-3-qisim' } }],
+						},
+					],
+				},
 			],
 			customCss: [
 				'./src/styles/custom.css',

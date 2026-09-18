@@ -119,7 +119,24 @@ def main():
     broken_la_words = []
     for fpath in required_mdx_files:
         content = fpath.read_text(encoding="utf-8")
-        matches = re.findall(r'\b[ئا-ە]*?ئاال[ئا-ە]*?\b|\b[ئا-ە]*?ھاالل[ئا-ە]*?\b|\b[ئا-ە]*?ئىسالم[ئا-ە]*?\b|\bباال[نىغاىڭدەتىمۋپ]*\b|\b[ئا-ە]+?الر[نىغاىڭدەتىمۋپ]*\b', content)
+        matches = re.findall(
+            r'\b[ئا-ە]*?ئاال[ئا-ە]*?\b|'
+            r'\b[ئا-ە]*?ھاالل[ئا-ە]*?\b|'
+            r'\b[ئا-ە]*?ئىسالم[ئا-ە]*?\b|'
+            r'\bباال[نىغاىڭدەتىمۋپ]*\b|'
+            r'\b[ئا-ە]+?الر[\u0621-\u06FF]*\b|'
+            r'\b[ئا-ە]+?الن(?:غان|مايدىغان|دۇر|ماقچى)[\u0621-\u06FF]*\b|'
+            r'\bتاالق[\u0621-\u06FF]*\b|'
+            r'\bئەۋالد[\u0621-\u06FF]*\b|'
+            r'\bئىسالھ[\u0621-\u06FF]*\b|'
+            r'\bئىپالس[\u0621-\u06FF]*\b|'
+            r'\bتىالۋ[ئا-ە]*\b|'
+            r'\bئېھتىالم[\u0621-\u06FF]*\b|'
+            r'\bقاالق[\u0621-\u06FF]*\b|'
+            r'\bقۋالق[\u0621-\u06FF]*\b|'
+            r'\bدامۋلالم\b',
+            content
+        )
         if matches:
             broken_la_words.extend([(fpath.name, m) for m in matches])
 
@@ -143,6 +160,32 @@ def main():
         passed += 1
     else:
         print(f"  [FAIL] Found {len(arabic_artifacts)} broken Arabic artifacts: {arabic_artifacts[:5]}")
+        failed += 1
+
+    # Test 8: Space around 'ى' and disconnected case/plural suffixes check
+    space_y_artifacts = []
+    for fpath in required_mdx_files:
+        content = fpath.read_text(encoding="utf-8")
+        for line in content.splitlines():
+            if line.strip().startswith('>') or '﴿' in line:
+                continue
+            matches = re.findall(
+                r'\b[\u0621-\u06FF]+ن[ \t]+ىڭ\b|'
+                r'\b[\u0621-\u06FF]+[ \t]+نىڭ\b|'
+                r'\b[\u0621-\u06FF]+[ \t]+نى\b|'
+                r'\b[\u0621-\u06FF]+[ \t]+لىرى[\u0621-\u06FF]*\b|'
+                r'\b[\u0621-\u06FF]+[ \t]+ىچىلىك\b|'
+                r'\b(?:چ|ق|ك|د|ب|م)[ \t]+ى[\u0621-\u06FF]+\b',
+                line
+            )
+            if matches:
+                space_y_artifacts.extend([(fpath.name, m) for m in matches])
+
+    if not space_y_artifacts:
+        print("  [PASS] Zero separated 'ى' and disconnected suffix artifacts found across all Aile pages.")
+        passed += 1
+    else:
+        print(f"  [FAIL] Found {len(space_y_artifacts)} separated 'ى'/suffix artifacts: {space_y_artifacts[:5]}")
         failed += 1
 
     print("==============================================================================")

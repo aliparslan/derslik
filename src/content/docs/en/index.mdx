@@ -33,6 +33,10 @@ hero:
       link: /aile/
       icon: open-book
       variant: secondary
+    - text: Arabic Language Grammar
+      link: /ereb-tili/
+      icon: translate
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
@@ -116,5 +120,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="Explore Family System"
 		icon="open-book"
 		tags={['505 Pages', 'Muhammad Yusuf', 'Marriage & Nikah', 'Parenting & Filial Piety', '36 Q&A', 'Full PDF Edition']}
+	/>
+
+	<PortalCard
+		title="Arabic Language Grammar Guide"
+		badge="Arabic Language"
+		subtitle="By Dr. V. Abdur Rahim"
+		description="The complete 3-volume grammatical rules and analysis of the renowned Medina Arabic Course (Durus al-Lughah al-Arabiyyah) prepared for non-native speakers, with full rules, conjugation charts, and PDF download."
+		href="/ereb-tili/"
+		buttonText="Study Arabic Grammar"
+		icon="translate"
+		tags={['3 Volumes (298 Pages)', 'Dr. V. Abdur Rahim', 'Medina Arabic', 'Grammar Rules & Tables', 'Full PDF Edition']}
 	/>
 </CardGrid>

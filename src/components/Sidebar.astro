@@ -12,6 +12,7 @@ const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
+const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
 
 let displaySidebar = sidebar;
 
@@ -72,6 +73,14 @@ const otherPortalsFor2000 = {
 			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
 			href: '/aile/',
 			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
 			badge: undefined,
 			attrs: {},
 		},
@@ -140,6 +149,14 @@ const otherPortalsFor100hedis = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -202,6 +219,14 @@ const otherPortalsFor40hedis = {
 			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
 			href: '/aile/',
 			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
 			badge: undefined,
 			attrs: {},
 		},
@@ -270,6 +295,14 @@ const otherPortalsForDua = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -335,6 +368,14 @@ const otherPortalsForPeyghemberler = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -397,6 +438,87 @@ const otherPortalsForAile = {
 			label: 'پەيغەمبەرلەر تارىخى',
 			href: '/peyghemberler/',
 			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+	],
+	collapsed: true,
+	badge: undefined,
+};
+
+const otherPortalsForErebTili = {
+	type: 'group' as const,
+	label: 'باشقا بۆلۈملەر',
+	entries: [
+		{
+			type: 'link' as const,
+			label: 'باش بەت (ئاساسىي كۆرۈنۈش)',
+			href: '/',
+			isCurrent: pathname === '/' || pathname === '',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تەلىم – تەربىيە دەرسلىكى',
+			href: '/derslik/',
+			isCurrent: pathname === '/derslik/' || pathname === '/derslik',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: '2000 سوئال-جاۋاب',
+			href: '/2000/',
+			isCurrent: pathname === '/2000/' || pathname === '/2000',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'قىرىق ھەدىس',
+			href: '/40hedis/',
+			isCurrent: pathname === '/40hedis/' || pathname === '/40hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'دۇئا ۋە زىكىرلەر',
+			href: '/dua/',
+			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'پەيغەمبەرلەر تارىخى',
+			href: '/peyghemberler/',
+			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
 			badge: undefined,
 			attrs: {},
 		},
@@ -708,6 +830,57 @@ if (is2000) {
 			otherPortalsForAile,
 		];
 	}
+} else if (isErebTili) {
+	// On /ereb-tili pages: isolate /ereb-tili navigation panel completely
+	const groupErebTili = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('ئەرەب') ||
+				entry.label.includes('ereb-tili') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/ereb-tili'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'ئەرەب تىلى گرامماتىكىسى (دوكتۇر ف. ئابدۇرەھىم)',
+		href: '/ereb-tili/',
+		isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filterErebTiliEntries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				if (e.href === '/ereb-tili/' || e.href === '/ereb-tili') return false;
+				return e.href.includes('/ereb-tili');
+			}
+			return true;
+		});
+	};
+
+	if (groupErebTili && groupErebTili.type === 'group') {
+		displaySidebar = [topHeader, ...filterErebTiliEntries(groupErebTili.entries), otherPortalsForErebTili];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/ereb-tili/' || entry.href === '/ereb-tili') return false;
+					return entry.href.includes('/ereb-tili');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('ئەرەب') ||
+						entry.label.includes('ereb-tili') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/ereb-tili')) || (e.type === 'group' && e.label.includes('ereb-tili')))
+					);
+				}
+				return false;
+			}),
+			otherPortalsForErebTili,
+		];
+	}
 } else {
 	// On course pages (derslik): show course stages, and group supplementary resources under "پايدىلىق بۆلۈملەر"
 	const rootStages = sidebar.filter((entry) => {
@@ -723,7 +896,9 @@ if (is2000) {
 				!entry.label.includes('پەيغەمبەرلەر') &&
 				!entry.label.includes('peyghemberler') &&
 				!entry.label.includes('ئائىلە') &&
-				!entry.label.includes('aile')
+				!entry.label.includes('aile') &&
+				!entry.label.includes('ئەرەب') &&
+				!entry.label.includes('ereb-tili')
 			);
 		}
 		return true;
@@ -795,6 +970,14 @@ if (is2000) {
 				label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
 				href: '/aile/',
 				isCurrent: pathname === '/aile/' || pathname === '/aile',
+				badge: undefined,
+				attrs: {},
+			},
+			{
+				type: 'link' as const,
+				label: 'ئەرەب تىلى گرامماتىكىسى',
+				href: '/ereb-tili/',
+				isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
 				badge: undefined,
 				attrs: {},
 			},

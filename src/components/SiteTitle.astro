@@ -18,6 +18,7 @@ const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
+const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
 const isDerslik =
 	id.startsWith('derslik') ||
 	pathname.includes('/derslik') ||
@@ -55,6 +56,11 @@ if (is2000) {
 } else if (isAile) {
 	sectionTitle = isEn ? 'Family System in Islam' : 'ئىسلامدىكى ئائىلە تۈزۈمى';
 	sectionHref = isEn ? '/en/aile/' : '/aile/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (isErebTili) {
+	sectionTitle = isEn ? 'Arabic Language Grammar' : 'ئەرەب تىلى دەرسلىكى گرامماتىكا قائىدىلىرى';
+	sectionHref = isEn ? '/en/ereb-tili/' : '/ereb-tili/';
 	Astro.locals.starlightRoute.siteTitle = sectionTitle;
 	Astro.locals.starlightRoute.siteTitleHref = landingHref;
 } else if (isDerslik) {
