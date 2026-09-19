@@ -13,6 +13,8 @@ const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
 const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
 
 let displaySidebar = sidebar;
 
@@ -81,6 +83,22 @@ const otherPortalsFor2000 = {
 			label: 'ئەرەب تىلى گرامماتىكىسى',
 			href: '/ereb-tili/',
 			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
 			badge: undefined,
 			attrs: {},
 		},
@@ -157,6 +175,22 @@ const otherPortalsFor100hedis = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -227,6 +261,22 @@ const otherPortalsFor40hedis = {
 			label: 'ئەرەب تىلى گرامماتىكىسى',
 			href: '/ereb-tili/',
 			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
 			badge: undefined,
 			attrs: {},
 		},
@@ -303,6 +353,22 @@ const otherPortalsForDua = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -373,6 +439,22 @@ const otherPortalsForPeyghemberler = {
 			label: 'ئەرەب تىلى گرامماتىكىسى',
 			href: '/ereb-tili/',
 			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
 			badge: undefined,
 			attrs: {},
 		},
@@ -449,6 +531,22 @@ const otherPortalsForAile = {
 			badge: undefined,
 			attrs: {},
 		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+			badge: undefined,
+			attrs: {},
+		},
 	],
 	collapsed: true,
 	badge: undefined,
@@ -519,6 +617,200 @@ const otherPortalsForErebTili = {
 			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
 			href: '/aile/',
 			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+			badge: undefined,
+			attrs: {},
+		},
+	],
+	collapsed: true,
+	badge: undefined,
+};
+
+const otherPortalsForNamaz = {
+	type: 'group' as const,
+	label: 'باشقا بۆلۈملەر',
+	entries: [
+		{
+			type: 'link' as const,
+			label: 'باش بەت (ئاساسىي كۆرۈنۈش)',
+			href: '/',
+			isCurrent: pathname === '/' || pathname === '',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تەلىم – تەربىيە دەرسلىكى',
+			href: '/derslik/',
+			isCurrent: pathname === '/derslik/' || pathname === '/derslik',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: '2000 سوئال-جاۋاب',
+			href: '/2000/',
+			isCurrent: pathname === '/2000/' || pathname === '/2000',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'قىرىق ھەدىس',
+			href: '/40hedis/',
+			isCurrent: pathname === '/40hedis/' || pathname === '/40hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'دۇئا ۋە زىكىرلەر',
+			href: '/dua/',
+			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'پەيغەمبەرلەر تارىخى',
+			href: '/peyghemberler/',
+			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ھاياتىڭىزنى قەدىرلەڭ',
+			href: '/hayat/',
+			isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+			badge: undefined,
+			attrs: {},
+		},
+	],
+	collapsed: true,
+	badge: undefined,
+};
+
+const otherPortalsForHayat = {
+	type: 'group' as const,
+	label: 'باشقا بۆلۈملەر',
+	entries: [
+		{
+			type: 'link' as const,
+			label: 'باش بەت (ئاساسىي كۆرۈنۈش)',
+			href: '/',
+			isCurrent: pathname === '/' || pathname === '',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تەلىم – تەربىيە دەرسلىكى',
+			href: '/derslik/',
+			isCurrent: pathname === '/derslik/' || pathname === '/derslik',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: '2000 سوئال-جاۋاب',
+			href: '/2000/',
+			isCurrent: pathname === '/2000/' || pathname === '/2000',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'قىرىق ھەدىس',
+			href: '/40hedis/',
+			isCurrent: pathname === '/40hedis/' || pathname === '/40hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'تاللانغان 100 ھەدىس',
+			href: '/100hedis/',
+			isCurrent: pathname === '/100hedis/' || pathname === '/100hedis',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'دۇئا ۋە زىكىرلەر',
+			href: '/dua/',
+			isCurrent: pathname === '/dua/' || pathname === '/dua',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'پەيغەمبەرلەر تارىخى',
+			href: '/peyghemberler/',
+			isCurrent: pathname === '/peyghemberler/' || pathname === '/peyghemberler',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئىسلامدىكى ئائىلە تۈزۈمى',
+			href: '/aile/',
+			isCurrent: pathname === '/aile/' || pathname === '/aile',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'ئەرەب تىلى گرامماتىكىسى',
+			href: '/ereb-tili/',
+			isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+			badge: undefined,
+			attrs: {},
+		},
+		{
+			type: 'link' as const,
+			label: 'نامازدىن ساۋات',
+			href: '/namaz/',
+			isCurrent: pathname === '/namaz/' || pathname === '/namaz',
 			badge: undefined,
 			attrs: {},
 		},
@@ -881,6 +1173,108 @@ if (is2000) {
 			otherPortalsForErebTili,
 		];
 	}
+} else if (isNamaz) {
+	// On /namaz pages: isolate /namaz navigation panel completely
+	const groupNamaz = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('ناماز') ||
+				entry.label.includes('namaz') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/namaz'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'نامازدىن ساۋات (مۇھەممەد يۈسۈپ)',
+		href: '/namaz/',
+		isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filterNamazEntries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				if (e.href === '/namaz/' || e.href === '/namaz') return false;
+				return e.href.includes('/namaz');
+			}
+			return true;
+		});
+	};
+
+	if (groupNamaz && groupNamaz.type === 'group') {
+		displaySidebar = [topHeader, ...filterNamazEntries(groupNamaz.entries), otherPortalsForNamaz];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/namaz/' || entry.href === '/namaz') return false;
+					return entry.href.includes('/namaz');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('ناماز') ||
+						entry.label.includes('namaz') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/namaz')) || (e.type === 'group' && e.label.includes('namaz')))
+					);
+				}
+				return false;
+			}),
+			otherPortalsForNamaz,
+		];
+	}
+} else if (isHayat) {
+	// On /hayat pages: isolate /hayat navigation panel completely
+	const groupHayat = sidebar.find(
+		(entry) =>
+			entry.type === 'group' &&
+			(entry.label.includes('ھايات') ||
+				entry.label.includes('hayat') ||
+				(entry.entries && entry.entries.some((e) => e.type === 'link' && e.href.includes('/hayat'))))
+	);
+
+	const topHeader = {
+		type: 'link' as const,
+		label: 'ھاياتىڭىزنى قەدىرلەڭ (مۇھەممەد يۈسۈپ)',
+		href: '/hayat/',
+		isCurrent: pathname === '/hayat/' || pathname === '/hayat',
+		badge: undefined,
+		attrs: {},
+	};
+
+	const filterHayatEntries = (entries: any[]) => {
+		return entries.filter((e) => {
+			if (e.type === 'link') {
+				if (e.href === '/hayat/' || e.href === '/hayat') return false;
+				return e.href.includes('/hayat');
+			}
+			return true;
+		});
+	};
+
+	if (groupHayat && groupHayat.type === 'group') {
+		displaySidebar = [topHeader, ...filterHayatEntries(groupHayat.entries), otherPortalsForHayat];
+	} else {
+		displaySidebar = [
+			topHeader,
+			...sidebar.filter((entry) => {
+				if (entry.type === 'link') {
+					if (entry.href === '/hayat/' || entry.href === '/hayat') return false;
+					return entry.href.includes('/hayat');
+				}
+				if (entry.type === 'group') {
+					return (
+						entry.label.includes('ھايات') ||
+						entry.label.includes('hayat') ||
+						entry.entries?.some((e) => (e.type === 'link' && e.href.includes('/hayat')) || (e.type === 'group' && e.label.includes('hayat')))
+					);
+				}
+				return false;
+			}),
+			otherPortalsForHayat,
+		];
+	}
 } else {
 	// On course pages (derslik): show course stages, and group supplementary resources under "پايدىلىق بۆلۈملەر"
 	const rootStages = sidebar.filter((entry) => {
@@ -898,7 +1292,11 @@ if (is2000) {
 				!entry.label.includes('ئائىلە') &&
 				!entry.label.includes('aile') &&
 				!entry.label.includes('ئەرەب') &&
-				!entry.label.includes('ereb-tili')
+				!entry.label.includes('ereb-tili') &&
+				!entry.label.includes('ناماز') &&
+				!entry.label.includes('namaz') &&
+				!entry.label.includes('ھايات') &&
+				!entry.label.includes('hayat')
 			);
 		}
 		return true;
@@ -978,6 +1376,22 @@ if (is2000) {
 				label: 'ئەرەب تىلى گرامماتىكىسى',
 				href: '/ereb-tili/',
 				isCurrent: pathname === '/ereb-tili/' || pathname === '/ereb-tili',
+				badge: undefined,
+				attrs: {},
+			},
+			{
+				type: 'link' as const,
+				label: 'نامازدىن ساۋات',
+				href: '/namaz/',
+				isCurrent: pathname === '/namaz/' || pathname === '/namaz',
+				badge: undefined,
+				attrs: {},
+			},
+			{
+				type: 'link' as const,
+				label: 'ھاياتىڭىزنى قەدىرلەڭ',
+				href: '/hayat/',
+				isCurrent: pathname === '/hayat/' || pathname === '/hayat',
 				badge: undefined,
 				attrs: {},
 			},

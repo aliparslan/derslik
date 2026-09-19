@@ -1,0 +1,280 @@
+---
+const PAGE_TITLE_ID = '_top';
+const title = Astro.locals.starlightRoute.entry.data.title;
+const pathname = Astro.url.pathname || '';
+const { lang } = Astro.locals.starlightRoute;
+const isEn = lang === 'en';
+
+const labels = {
+	bookmarkAdd: isEn ? 'Bookmark this page' : 'خەتكۈشكە قوشۇش',
+	bookmarkRemove: isEn ? 'Remove from bookmarks' : 'خەتكۈشتىن ئۆچۈرۈش',
+	toastAdded: isEn ? 'Page added to bookmarks' : 'بەت خەتكۈشلەرگە قوشۇلدى',
+	toastRemoved: isEn ? 'Page removed from bookmarks' : 'بەت خەتكۈشتىن ئۆچۈرۈلدى',
+};
+---
+
+<div class="page-title-row">
+	<h1 id={PAGE_TITLE_ID}>{title}</h1>
+	<starlight-page-bookmark
+		class="page-bookmark-container"
+		data-url={pathname}
+		data-title={title}
+		data-labels={JSON.stringify(labels)}
+	>
+		<button
+			type="button"
+			class="page-bookmark-btn"
+			data-page-bookmark-btn
+			aria-label={labels.bookmarkAdd}
+			title={labels.bookmarkAdd}
+			aria-pressed="false"
+		>
+			<svg class="icon-outline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+			<svg class="icon-filled" width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+		</button>
+	</starlight-page-bookmark>
+</div>
+
+<script>
+	interface BookmarkItem {
+		id: string;
+		url: string;
+		title: string;
+		portal: string;
+		portalName: string;
+		pageTitle?: string;
+		createdAt: number;
+	}
+
+	const STORAGE_KEY = 'derslik-bookmarks-v1';
+
+	function getPortalInfo(path: string): { portal: string; portalName: string } {
+		const clean = path.replace(/^\/en\//, '/').replace(/^\//, '');
+		const first = clean.split('/')[0] || '';
+		switch (first) {
+			case 'ereb-tili':
+				return { portal: 'ereb-tili', portalName: 'ئەرەب تىلى گرامماتىكىسى' };
+			case 'aile':
+				return { portal: 'aile', portalName: 'ئىسلامدىكى ئائىلە تۈزۈمى' };
+			case '100hedis':
+				return { portal: '100hedis', portalName: 'تاللانغان 100 ھەدىس' };
+			case 'hayat':
+				return { portal: 'hayat', portalName: 'ھاياتىڭىزنى قەدىرلەڭ' };
+			case '40hedis':
+				return { portal: '40hedis', portalName: 'قىرىق ھەدىس' };
+			case 'dua':
+				return { portal: 'dua', portalName: 'ھىسنۇل مۇسلىم (دۇئا)' };
+			case 'peyghemberler':
+				return { portal: 'peyghemberler', portalName: 'پەيغەمبەرلەر تارىخى' };
+			case '2000':
+				return { portal: '2000', portalName: 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب' };
+			case 'derslik':
+				return { portal: 'derslik', portalName: 'تەلىم – تەربىيە پىروگراممىسى' };
+			default:
+				return { portal: 'derslik', portalName: 'باش بەت' };
+		}
+	}
+
+	function normalizeUrl(rawUrl: string): string {
+		try {
+			const resolved = new URL(rawUrl, window.location.href);
+			let path = resolved.pathname;
+			if (!path.endsWith('/') && !path.includes('.')) {
+				path += '/';
+			}
+			return path + (resolved.hash || '');
+		} catch (e) {
+			return rawUrl;
+		}
+	}
+
+	function loadBookmarks(): BookmarkItem[] {
+		try {
+			const data = localStorage.getItem(STORAGE_KEY);
+			return data ? JSON.parse(data) : [];
+		} catch (e) {
+			return [];
+		}
+	}
+
+	function saveBookmarks(items: BookmarkItem[]): void {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+			window.dispatchEvent(new CustomEvent('derslik-bookmarks-updated', { detail: { items } }));
+		} catch (e) {}
+	}
+
+	function showGlobalToast(msg: string) {
+		const toast = document.querySelector('.bookmark-toast') as HTMLElement | null;
+		if (!toast) return;
+		toast.textContent = msg;
+		toast.classList.add('show');
+		toast.setAttribute('aria-hidden', 'false');
+		setTimeout(() => {
+			toast.classList.remove('show');
+			toast.setAttribute('aria-hidden', 'true');
+		}, 2500);
+	}
+
+	class StarlightPageBookmark extends HTMLElement {
+		private btn: HTMLButtonElement | null = null;
+		private labels: any = {};
+
+		connectedCallback() {
+			try {
+				this.labels = JSON.parse(this.getAttribute('data-labels') || '{}');
+			} catch (e) {}
+
+			this.btn = this.querySelector('[data-page-bookmark-btn]');
+			this.updateUi();
+
+			this.btn?.addEventListener('click', () => {
+				this.toggleBookmark();
+			});
+
+			window.addEventListener('derslik-bookmarks-updated', () => {
+				this.updateUi();
+			});
+
+			window.addEventListener('storage', (e) => {
+				if (e.key === STORAGE_KEY) this.updateUi();
+			});
+		}
+
+		private getUrl(): string {
+			let u = this.getAttribute('data-url') || window.location.pathname || '/';
+			if (!u.endsWith('/')) u += '/';
+			return normalizeUrl(u);
+		}
+
+		private getPageTitle(): string {
+			const attr = this.getAttribute('data-title')?.trim();
+			if (attr) return attr;
+			const h1 = document.querySelector('h1')?.textContent?.trim();
+			if (h1) return h1;
+			return document.title ? document.title.split('|')[0].trim() : 'دەرسلىك';
+		}
+
+		private isBookmarked(): boolean {
+			const url = this.getUrl();
+			const list = loadBookmarks();
+			return list.some((item) => normalizeUrl(item.url) === url || item.id === url);
+		}
+
+		private toggleBookmark() {
+			const url = this.getUrl();
+			const title = this.getPageTitle();
+			const list = loadBookmarks();
+			const existingIndex = list.findIndex((item) => normalizeUrl(item.url) === url || item.id === url);
+
+			if (existingIndex >= 0) {
+				list.splice(existingIndex, 1);
+				saveBookmarks(list);
+				showGlobalToast(this.labels.toastRemoved || 'Page removed from bookmarks');
+			} else {
+				const info = getPortalInfo(url);
+				list.unshift({
+					id: url,
+					url: url,
+					title: title,
+					portal: info.portal,
+					portalName: info.portalName,
+					pageTitle: title,
+					createdAt: Date.now(),
+				});
+				saveBookmarks(list);
+				showGlobalToast(this.labels.toastAdded || 'Page added to bookmarks');
+			}
+			this.updateUi();
+		}
+
+		private updateUi() {
+			if (!this.btn) return;
+			const bookmarked = this.isBookmarked();
+			const lbl = bookmarked
+				? (this.labels.bookmarkRemove || 'Remove from bookmarks')
+				: (this.labels.bookmarkAdd || 'Bookmark this page');
+
+			this.btn.classList.toggle('is-bookmarked', bookmarked);
+			this.btn.setAttribute('aria-pressed', String(bookmarked));
+			this.btn.setAttribute('aria-label', lbl);
+			this.btn.setAttribute('title', lbl);
+		}
+	}
+
+	if (!customElements.get('starlight-page-bookmark')) {
+		customElements.define('starlight-page-bookmark', StarlightPageBookmark);
+	}
+</script>
+
+<style>
+	@layer starlight.core {
+		.page-title-row {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 1rem;
+			margin-top: 1rem;
+		}
+
+		.page-title-row h1 {
+			margin: 0;
+			font-size: var(--sl-text-h1);
+			line-height: var(--sl-line-height-headings);
+			font-weight: 600;
+			color: var(--sl-color-white);
+			flex: 1 1 auto;
+			min-width: 0;
+			word-break: break-word;
+		}
+
+		.page-bookmark-container {
+			display: inline-flex;
+			flex-shrink: 0;
+			margin-top: 0.25rem;
+		}
+
+		.page-bookmark-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 2.25rem;
+			height: 2.25rem;
+			border-radius: 0.5rem;
+			border: 1px solid var(--sl-color-gray-5);
+			background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.04));
+			color: var(--sl-color-gray-3);
+			cursor: pointer;
+			transition: all 0.2s ease;
+			padding: 0;
+		}
+
+		.page-bookmark-btn:hover {
+			border-color: #f59e0b;
+			color: #f59e0b;
+			background: rgba(245, 158, 11, 0.1);
+		}
+
+		.page-bookmark-btn .icon-filled {
+			display: none;
+		}
+
+		.page-bookmark-btn.is-bookmarked {
+			border-color: #f59e0b;
+			color: #f59e0b;
+			background: rgba(245, 158, 11, 0.15);
+		}
+
+		.page-bookmark-btn.is-bookmarked .icon-outline {
+			display: none;
+		}
+
+		.page-bookmark-btn.is-bookmarked .icon-filled {
+			display: block;
+		}
+	}
+</style>

@@ -22,6 +22,21 @@
 }
 
 /*
+  Global link styling: disable underlines across the entire site
+*/
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited,
+.sl-markdown-content a,
+.sl-markdown-content a:hover,
+.sl-markdown-content a:not(:where(.not-content *)),
+.sl-markdown-content a:hover:not(:where(.not-content *)) {
+	text-decoration: none !important;
+}
+
+/*
   Accent: Kök Bayraq sky blue (~#0099FF), hue ≈ 249.
   Tuned for readable accents on both light and dark Starlight themes.
 */
@@ -31,6 +46,59 @@
 	--sl-color-accent-high: oklch(0.84 0.09 249);
 	--sl-color-text-accent: var(--sl-color-accent-high);
 	--sl-color-bg-accent: var(--sl-color-accent-high);
+
+	/* Reader font scale setting */
+	--sl-font-scale: 1;
+}
+
+:root[data-font-size='sm'] {
+	--sl-font-scale: 0.88;
+}
+
+:root[data-font-size='md'] {
+	--sl-font-scale: 1;
+}
+
+:root[data-font-size='lg'] {
+	--sl-font-scale: 1.15;
+}
+
+:root[data-font-size='xl'] {
+	--sl-font-scale: 1.3;
+}
+
+:root[data-font-size='2xl'] {
+	--sl-font-scale: 1.45;
+}
+
+/* Dynamically scale text inside main content area */
+.main-pane {
+	--sl-text-2xs: calc(0.75rem * var(--sl-font-scale, 1));
+	--sl-text-xs: calc(0.8125rem * var(--sl-font-scale, 1));
+	--sl-text-sm: calc(0.875rem * var(--sl-font-scale, 1));
+	--sl-text-base: calc(1rem * var(--sl-font-scale, 1));
+	--sl-text-lg: calc(1.125rem * var(--sl-font-scale, 1));
+	--sl-text-xl: calc(1.25rem * var(--sl-font-scale, 1));
+	--sl-text-2xl: calc(1.5rem * var(--sl-font-scale, 1));
+	--sl-text-3xl: calc(1.8125rem * var(--sl-font-scale, 1));
+	--sl-text-4xl: calc(2.1875rem * var(--sl-font-scale, 1));
+	--sl-text-5xl: calc(2.625rem * var(--sl-font-scale, 1));
+
+	--sl-text-body: var(--sl-text-base);
+	--sl-text-body-sm: var(--sl-text-xs);
+	--sl-text-code: var(--sl-text-sm);
+	--sl-text-code-sm: var(--sl-text-xs);
+	--sl-text-h1: var(--sl-text-4xl);
+	--sl-text-h2: var(--sl-text-3xl);
+	--sl-text-h3: var(--sl-text-2xl);
+	--sl-text-h4: var(--sl-text-xl);
+	--sl-text-h5: var(--sl-text-lg);
+
+	font-size: calc(1rem * var(--sl-font-scale, 1));
+}
+
+.sl-markdown-content {
+	font-size: calc(1rem * var(--sl-font-scale, 1));
 }
 
 :root[data-theme='light'] {
@@ -287,7 +355,7 @@ table.names-table tr:hover,
 /* Vocalized Arabic Name in 99 Names Table */
 .arabic-name {
 	font-family: 'Noto Sans Arabic', 'Noto Naskh Arabic', 'Amiri', serif;
-	font-size: 1.3rem;
+	font-size: calc(1.3rem * var(--sl-font-scale, 1));
 	font-weight: 700;
 	color: var(--sl-color-accent-high);
 	white-space: nowrap;
@@ -398,7 +466,7 @@ table.names-table tr:hover,
 
 .hadith-title,
 .dua-title {
-	font-size: 1.25rem;
+	font-size: calc(1.25rem * var(--sl-font-scale, 1));
 	font-weight: 700;
 	color: var(--sl-color-white);
 	flex-grow: 1;
@@ -436,7 +504,7 @@ table.names-table tr:hover,
 .hadith-arabic,
 .dua-arabic {
 	font-family: var(--sl-font, 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif);
-	font-size: 1.35rem;
+	font-size: calc(1.35rem * var(--sl-font-scale, 1));
 	line-height: 2.2;
 	background-color: rgba(0, 153, 255, 0.05);
 	border-inline-start: 4px solid var(--sl-color-accent);
@@ -454,7 +522,7 @@ table.names-table tr:hover,
 
 .hadith-translation,
 .dua-translation {
-	font-size: 1.05rem;
+	font-size: calc(1.05rem * var(--sl-font-scale, 1));
 	line-height: 1.95;
 	color: var(--sl-color-gray-2, #d0d7de);
 	margin-block-end: 1.25rem;
@@ -480,7 +548,7 @@ table.names-table tr:hover,
 	font-weight: 700;
 	color: var(--sl-color-accent);
 	margin-block-end: 0.5rem;
-	font-size: 1.05rem;
+	font-size: calc(1.05rem * var(--sl-font-scale, 1));
 }
 
 .hadith-sharh,
@@ -488,7 +556,7 @@ table.names-table tr:hover,
 	border-block-start: 1px dashed var(--sl-color-gray-5);
 	padding-block-start: 1.1rem;
 	margin-block-start: 1.1rem;
-	font-size: 1rem;
+	font-size: calc(1rem * var(--sl-font-scale, 1));
 	line-height: 1.9;
 	color: var(--sl-color-gray-2, #d0d7de);
 }
@@ -504,7 +572,7 @@ table.names-table tr:hover,
 	color: var(--sl-color-white);
 	margin-block-start: 1rem;
 	margin-block-end: 0.4rem;
-	font-size: 1.05rem;
+	font-size: calc(1.05rem * var(--sl-font-scale, 1));
 	border-inline-start: 3px solid var(--sl-color-accent);
 	padding-inline-start: 0.5rem;
 }
@@ -528,5 +596,103 @@ table.names-table tr:hover,
 .hadith-sharh p:last-child,
 .dua-note p:last-child {
 	margin-block-end: 0;
+}
+
+/* ==========================================================================
+   Topic and Link Bookmarking Buttons
+   ========================================================================== */
+.topic-bookmark-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	vertical-align: middle;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 0.375rem;
+	cursor: pointer;
+	padding: 0;
+	color: var(--sl-color-gray-4);
+	transition: all 0.2s ease;
+	line-height: 1;
+	box-sizing: border-box;
+}
+
+.topic-bookmark-btn:hover {
+	color: #f59e0b;
+	background: rgba(245, 158, 11, 0.12);
+	border-color: rgba(245, 158, 11, 0.3);
+}
+
+.topic-bookmark-btn .icon-filled {
+	display: none;
+}
+
+.topic-bookmark-btn.is-bookmarked {
+	color: #f59e0b;
+}
+
+.topic-bookmark-btn.is-bookmarked .icon-outline {
+	display: none;
+}
+
+.topic-bookmark-btn.is-bookmarked .icon-filled {
+	display: inline-block;
+}
+
+/* 1. Inside Hadith / QA / Dua Cards */
+.card-bookmark-btn {
+	width: 1.85rem;
+	height: 1.85rem;
+	opacity: 0.5;
+	margin-inline-start: 0.35rem;
+}
+
+.hadith-card:hover .card-bookmark-btn,
+.qa-card:hover .card-bookmark-btn,
+.dua-card:hover .card-bookmark-btn,
+.card-bookmark-btn:focus-visible,
+.card-bookmark-btn.is-bookmarked {
+	opacity: 1;
+}
+
+/* 2. Beside Headings (h2, h3) */
+.heading-bookmark-btn {
+	width: 1.7rem;
+	height: 1.7rem;
+	opacity: 0.35;
+	margin-inline-start: 0.5rem;
+	vertical-align: middle;
+}
+
+.sl-heading-wrapper:hover .heading-bookmark-btn,
+h2:hover .heading-bookmark-btn,
+h3:hover .heading-bookmark-btn,
+.heading-bookmark-btn:focus-visible,
+.heading-bookmark-btn.is-bookmarked {
+	opacity: 1;
+}
+
+/* 3. Beside Links in Lists (.sl-markdown-content ul li > a, ol li > a) */
+.link-bookmark-btn {
+	width: 1.45rem;
+	height: 1.45rem;
+	opacity: 0.3;
+	margin-inline-start: 0.4rem;
+	vertical-align: middle;
+}
+
+.sl-markdown-content li:hover .link-bookmark-btn,
+.link-bookmark-btn:focus-visible,
+.link-bookmark-btn.is-bookmarked {
+	opacity: 1;
+}
+
+@media (hover: none) {
+	.card-bookmark-btn,
+	.heading-bookmark-btn,
+	.link-bookmark-btn {
+		opacity: 0.6;
+	}
 }
 

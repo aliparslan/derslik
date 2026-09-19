@@ -19,6 +19,8 @@ const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
 const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
 const isDerslik =
 	id.startsWith('derslik') ||
 	pathname.includes('/derslik') ||
@@ -61,6 +63,16 @@ if (is2000) {
 } else if (isErebTili) {
 	sectionTitle = isEn ? 'Arabic Language Grammar' : 'ئەرەب تىلى دەرسلىكى گرامماتىكا قائىدىلىرى';
 	sectionHref = isEn ? '/en/ereb-tili/' : '/ereb-tili/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (isNamaz) {
+	sectionTitle = isEn ? 'Basics of Prayer' : 'نامازدىن ساۋات';
+	sectionHref = isEn ? '/en/namaz/' : '/namaz/';
+	Astro.locals.starlightRoute.siteTitle = sectionTitle;
+	Astro.locals.starlightRoute.siteTitleHref = landingHref;
+} else if (isHayat) {
+	sectionTitle = isEn ? 'Value Your Life' : 'ھاياتىڭىزنى قەدىرلەڭ';
+	sectionHref = isEn ? '/en/hayat/' : '/hayat/';
 	Astro.locals.starlightRoute.siteTitle = sectionTitle;
 	Astro.locals.starlightRoute.siteTitleHref = landingHref;
 } else if (isDerslik) {

@@ -1,0 +1,58 @@
+---
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import BookmarksModal from './BookmarksModal.astro';
+import SettingsModal from './SettingsModal.astro';
+
+const id = Astro.locals.starlightRoute.id || '';
+const pathname = Astro.url.pathname || '';
+const is2000 = id.startsWith('2000') || pathname.includes('/2000');
+const is40hedis = id.startsWith('40hedis') || pathname.includes('/40hedis');
+const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
+const isDua = id.startsWith('dua') || pathname.includes('/dua');
+const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
+const isAile = id.startsWith('aile') || pathname.includes('/aile');
+const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
+const hideLanguage = is2000 || is40hedis || is100hedis || isDua || isPeyghemberler || isAile || isErebTili || isNamaz || isHayat;
+---
+
+<div class="mobile-preferences sl-flex">
+	<div class="social-icons">
+		<SocialIcons />
+	</div>
+	<div class="pref-items sl-flex">
+		<BookmarksModal />
+		<SettingsModal hideLanguage={hideLanguage} />
+		{!is2000 && !is40hedis && !is100hedis && !isDua && !isPeyghemberler && !isAile && !isErebTili && null}
+	</div>
+</div>
+
+<style>
+	@layer starlight.core {
+		.social-icons {
+			display: flex;
+			margin-inline-end: auto;
+			gap: 1rem;
+			align-items: center;
+			padding-block: 0.75rem;
+		}
+		.social-icons:empty {
+			display: none;
+		}
+		.mobile-preferences {
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			border-top: 1px solid var(--sl-color-gray-6);
+			column-gap: 1rem;
+			row-gap: 0.5rem;
+			padding: 0.75rem 0;
+		}
+		.pref-items {
+			align-items: center;
+			gap: 0.75rem;
+			flex-wrap: wrap;
+		}
+	}
+</style>

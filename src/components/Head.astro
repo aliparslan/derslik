@@ -44,3 +44,14 @@ if (is2000 && Astro.locals.starlightRoute.head) {
 ---
 
 <Default {...Astro.props}><slot /></Default>
+
+<script is:inline>
+	(function () {
+		try {
+			const saved = localStorage.getItem('starlight-font-size');
+			if (saved && ['sm', 'md', 'lg', 'xl', '2xl'].includes(saved)) {
+				document.documentElement.dataset.fontSize = saved;
+			}
+		} catch (e) {}
+	})();
+</script>

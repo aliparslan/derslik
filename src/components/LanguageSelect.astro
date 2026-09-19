@@ -9,7 +9,10 @@ const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
-const hideLanguage = is2000 || is40hedis || is100hedis || isDua || isPeyghemberler || isAile;
+const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
+const hideLanguage = is2000 || is40hedis || is100hedis || isDua || isPeyghemberler || isAile || isErebTili || isNamaz || isHayat;
 ---
 
 {!hideLanguage && <Default {...Astro.props}><slot /></Default>}

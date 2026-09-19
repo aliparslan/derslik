@@ -37,6 +37,10 @@ hero:
       link: /ereb-tili/
       icon: translate
       variant: secondary
+    - text: Basics of Prayer (Namaz)
+      link: /namaz/
+      icon: sun
+      variant: secondary
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
@@ -131,5 +135,16 @@ import PortalCard from '~/components/PortalCard.astro';
 		buttonText="Study Arabic Grammar"
 		icon="translate"
 		tags={['3 Volumes (298 Pages)', 'Dr. V. Abdur Rahim', 'Medina Arabic', 'Grammar Rules & Tables', 'Full PDF Edition']}
+	/>
+
+	<PortalCard
+		title="Basics of Prayer (Namāzdin Sāwāt)"
+		badge="Prayer Guide"
+		subtitle="By Muhammad Yusuf"
+		description="Comprehensive illustrated guide to Islamic prayer for learners — purification, ablution (wudu), ghusl, tayammum, step-by-step prayer rituals with adhkar, congregational, Friday, funeral, Eid, and voluntary prayers."
+		href="/namaz/"
+		buttonText="Learn Prayer Guide"
+		icon="sun"
+		tags={['170 Pages', 'Muhammad Yusuf', 'Conditions of Prayer', 'Illustrated Steps', 'Adhkar & Duas', 'Full PDF Edition']}
 	/>
 </CardGrid>

@@ -339,6 +339,84 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'ھاياتىڭىزنى قەدىرلەڭ',
+					translations: {
+						en: 'Value Your Life',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/hayat/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە',
+							translations: {
+								en: '00-Introduction',
+							},
+							items: [{ autogenerate: { directory: 'hayat/00-muqeddimu' } }],
+						},
+						{
+							label: '1–10-ماقالىلەر: كەسىپ، كۆزقاراش ۋە تەپەككۇر',
+							slug: 'hayat/01-bap-01-10',
+							translations: {
+								en: 'Chapters 1–10',
+							},
+						},
+						{
+							label: '11–20-ماقالىلەر: ئەمەلىيەت، ئىرادە ۋە خۇشاللىق',
+							slug: 'hayat/02-bap-11-20',
+							translations: {
+								en: 'Chapters 11–20',
+							},
+						},
+						{
+							label: '21–30-ماقالىلەر: ۋاقىت، روھىيەت ۋە ئۆمۈر نىجاتلىقى',
+							slug: 'hayat/03-bap-21-30',
+							translations: {
+								en: 'Chapters 21–30',
+							},
+						},
+						{
+							label: '31–40-ماقالىلەر: ئۆزىنى ئىسلاھ قىلىش، ئائىلە ۋە پۇرسەت',
+							slug: 'hayat/04-bap-31-40',
+							translations: {
+								en: 'Chapters 31–40',
+							},
+						},
+						{
+							label: '41–50-ماقالىلەر: توغرا قارار، پىرىنسىپ ۋە ئائىلە تۈزۈمى',
+							slug: 'hayat/05-bap-41-50',
+							translations: {
+								en: 'Chapters 41–50',
+							},
+						},
+						{
+							label: '51–57-ماقالىلەر: ئادەت، تەلەي ۋە ھاياتلىق قائىدىلىرى',
+							slug: 'hayat/06-bap-51-57',
+							translations: {
+								en: 'Chapters 51–57',
+							},
+						},
+						{
+							label: '40 مەشئەل: ھاياتلىق ئىبرەتلىرى',
+							slug: 'hayat/07-40-mesh-el',
+							translations: {
+								en: '40 Beacons',
+							},
+						},
+						{
+							label: 'توققۇز تەۋسىيە: ئالتۇن يېتەكچى نەسىھەتلەر',
+							slug: 'hayat/08-toqquz-tewsiye',
+							translations: {
+								en: 'Nine Recommendations',
+							},
+						},
+					],
+				},
+				{
 					label: 'ھىسنۇل مۇسلىم (دۇئا ۋە زىكىرلەر)',
 					translations: {
 						en: 'Hisnul Muslim (Dua)',
@@ -538,6 +616,49 @@ export default defineConfig({
 						},
 					],
 				},
+				{
+					label: 'نامازدىن ساۋات',
+					translations: {
+						en: 'Basics of Prayer',
+					},
+					items: [
+						{
+							label: 'ئومۇمىي بايان',
+							link: '/namaz/',
+							translations: {
+								en: 'Overview',
+							},
+						},
+						{
+							label: '00-مۇقەددىمە ۋە ئىسلام ئاتالغۇلىرى',
+							translations: {
+								en: '00-Introduction & Terms',
+							},
+							items: [{ autogenerate: { directory: 'namaz/00-muqeddimu' } }],
+						},
+						{
+							label: '01-بىرىنچى بۆلۈم: شەرتلىرى ۋە پاكلىنىش',
+							translations: {
+								en: 'Part 1: Conditions & Purification',
+							},
+							items: [{ autogenerate: { directory: 'namaz/01-birinchi-bolum' } }],
+						},
+						{
+							label: '02-ئىككىنچى بۆلۈم: ناماز ئوقۇش تەرتىپى',
+							translations: {
+								en: 'Part 2: Prayer Steps & Rules',
+							},
+							items: [{ autogenerate: { directory: 'namaz/02-ikkinchi-bolum' } }],
+						},
+						{
+							label: '03-ئۈچىنچى بۆلۈم: نامازلارنىڭ تۈرلىرى',
+							translations: {
+								en: 'Part 3: Types of Prayers',
+							},
+							items: [{ autogenerate: { directory: 'namaz/03-uchinchi-bolum' } }],
+						},
+					],
+				},
 			],
 			customCss: [
 				'./src/styles/custom.css',
@@ -550,6 +671,8 @@ export default defineConfig({
 				Head: './src/components/Head.astro',
 				LanguageSelect: './src/components/LanguageSelect.astro',
 				Pagination: './src/components/Pagination.astro',
+				MobileMenuFooter: './src/components/MobileMenuFooter.astro',
+				PageTitle: './src/components/PageTitle.astro',
 			},
 		}),
 	],

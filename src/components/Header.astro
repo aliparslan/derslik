@@ -1,11 +1,11 @@
 ---
 import config from 'virtual:starlight/user-config';
 
-import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
 import Search from 'virtual:starlight/components/Search';
 import SiteTitle from 'virtual:starlight/components/SiteTitle';
 import SocialIcons from 'virtual:starlight/components/SocialIcons';
-import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import BookmarksModal from './BookmarksModal.astro';
+import SettingsModal from './SettingsModal.astro';
 
 const shouldRenderSearch =
 	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
@@ -18,6 +18,11 @@ const is100hedis = id.startsWith('100hedis') || pathname.includes('/100hedis');
 const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
+const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
+const hideLanguage = is2000 || is40hedis || is100hedis || isDua || isPeyghemberler || isAile || isErebTili || isNamaz || isHayat;
+const hasSocial = config.social && Object.keys(config.social).length > 0;
 ---
 
 <div class="header">
@@ -27,11 +32,14 @@ const isAile = id.startsWith('aile') || pathname.includes('/aile');
 	<div class="sl-flex print:hidden end-group">
 		{shouldRenderSearch && <Search />}
 		<div class="sl-hidden md:sl-flex right-group">
-			<div class="sl-flex social-icons">
-				<SocialIcons />
-			</div>
-			<ThemeSelect />
-			{!is2000 && !is40hedis && !is100hedis && !isDua && !isPeyghemberler && !isAile && <LanguageSelect />}
+			{hasSocial && (
+				<div class="sl-flex social-icons">
+					<SocialIcons />
+				</div>
+			)}
+			<BookmarksModal />
+			<SettingsModal hideLanguage={hideLanguage} />
+			{!is2000 && !is40hedis && !is100hedis && !isDua && !isPeyghemberler && !isAile && !isErebTili && null}
 		</div>
 	</div>
 </div>

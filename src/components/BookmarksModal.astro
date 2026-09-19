@@ -1,0 +1,1862 @@
+---
+const { lang } = Astro.locals.starlightRoute;
+const isEn = lang === 'en';
+const pathname = Astro.url.pathname || '';
+const title = Astro.locals.starlightRoute.entry?.data?.title || '';
+
+const labels = {
+	btnLabel: isEn ? 'Saved bookmarks' : 'خەتكۈشلەر',
+	modalTitle: isEn ? 'Saved Bookmarks' : 'خەتكۈشلەر (ساقلانغان بەتلەر)',
+	searchPlaceholder: isEn ? 'Search bookmarks...' : 'خەتكۈشلەرنى ئىزدەش...',
+	emptyTitle: isEn ? 'No bookmarks saved yet' : 'تېخى ھېچقانداق بەت خەتكۈشكە قوشۇلمىدى',
+	emptyDesc: isEn
+		? 'Click the button below or the bookmark icon on any page to save it for quick reference.'
+		: 'تۆۋەندىكى كۇنۇپكىنى ياكى بەتلەردىكى خەتكۈش بەلگىسىنى چېكىپ بۇ يەرگە ساقلىۋالالايسىز.',
+	emptyAddBtn: isEn ? 'Bookmark this current page' : 'ھازىرقى بەتنى خەتكۈشكە قوشۇش',
+	addCurrent: isEn ? 'Bookmark this page' : 'بۇ بەتنى خەتكۈشكە قوشۇش',
+	removeCurrent: isEn ? 'Remove from bookmarks' : 'خەتكۈشتىن ئۆچۈرۈش',
+	currentPage: isEn ? 'Current page:' : 'ھازىرقى بەت:',
+	clearAll: isEn ? 'Clear all' : 'ھەممىنى ئۆچۈرۈش',
+	confirmClear: isEn
+		? 'Are you sure you want to remove all saved bookmarks?'
+		: 'راستلا بارلىق خەتكۈشلەرنى ئۆچۈرەمسىز؟',
+	removeBookmark: isEn ? 'Remove' : 'ئۆچۈرۈش',
+	closeModal: isEn ? 'Close' : 'تاقاش',
+	totalCount: isEn ? 'items' : 'دانە',
+	addedToast: isEn ? 'Page added to bookmarks' : 'بەت خەتكۈشلەرگە قوشۇلدى',
+	removedToast: isEn ? 'Page removed from bookmarks' : 'بەت خەتكۈشتىن ئۆچۈرۈلدى',
+	overview: isEn ? 'Overview' : 'ئومۇمىي بايان',
+	byBook: isEn ? 'By Book' : 'كىتاب بويىچە',
+	byPage: isEn ? 'By Page' : 'بەت بويىچە',
+	byRecent: isEn ? 'Recent' : 'ۋاقىت بويىچە',
+	pageBadge: isEn ? 'Page' : 'بەت',
+	mainPage: isEn ? 'Main Page' : 'ئاساسىي بەت',
+	isEn,
+};
+---
+
+<starlight-bookmarks-modal
+	class="bookmarks-widget"
+	data-url={pathname}
+	data-title={title}
+	data-labels={JSON.stringify(labels)}
+>
+	<!-- Segmented control: [Quick Toggle Bookmark] | [Open Bookmarks Modal (Count)] -->
+	<div class="bookmarks-control-group">
+		<button
+			type="button"
+			class="bookmarks-quick-toggle-btn"
+			data-quick-toggle
+			aria-label={labels.addCurrent}
+			title={labels.addCurrent}
+			aria-pressed="false"
+		>
+			<svg class="icon-outline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+			<svg class="icon-filled" width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+		</button>
+
+		<button
+			type="button"
+			class="bookmarks-trigger-btn"
+			data-bookmark-modal-open
+			aria-label={labels.btnLabel}
+			title={labels.btnLabel}
+			aria-haspopup="dialog"
+		>
+			<svg class="trigger-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="M4 6h16M4 12h16M4 18h16"/>
+			</svg>
+			<span class="bookmark-count-badge" aria-hidden="true">0</span>
+		</button>
+	</div>
+
+	<dialog class="bookmarks-dialog" aria-label={labels.modalTitle}>
+		<div class="dialog-content">
+			<!-- Dialog Header -->
+			<div class="dialog-header">
+				<div class="header-title-group">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="title-icon" aria-hidden="true">
+						<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+					</svg>
+					<h2 class="dialog-title">{labels.modalTitle}</h2>
+					<span class="dialog-count-tag" style="display: none;">0</span>
+				</div>
+				<button type="button" class="dialog-close-btn" data-bookmark-modal-close aria-label={labels.closeModal}>
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<line x1="18" y1="6" x2="6" y2="18"/>
+						<line x1="6" y1="6" x2="18" y2="18"/>
+					</svg>
+				</button>
+			</div>
+
+			<!-- Current Page Quick Action Bar -->
+			<div class="current-page-bar">
+				<div class="current-page-info">
+					<span class="current-page-label">{labels.currentPage}</span>
+					<span class="current-page-title-val">...</span>
+				</div>
+				<button type="button" class="current-page-toggle-btn" data-cp-toggle>
+					<svg class="cp-icon-add" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<line x1="12" y1="5" x2="12" y2="19"/>
+						<line x1="5" y1="12" x2="19" y2="12"/>
+					</svg>
+					<svg class="cp-icon-remove" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<polyline points="20 6 9 17 4 12"/>
+					</svg>
+					<span class="cp-btn-text">{labels.addCurrent}</span>
+				</button>
+			</div>
+
+			<!-- Search Filter -->
+			<div class="dialog-search-bar" style="display: none;">
+				<svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="11" cy="11" r="8"/>
+					<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+				</svg>
+				<input
+					type="search"
+					class="search-input"
+					placeholder={labels.searchPlaceholder}
+					aria-label={labels.searchPlaceholder}
+				/>
+			</div>
+
+			<!-- View Switcher (Organize by Books / Pages / Recent) -->
+			<div class="dialog-view-bar" style="display: none;">
+				<div class="view-segmented-control" role="tablist" aria-label={labels.modalTitle}>
+					<button type="button" class="view-seg-btn active" data-view-mode="book" role="tab" aria-selected="true">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+							<path d="M6 6h10M6 10h10"/>
+						</svg>
+						<span>{labels.byBook}</span>
+					</button>
+					<button type="button" class="view-seg-btn" data-view-mode="page" role="tab" aria-selected="false">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+							<polyline points="14 2 14 8 20 8"/>
+							<line x1="16" y1="13" x2="8" y2="13"/>
+							<line x1="16" y1="17" x2="8" y2="17"/>
+						</svg>
+						<span>{labels.byPage}</span>
+					</button>
+					<button type="button" class="view-seg-btn" data-view-mode="all" role="tab" aria-selected="false">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="10"/>
+							<polyline points="12 6 12 12 16 14"/>
+						</svg>
+						<span>{labels.byRecent}</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Bookmarks List Body -->
+			<div class="dialog-body">
+				<!-- Empty State -->
+				<div class="bookmarks-empty">
+					<div class="empty-icon-wrap">
+						<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+							<line x1="12" y1="10" x2="12" y2="10.01"/>
+						</svg>
+					</div>
+					<h3 class="empty-title">{labels.emptyTitle}</h3>
+					<p class="empty-desc">{labels.emptyDesc}</p>
+					<button type="button" class="empty-add-btn" data-empty-add>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<line x1="12" y1="5" x2="12" y2="19"/>
+							<line x1="5" y1="12" x2="19" y2="12"/>
+						</svg>
+						<span>{labels.emptyAddBtn}</span>
+					</button>
+				</div>
+
+				<!-- Items Container -->
+				<div class="bookmarks-list" style="display: none;"></div>
+			</div>
+
+			<!-- Dialog Footer -->
+			<div class="dialog-footer" style="display: none;">
+				<button type="button" class="clear-all-btn">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M3 6h18"/>
+						<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+						<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+					</svg>
+					<span>{labels.clearAll}</span>
+				</button>
+			</div>
+		</div>
+	</dialog>
+
+	<div class="bookmark-toast" role="status" aria-live="polite" aria-hidden="true"></div>
+</starlight-bookmarks-modal>
+
+<script>
+	interface BookmarkItem {
+		id: string;
+		url: string;
+		title: string;
+		portal: string;
+		portalName: string;
+		pageTitle?: string;
+		createdAt: number;
+	}
+
+	const STORAGE_KEY = 'derslik-bookmarks-v1';
+
+	function getPortalInfo(path: string): { portal: string; portalName: string } {
+		const clean = path.replace(/^\/en\//, '/').replace(/^\//, '');
+		const first = clean.split('/')[0] || '';
+		switch (first) {
+			case 'namaz':
+				return { portal: 'namaz', portalName: 'نامازدىن ساۋات' };
+			case 'ereb-tili':
+				return { portal: 'ereb-tili', portalName: 'ئەرەب تىلى گرامماتىكىسى' };
+			case 'aile':
+				return { portal: 'aile', portalName: 'ئىسلامدىكى ئائىلە تۈزۈمى' };
+			case '100hedis':
+				return { portal: '100hedis', portalName: 'تاللانغان 100 ھەدىس' };
+			case '40hedis':
+				return { portal: '40hedis', portalName: 'قىرىق ھەدىس' };
+			case 'dua':
+				return { portal: 'dua', portalName: 'ھىسنۇل مۇسلىم (دۇئا)' };
+			case 'hayat':
+				return { portal: 'hayat', portalName: 'ھاياتىڭىزنى قەدىرلەڭ' };
+			case 'peyghemberler':
+				return { portal: 'peyghemberler', portalName: 'پەيغەمبەرلەر تارىخى' };
+			case '2000':
+				return { portal: '2000', portalName: 'دىن ۋە ھايات: 2000 سوئالغا جاۋاب' };
+			case 'derslik':
+				return { portal: 'derslik', portalName: 'تەلىم – تەربىيە پىروگراممىسى' };
+			default:
+				return { portal: 'derslik', portalName: 'باش بەت' };
+		}
+	}
+
+	function normalizeUrl(rawUrl: string): string {
+		try {
+			const resolved = new URL(rawUrl, window.location.href);
+			let path = resolved.pathname;
+			if (!path.endsWith('/') && !path.includes('.')) {
+				path += '/';
+			}
+			return path + (resolved.hash || '');
+		} catch (e) {
+			return rawUrl;
+		}
+	}
+
+	function loadBookmarks(): BookmarkItem[] {
+		try {
+			const data = localStorage.getItem(STORAGE_KEY);
+			return data ? JSON.parse(data) : [];
+		} catch (e) {
+			return [];
+		}
+	}
+
+	function saveBookmarks(items: BookmarkItem[]): void {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+			window.dispatchEvent(new CustomEvent('derslik-bookmarks-updated', { detail: { items } }));
+		} catch (e) {}
+	}
+
+	let globalToastTimer: any = null;
+	function showGlobalToast(msg: string): void {
+		const toast = document.querySelector('.bookmark-toast') as HTMLElement | null;
+		if (!toast) return;
+		toast.textContent = msg;
+		toast.classList.add('show');
+		toast.setAttribute('aria-hidden', 'false');
+
+		clearTimeout(globalToastTimer);
+		globalToastTimer = setTimeout(() => {
+			toast.classList.remove('show');
+			toast.setAttribute('aria-hidden', 'true');
+		}, 2500);
+	}
+
+	function formatDate(ts: number, isEn = false): string {
+		try {
+			if (!ts) return '';
+			const d = new Date(ts);
+			const now = Date.now();
+			const diff = now - ts;
+			if (diff < 60000) return isEn ? 'just now' : 'ھازىرلا';
+			if (diff < 3600000) return isEn ? `${Math.floor(diff / 60000)}m ago` : `${Math.floor(diff / 60000)} مىنۇت بۇرۇن`;
+			if (diff < 86400000) return isEn ? `${Math.floor(diff / 3600000)}h ago` : `${Math.floor(diff / 3600000)} سائەت بۇرۇن`;
+			return d.toLocaleDateString(isEn ? 'en-US' : 'ug');
+		} catch (e) {
+			return '';
+		}
+	}
+
+	function escapeRegex(s: string): string {
+		return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
+	function stripPrefix(str: string, prefix: string): string {
+		if (!str || !prefix) return str;
+		const cleanP = prefix.replace(/[:–—\-\|\s«»"'\(\)\[\]]/g, '').trim();
+		if (!cleanP) return str;
+
+		const trimmed = str.trim();
+		const regex = new RegExp(`^([«"']?\\s*${escapeRegex(prefix)}\\s*[»"']?\\s*[:–—\\-\\|•]*\\s*)`, 'i');
+		if (regex.test(trimmed)) {
+			const res = trimmed.replace(regex, '').trim();
+			return res.replace(/^[:–—\\-\\|•\s]+/, '').trim();
+		}
+
+		const match = trimmed.match(/^([^:–—\-\|]+)[:–—\-\|]\s*(.+)$/);
+		if (match) {
+			const head = match[1].replace(/[:–—\-\|\s«»"'\(\)\[\]]/g, '').trim();
+			if (head.toLowerCase() === cleanP.toLowerCase()) {
+				return match[2].trim();
+			}
+		}
+		return str;
+	}
+
+	function formatParentheses(s: string): string {
+		if (!s) return '';
+		return s
+			.replace(/([^\s\(\[\{«"'\-])\(/g, '$1 (')
+			.replace(/\)([^\s\)\]\}»"':,;.!؟?\-])/g, ') $1');
+	}
+
+	function cleanTitles(item: BookmarkItem): {
+		portalName: string;
+		pageTitle: string;
+		bookmarkTitle: string;
+		isPageBookmark: boolean;
+	} {
+		const portalName = (item.portalName || getPortalInfo(item.url).portalName || '').trim();
+		let pageTitle = (item.pageTitle || '').trim();
+		let rawTitle = (item.title || item.url || '').trim();
+
+		// Strip portal prefix from pageTitle if present
+		if (portalName && pageTitle.toLowerCase().startsWith(portalName.toLowerCase())) {
+			pageTitle = stripPrefix(pageTitle, portalName) || portalName;
+		}
+		pageTitle = pageTitle.replace(/\s*\|\s*.*$/, '').trim();
+		if (!pageTitle) pageTitle = portalName;
+
+		// Strip portal prefix from rawTitle if present
+		if (portalName && rawTitle.toLowerCase().startsWith(portalName.toLowerCase())) {
+			const stripped = stripPrefix(rawTitle, portalName);
+			if (stripped) rawTitle = stripped;
+		}
+
+		// Check if URL represents the page itself (no hash or #_top)
+		let hasTopicHash = false;
+		try {
+			const u = new URL(item.url, window.location.href);
+			if (u.hash && u.hash !== '#_top' && u.hash !== '#') {
+				hasTopicHash = true;
+			}
+		} catch (e) {}
+
+		const normPage = pageTitle.replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+		const normRaw = rawTitle.replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+
+		const isPageBookmark = !hasTopicHash || normRaw === normPage;
+
+		let bookmarkTitle = rawTitle;
+		if (!isPageBookmark) {
+			bookmarkTitle = stripPrefix(bookmarkTitle, pageTitle);
+		}
+		bookmarkTitle = bookmarkTitle.replace(/\s*\|\s*.*$/, '').trim();
+		if (!bookmarkTitle) bookmarkTitle = pageTitle;
+
+		pageTitle = formatParentheses(pageTitle);
+		bookmarkTitle = formatParentheses(bookmarkTitle);
+
+		return {
+			portalName,
+			pageTitle,
+			bookmarkTitle: isPageBookmark ? pageTitle : bookmarkTitle,
+			isPageBookmark,
+		};
+	}
+
+	function updateAllTopicButtons(): void {
+		const list = loadBookmarks();
+		const bookmarkedUrls = new Set(list.map((item) => normalizeUrl(item.url)));
+
+		const buttons = document.querySelectorAll<HTMLButtonElement>('.topic-bookmark-btn');
+		buttons.forEach((btn) => {
+			const rawUrl = btn.dataset.topicUrl || '';
+			const isBookmarked = bookmarkedUrls.has(normalizeUrl(rawUrl));
+			btn.classList.toggle('is-bookmarked', isBookmarked);
+			btn.setAttribute('aria-pressed', String(isBookmarked));
+			const lbl = isBookmarked
+				? (btn.dataset.lblRemove || 'خەتكۈشتىن ئۆچۈرۈش')
+				: (btn.dataset.lblAdd || 'خەتكۈشكە قوشۇش');
+			btn.setAttribute('aria-label', lbl);
+			btn.setAttribute('title', lbl);
+		});
+	}
+
+	function toggleTopicBookmark(url: string, title: string, pageTitle: string, labels: any): void {
+		const normUrl = normalizeUrl(url);
+		const list = loadBookmarks();
+		const existingIndex = list.findIndex(
+			(item) => normalizeUrl(item.url) === normUrl || item.id === normUrl
+		);
+
+		if (existingIndex >= 0) {
+			list.splice(existingIndex, 1);
+			saveBookmarks(list);
+			const msg = labels.isEn
+				? `"${title}" removed from bookmarks`
+				: `«${title}» خەتكۈشتىن ئۆچۈرۈلدى`;
+			showGlobalToast(msg);
+		} else {
+			const info = getPortalInfo(normUrl);
+			list.unshift({
+				id: normUrl,
+				url: normUrl,
+				title: title,
+				portal: info.portal,
+				portalName: info.portalName,
+				pageTitle: pageTitle || info.portalName,
+				createdAt: Date.now(),
+			});
+			saveBookmarks(list);
+			const msg = labels.isEn
+				? `"${title}" added to bookmarks`
+				: `«${title}» خەتكۈشلەرگە قوشۇلدى`;
+			showGlobalToast(msg);
+		}
+
+		updateAllTopicButtons();
+	}
+
+	function createTopicBookmarkBtn(
+		targetUrl: string,
+		targetTitle: string,
+		pageTitle: string,
+		labels: any,
+		extraClass: string
+	): HTMLButtonElement {
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = `topic-bookmark-btn ${extraClass}`;
+		btn.dataset.topicUrl = targetUrl;
+		btn.dataset.topicTitle = targetTitle;
+		btn.dataset.pageTitle = pageTitle;
+
+		const addLbl = labels.addCurrent || (labels.isEn ? 'Bookmark this' : 'خەتكۈشكە قوشۇش');
+		const removeLbl = labels.removeCurrent || (labels.isEn ? 'Remove from bookmarks' : 'خەتكۈشتىن ئۆچۈرۈش');
+
+		btn.dataset.lblAdd = addLbl;
+		btn.dataset.lblRemove = removeLbl;
+		btn.setAttribute('aria-label', addLbl);
+		btn.setAttribute('title', addLbl);
+		btn.setAttribute('aria-pressed', 'false');
+
+		btn.innerHTML = `
+			<svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+			<svg class="icon-filled" width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+			</svg>
+		`;
+
+		btn.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			toggleTopicBookmark(targetUrl, targetTitle, pageTitle, labels);
+		});
+
+		return btn;
+	}
+
+	function initTopicAndLinkBookmarks(labels: any): void {
+		const currentPageTitle =
+			document.querySelector('h1')?.textContent?.trim() ||
+			document.title?.split('|')[0]?.trim() ||
+			'';
+
+		// 1. Topic Cards: hadith-card, qa-card, dua-card
+		const cards = document.querySelectorAll<HTMLElement>('.hadith-card, .qa-card, .dua-card');
+		cards.forEach((card) => {
+			const id = card.id;
+			if (!id) return;
+
+			let targetContainer: HTMLElement | null = null;
+			let titleText = '';
+
+			if (card.classList.contains('hadith-card')) {
+				targetContainer = card.querySelector('.hadith-header');
+				titleText = card.querySelector('.hadith-title')?.textContent?.trim() || '';
+			} else if (card.classList.contains('qa-card')) {
+				targetContainer = card.querySelector('.qa-question');
+				const num = card.querySelector('.qa-number')?.textContent?.trim() || '';
+				const qText = card.querySelector('.qa-text')?.textContent?.trim() || '';
+				titleText = num ? `سوئال ${num}: ${qText}` : qText;
+			} else if (card.classList.contains('dua-card')) {
+				targetContainer = card.querySelector('.dua-header');
+				titleText = card.querySelector('.dua-title')?.textContent?.trim() || '';
+			}
+
+			if (!targetContainer || targetContainer.querySelector('.topic-bookmark-btn')) return;
+
+			const targetUrl = normalizeUrl(`${window.location.pathname}#${id}`);
+			const btn = createTopicBookmarkBtn(targetUrl, titleText, currentPageTitle, labels, 'card-bookmark-btn');
+			targetContainer.appendChild(btn);
+		});
+
+		// 2. Headings inside .sl-markdown-content (excluding cards, asides, dialogs)
+		const headings = document.querySelectorAll<HTMLElement>('.sl-markdown-content :is(h2, h3)[id]');
+		headings.forEach((heading) => {
+			if (heading.closest('.hadith-card, .qa-card, .dua-card, dialog, .starlight-aside, aside')) return;
+			const id = heading.id;
+			if (!id) return;
+
+			const wrapper = heading.closest('.sl-heading-wrapper');
+			const host = wrapper || heading;
+			if (host.querySelector('.topic-bookmark-btn')) return;
+
+			const clone = heading.cloneNode(true) as HTMLElement;
+			clone.querySelectorAll('.sl-anchor-link, .sr-only, button, a, svg').forEach((el) => el.remove());
+			const titleText = clone.textContent?.trim() || heading.textContent?.trim() || '';
+			if (!titleText) return;
+
+			const targetUrl = normalizeUrl(`${window.location.pathname}#${id}`);
+			const btn = createTopicBookmarkBtn(targetUrl, titleText, currentPageTitle, labels, 'heading-bookmark-btn');
+			host.appendChild(btn);
+		});
+
+		// 3. Topic Links in Markdown Lists (.sl-markdown-content ul li > a, ol li > a)
+		const listLinks = document.querySelectorAll<HTMLAnchorElement>(
+			'.sl-markdown-content :is(ul, ol) > li > a[href]'
+		);
+		listLinks.forEach((link) => {
+			const href = link.getAttribute('href');
+			if (!href) return;
+			if (href.startsWith('http://') || (href.startsWith('https://') && !href.includes(window.location.host))) return;
+			if (href.startsWith('mailto:') || href.startsWith('javascript:')) return;
+			if (link.closest('dialog, .pagination-links, .starlight-aside')) return;
+			if (link.parentElement?.querySelector('.topic-bookmark-btn')) return;
+
+			const linkText = link.textContent?.trim() || '';
+			if (!linkText) return;
+
+			const targetUrl = normalizeUrl(new URL(href, window.location.href).href);
+			const btn = createTopicBookmarkBtn(targetUrl, linkText, currentPageTitle, labels, 'link-bookmark-btn');
+			link.insertAdjacentElement('afterend', btn);
+		});
+
+		updateAllTopicButtons();
+	}
+
+	class StarlightBookmarksModal extends HTMLElement {
+		private quickToggleBtn: HTMLButtonElement | null = null;
+		private triggerBtn: HTMLButtonElement | null = null;
+		private badge: HTMLElement | null = null;
+		private dialog: HTMLDialogElement | null = null;
+		private closeBtn: HTMLButtonElement | null = null;
+		private searchInput: HTMLInputElement | null = null;
+		private searchBar: HTMLElement | null = null;
+		private viewBar: HTMLElement | null = null;
+		private viewSegBtns: NodeListOf<HTMLButtonElement> | null = null;
+		private emptyView: HTMLElement | null = null;
+		private emptyAddBtn: HTMLButtonElement | null = null;
+		private cpTitleVal: HTMLElement | null = null;
+		private cpToggleBtn: HTMLButtonElement | null = null;
+		private cpBtnText: HTMLElement | null = null;
+		private listView: HTMLElement | null = null;
+		private countTag: HTMLElement | null = null;
+		private footer: HTMLElement | null = null;
+		private clearAllBtn: HTMLButtonElement | null = null;
+		private currentViewMode: 'book' | 'page' | 'all' = 'book';
+		private labels: any = {};
+
+		connectedCallback() {
+			try {
+				this.labels = JSON.parse(this.getAttribute('data-labels') || '{}');
+			} catch (e) {}
+
+			this.quickToggleBtn = this.querySelector('[data-quick-toggle]');
+			this.triggerBtn = this.querySelector('[data-bookmark-modal-open]');
+			this.badge = this.querySelector('.bookmark-count-badge');
+			this.dialog = this.querySelector('dialog');
+			this.closeBtn = this.querySelector('[data-bookmark-modal-close]');
+			this.searchInput = this.querySelector('.search-input');
+			this.searchBar = this.querySelector('.dialog-search-bar');
+			this.viewBar = this.querySelector('.dialog-view-bar');
+			this.viewSegBtns = this.querySelectorAll('.view-seg-btn');
+			this.emptyView = this.querySelector('.bookmarks-empty');
+			this.emptyAddBtn = this.querySelector('[data-empty-add]');
+			this.cpTitleVal = this.querySelector('.current-page-title-val');
+			this.cpToggleBtn = this.querySelector('[data-cp-toggle]');
+			this.cpBtnText = this.querySelector('.cp-btn-text');
+			this.listView = this.querySelector('.bookmarks-list');
+			this.countTag = this.querySelector('.dialog-count-tag');
+			this.footer = this.querySelector('.dialog-footer');
+			this.clearAllBtn = this.querySelector('.clear-all-btn');
+
+			// Restore saved view mode (default 'book')
+			try {
+				const savedMode = localStorage.getItem('derslik-bookmarks-view-mode');
+				if (savedMode === 'book' || savedMode === 'page' || savedMode === 'all') {
+					this.currentViewMode = savedMode as any;
+				}
+			} catch (e) {}
+
+			this.viewSegBtns?.forEach((btn) => {
+				const mode = btn.getAttribute('data-view-mode');
+				const isAct = mode === this.currentViewMode;
+				btn.classList.toggle('active', isAct);
+				btn.setAttribute('aria-selected', String(isAct));
+				btn.addEventListener('click', () => {
+					if (mode) this.setViewMode(mode as any);
+				});
+			});
+
+			this.updateUi();
+
+			// 1. Quick toggle button (in header)
+			this.quickToggleBtn?.addEventListener('click', (e) => {
+				e.stopPropagation();
+				this.toggleCurrent();
+			});
+
+			// 2. Open Modal trigger
+			this.triggerBtn?.addEventListener('click', () => this.openDialog());
+			this.closeBtn?.addEventListener('click', () => this.closeDialog());
+
+			// 3. Current page bar toggle button (inside modal)
+			this.cpToggleBtn?.addEventListener('click', () => {
+				this.toggleCurrent();
+			});
+
+			// 4. Empty state quick add button
+			this.emptyAddBtn?.addEventListener('click', () => {
+				this.toggleCurrent();
+			});
+
+			// 5. Close on backdrop click
+			this.dialog?.addEventListener('click', (e) => {
+				if (e.target === this.dialog) this.closeDialog();
+			});
+
+			// 6. Search input filter
+			this.searchInput?.addEventListener('input', () => this.renderList());
+
+			// 7. Clear all bookmarks
+			this.clearAllBtn?.addEventListener('click', () => {
+				if (confirm(this.labels.confirmClear || 'Are you sure?')) {
+					saveBookmarks([]);
+					this.updateUi();
+					updateAllTopicButtons();
+				}
+			});
+
+			// 8. Reactive listeners
+			window.addEventListener('derslik-bookmarks-updated', () => {
+				this.updateUi();
+				updateAllTopicButtons();
+			});
+
+			window.addEventListener('storage', (e) => {
+				if (e.key === STORAGE_KEY) {
+					this.updateUi();
+					updateAllTopicButtons();
+				}
+			});
+
+			// 9. Initialize topic and link bookmarks
+			const init = () => initTopicAndLinkBookmarks(this.labels);
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
+			window.addEventListener('load', init);
+			window.addEventListener('astro:page-load', init);
+		}
+
+		private setViewMode(mode: 'book' | 'page' | 'all') {
+			this.currentViewMode = mode;
+			try {
+				localStorage.setItem('derslik-bookmarks-view-mode', mode);
+			} catch (e) {}
+			this.viewSegBtns?.forEach((b) => {
+				const isAct = b.getAttribute('data-view-mode') === mode;
+				b.classList.toggle('active', isAct);
+				b.setAttribute('aria-selected', String(isAct));
+			});
+			this.renderList();
+		}
+
+		private getUrl(): string {
+			let u = this.getAttribute('data-url') || window.location.pathname || '/';
+			if (!u.endsWith('/')) u += '/';
+			return normalizeUrl(u);
+		}
+
+		private getPageTitle(): string {
+			const h1 = document.querySelector('h1')?.textContent?.trim();
+			if (h1) return h1;
+			const attr = this.getAttribute('data-title')?.trim();
+			if (attr) return attr;
+			const doc = document.title ? document.title.split('|')[0].trim() : '';
+			return doc || 'دەرسلىك';
+		}
+
+		private isCurrentBookmarked(): boolean {
+			const url = this.getUrl();
+			const list = loadBookmarks();
+			return list.some((item) => normalizeUrl(item.url) === url || item.id === url);
+		}
+
+		private toggleCurrent() {
+			const url = this.getUrl();
+			const title = this.getPageTitle();
+			const list = loadBookmarks();
+			const existingIndex = list.findIndex((item) => normalizeUrl(item.url) === url || item.id === url);
+			const addToast = this.labels.addedToast || 'Page added to bookmarks';
+			const removeToast = this.labels.removedToast || 'Page removed from bookmarks';
+
+			if (existingIndex >= 0) {
+				// Remove
+				list.splice(existingIndex, 1);
+				saveBookmarks(list);
+				showGlobalToast(removeToast);
+			} else {
+				// Add
+				const info = getPortalInfo(url);
+				list.unshift({
+					id: url,
+					url: url,
+					title: title,
+					portal: info.portal,
+					portalName: info.portalName,
+					pageTitle: title,
+					createdAt: Date.now(),
+				});
+				saveBookmarks(list);
+				showGlobalToast(addToast);
+			}
+			this.updateUi();
+			updateAllTopicButtons();
+		}
+
+		private openDialog() {
+			if (this.dialog && !this.dialog.open) {
+				if (this.searchInput) this.searchInput.value = '';
+				this.dialog.showModal();
+				this.updateUi();
+				this.renderList();
+			}
+		}
+
+		private closeDialog() {
+			if (this.dialog?.open) {
+				this.dialog.close();
+			}
+		}
+
+		private updateUi() {
+			const items = loadBookmarks();
+			const count = items.length;
+			const isBookmarked = this.isCurrentBookmarked();
+			const addLabel = this.labels.addCurrent || 'Bookmark this page';
+			const removeLabel = this.labels.removeCurrent || 'Remove from bookmarks';
+
+			// Header quick toggle button state
+			if (this.quickToggleBtn) {
+				this.quickToggleBtn.setAttribute('aria-pressed', String(isBookmarked));
+				const lbl = isBookmarked ? removeLabel : addLabel;
+				this.quickToggleBtn.setAttribute('aria-label', lbl);
+				this.quickToggleBtn.setAttribute('title', lbl);
+				if (isBookmarked) {
+					this.quickToggleBtn.classList.add('is-bookmarked');
+				} else {
+					this.quickToggleBtn.classList.remove('is-bookmarked');
+				}
+			}
+
+			// Badge count
+			if (this.badge) {
+				this.badge.textContent = String(count);
+				if (count > 0) {
+					this.badge.classList.add('has-bookmarks');
+				} else {
+					this.badge.classList.remove('has-bookmarks');
+				}
+			}
+
+			if (this.countTag) {
+				this.countTag.textContent = `${count} ${this.labels.totalCount || ''}`;
+				this.countTag.style.display = count > 0 ? 'inline-block' : 'none';
+			}
+
+			// Current page bar inside modal
+			if (this.cpTitleVal) {
+				this.cpTitleVal.textContent = this.getPageTitle();
+			}
+			if (this.cpToggleBtn && this.cpBtnText) {
+				if (isBookmarked) {
+					this.cpToggleBtn.classList.add('is-bookmarked');
+					this.cpBtnText.textContent = removeLabel;
+					this.cpToggleBtn.setAttribute('title', removeLabel);
+				} else {
+					this.cpToggleBtn.classList.remove('is-bookmarked');
+					this.cpBtnText.textContent = addLabel;
+					this.cpToggleBtn.setAttribute('title', addLabel);
+				}
+			}
+
+			this.renderList();
+		}
+
+		private bindNavigation(linkEl: HTMLAnchorElement, url: string) {
+			linkEl.addEventListener('click', () => {
+				this.closeDialog();
+				try {
+					const targetObj = new URL(url, window.location.href);
+					if (targetObj.pathname === window.location.pathname && targetObj.hash) {
+						const targetEl = document.querySelector(targetObj.hash);
+						if (targetEl) {
+							setTimeout(() => {
+								targetEl.scrollIntoView({ behavior: 'smooth' });
+							}, 100);
+						}
+					}
+				} catch (e) {}
+			});
+		}
+
+		private createItemElement(
+			item: BookmarkItem,
+			mode: 'book' | 'page' | 'all',
+			parentGroupTitle?: string
+		): HTMLElement {
+			const li = document.createElement('li');
+			li.className = 'bookmark-item';
+
+			const contentDiv = document.createElement('div');
+			contentDiv.className = 'item-content';
+
+			const mainRow = document.createElement('div');
+			mainRow.className = 'item-main-row';
+
+			const clean = cleanTitles(item);
+
+			if (clean.isPageBookmark) {
+				// Page bookmark: [PageBadge] PageTitle (time)
+				const pageBadge = document.createElement('span');
+				pageBadge.className = 'page-badge';
+				pageBadge.textContent = this.labels.pageBadge || (this.labels.isEn ? 'Page' : 'بەت');
+				mainRow.appendChild(pageBadge);
+
+				const titleLink = document.createElement('a');
+				titleLink.className = 'item-title';
+				titleLink.href = item.url;
+				titleLink.textContent = clean.pageTitle;
+				this.bindNavigation(titleLink, item.url);
+				mainRow.appendChild(titleLink);
+			} else {
+				// Topic bookmark: [PageTag] - BookmarkTitle (time)
+				const normPage = clean.pageTitle.replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+				const normBm = clean.bookmarkTitle.replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+
+				// Avoid repeating page name if it's identical to the topic title
+				if (normPage && normPage !== normBm) {
+					const pageTag = document.createElement('span');
+					pageTag.className = 'page-tag';
+					pageTag.textContent = clean.pageTitle;
+					mainRow.appendChild(pageTag);
+
+					mainRow.appendChild(document.createTextNode(' '));
+					const sepSpan = document.createElement('span');
+					sepSpan.className = 'title-sep';
+					sepSpan.textContent = '-';
+					sepSpan.setAttribute('aria-hidden', 'true');
+					mainRow.appendChild(sepSpan);
+					mainRow.appendChild(document.createTextNode(' '));
+				}
+
+				const titleLink = document.createElement('a');
+				titleLink.className = 'item-title';
+				titleLink.href = item.url;
+				titleLink.textContent = clean.bookmarkTitle;
+				this.bindNavigation(titleLink, item.url);
+				mainRow.appendChild(titleLink);
+			}
+
+			const timeStr = formatDate(item.createdAt, Boolean(this.labels.isEn));
+			if (timeStr) {
+				mainRow.appendChild(document.createTextNode(' '));
+				const timeSpan = document.createElement('span');
+				timeSpan.className = 'item-time';
+				timeSpan.textContent = `(${timeStr})`;
+				mainRow.appendChild(timeSpan);
+			}
+
+			contentDiv.appendChild(mainRow);
+
+			const delBtn = document.createElement('button');
+			delBtn.type = 'button';
+			delBtn.className = 'delete-item-btn';
+			delBtn.title = this.labels.removeBookmark || 'Remove';
+			delBtn.setAttribute('aria-label', this.labels.removeBookmark || 'Remove');
+			delBtn.innerHTML = `
+				<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<line x1="18" y1="6" x2="6" y2="18"/>
+					<line x1="6" y1="6" x2="18" y2="18"/>
+				</svg>
+			`;
+
+			delBtn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const fresh = loadBookmarks();
+				const idx = fresh.findIndex((x) => x.id === item.id || x.url === item.url);
+				if (idx >= 0) {
+					fresh.splice(idx, 1);
+					saveBookmarks(fresh);
+					this.updateUi();
+					this.renderList();
+					updateAllTopicButtons();
+				}
+			});
+
+			li.appendChild(contentDiv);
+			li.appendChild(delBtn);
+			return li;
+		}
+
+		private renderList() {
+			const allItems = loadBookmarks();
+			const query = (this.searchInput?.value || '').trim().toLowerCase();
+
+			const filtered = query
+				? allItems.filter(
+						(it) =>
+							it.title.toLowerCase().includes(query) ||
+							it.portalName.toLowerCase().includes(query) ||
+							(it.pageTitle && it.pageTitle.toLowerCase().includes(query)) ||
+							it.url.toLowerCase().includes(query)
+				  )
+				: allItems;
+
+			if (allItems.length === 0) {
+				if (this.emptyView) this.emptyView.style.display = 'flex';
+				if (this.listView) this.listView.style.display = 'none';
+				if (this.searchBar) this.searchBar.style.display = 'none';
+				if (this.viewBar) this.viewBar.style.display = 'none';
+				if (this.footer) this.footer.style.display = 'none';
+				return;
+			}
+
+			if (this.emptyView) this.emptyView.style.display = 'none';
+			if (this.listView) this.listView.style.display = 'flex';
+			if (this.searchBar) this.searchBar.style.display = 'flex';
+			if (this.viewBar) this.viewBar.style.display = 'flex';
+			if (this.footer) this.footer.style.display = 'flex';
+
+			if (!this.listView) return;
+			this.listView.innerHTML = '';
+
+			if (filtered.length === 0) {
+				const noMatch = document.createElement('div');
+				noMatch.className = 'no-match-msg';
+				noMatch.textContent = this.labels.isEn
+					? 'No matching bookmarks'
+					: 'ھېچقانداق خەتكۈش تېپىلمىدى';
+				this.listView.appendChild(noMatch);
+				return;
+			}
+
+			if (this.currentViewMode === 'book') {
+				// Group by Book / Portal
+				const bookMap = new Map<string, { portal: string; portalName: string; items: BookmarkItem[] }>();
+				filtered.forEach((it) => {
+					const clean = cleanTitles(it);
+					const p = it.portal || 'derslik';
+					if (!bookMap.has(p)) {
+						bookMap.set(p, {
+							portal: p,
+							portalName: clean.portalName,
+							items: [],
+						});
+					}
+					bookMap.get(p)!.items.push(it);
+				});
+
+				bookMap.forEach((group) => {
+					const groupEl = document.createElement('div');
+					groupEl.className = 'bookmark-group';
+
+					const headerEl = document.createElement('div');
+					headerEl.className = 'group-header';
+
+					const titleWrap = document.createElement('div');
+					titleWrap.className = 'group-title-wrap';
+
+					const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+					iconSvg.setAttribute('class', 'group-icon');
+					iconSvg.setAttribute('width', '14');
+					iconSvg.setAttribute('height', '14');
+					iconSvg.setAttribute('viewBox', '0 0 24 24');
+					iconSvg.setAttribute('fill', 'none');
+					iconSvg.setAttribute('stroke', 'currentColor');
+					iconSvg.setAttribute('stroke-width', '2');
+					iconSvg.setAttribute('stroke-linecap', 'round');
+					iconSvg.setAttribute('stroke-linejoin', 'round');
+					iconSvg.innerHTML = '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/>';
+
+					const portalTag = document.createElement('span');
+					portalTag.className = `portal-tag tag-${group.portal}`;
+					portalTag.textContent = group.portalName;
+
+					const countBadge = document.createElement('span');
+					countBadge.className = 'group-count-badge';
+					countBadge.textContent = `${group.items.length} ${this.labels.totalCount || ''}`;
+
+					const colonSpan = document.createElement('span');
+					colonSpan.className = 'group-colon';
+					colonSpan.textContent = ':';
+					colonSpan.setAttribute('aria-hidden', 'true');
+
+					titleWrap.appendChild(iconSvg);
+					titleWrap.appendChild(portalTag);
+					titleWrap.appendChild(colonSpan);
+					titleWrap.appendChild(countBadge);
+					headerEl.appendChild(titleWrap);
+					groupEl.appendChild(headerEl);
+
+					const ul = document.createElement('ul');
+					ul.className = 'group-items-list';
+					group.items.forEach((item) => {
+						ul.appendChild(this.createItemElement(item, 'book'));
+					});
+					groupEl.appendChild(ul);
+					this.listView?.appendChild(groupEl);
+				});
+			} else if (this.currentViewMode === 'page') {
+				// Group by Page
+				const pageMap = new Map<string, { pageTitle: string; portal: string; portalName: string; items: BookmarkItem[] }>();
+				filtered.forEach((it) => {
+					const clean = cleanTitles(it);
+					const pTitle = clean.pageTitle;
+					const key = `${it.portal}:::${pTitle}`;
+					if (!pageMap.has(key)) {
+						pageMap.set(key, {
+							pageTitle: pTitle,
+							portal: it.portal,
+							portalName: clean.portalName,
+							items: [],
+						});
+					}
+					pageMap.get(key)!.items.push(it);
+				});
+
+				pageMap.forEach((group) => {
+					const groupEl = document.createElement('div');
+					groupEl.className = 'bookmark-group';
+
+					const headerEl = document.createElement('div');
+					headerEl.className = 'group-header';
+
+					const titleWrap = document.createElement('div');
+					titleWrap.className = 'group-title-wrap';
+
+					const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+					iconSvg.setAttribute('class', 'group-icon');
+					iconSvg.setAttribute('width', '14');
+					iconSvg.setAttribute('height', '14');
+					iconSvg.setAttribute('viewBox', '0 0 24 24');
+					iconSvg.setAttribute('fill', 'none');
+					iconSvg.setAttribute('stroke', 'currentColor');
+					iconSvg.setAttribute('stroke-width', '2');
+					iconSvg.setAttribute('stroke-linecap', 'round');
+					iconSvg.setAttribute('stroke-linejoin', 'round');
+					iconSvg.innerHTML = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>';
+
+					const pageTitleSpan = document.createElement('span');
+					pageTitleSpan.className = 'group-title';
+					pageTitleSpan.textContent = group.pageTitle;
+
+					titleWrap.appendChild(iconSvg);
+					titleWrap.appendChild(pageTitleSpan);
+
+					const normPage = group.pageTitle.replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+					const normPortal = (group.portalName || '').replace(/[:–—\-\|\s«»"']/g, '').toLowerCase();
+					if (normPage !== normPortal && group.portalName) {
+						const sepSpan = document.createElement('span');
+						sepSpan.className = 'group-colon';
+						sepSpan.textContent = ':';
+						sepSpan.setAttribute('aria-hidden', 'true');
+						titleWrap.appendChild(sepSpan);
+
+						const bookTag = document.createElement('span');
+						bookTag.className = `portal-tag tag-${group.portal}`;
+						bookTag.textContent = group.portalName;
+						titleWrap.appendChild(bookTag);
+					}
+
+					const countBadge = document.createElement('span');
+					countBadge.className = 'group-count-badge';
+					countBadge.textContent = `${group.items.length} ${this.labels.totalCount || ''}`;
+
+					const colonSpan = document.createElement('span');
+					colonSpan.className = 'group-colon';
+					colonSpan.textContent = ':';
+					colonSpan.setAttribute('aria-hidden', 'true');
+
+					titleWrap.appendChild(colonSpan);
+					titleWrap.appendChild(countBadge);
+					headerEl.appendChild(titleWrap);
+					groupEl.appendChild(headerEl);
+
+					const ul = document.createElement('ul');
+					ul.className = 'group-items-list';
+					group.items.forEach((item) => {
+						ul.appendChild(this.createItemElement(item, 'page', group.pageTitle));
+					});
+					groupEl.appendChild(ul);
+					this.listView?.appendChild(groupEl);
+				});
+			} else {
+				// Mode 'all' (Recent list)
+				const ul = document.createElement('ul');
+				ul.className = 'bookmarks-flat-list';
+				filtered.forEach((item) => {
+					ul.appendChild(this.createItemElement(item, 'all'));
+				});
+				this.listView?.appendChild(ul);
+			}
+		}
+	}
+
+	if (!customElements.get('starlight-bookmarks-modal')) {
+		customElements.define('starlight-bookmarks-modal', StarlightBookmarksModal);
+	}
+</script>
+
+<style>
+	.bookmarks-widget {
+		display: inline-flex;
+		align-items: center;
+		position: relative;
+	}
+
+	/* Segmented pill group in header */
+	.bookmarks-control-group {
+		display: inline-flex;
+		align-items: center;
+		background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.04));
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 9999px;
+		padding: 2px;
+		gap: 2px;
+		transition: border-color 0.2s ease;
+	}
+
+	.bookmarks-control-group:hover {
+		border-color: var(--sl-color-accent);
+	}
+
+	/* 1. Quick Toggle Button */
+	.bookmarks-quick-toggle-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		border-radius: 9999px;
+		border: none;
+		background: transparent;
+		color: var(--sl-color-gray-3);
+		cursor: pointer;
+		transition: all 0.2s ease;
+		padding: 0;
+	}
+
+	.bookmarks-quick-toggle-btn:hover {
+		background: var(--sl-color-gray-5);
+		color: var(--sl-color-white);
+	}
+
+	.bookmarks-quick-toggle-btn .icon-filled {
+		display: none;
+	}
+
+	.bookmarks-quick-toggle-btn.is-bookmarked {
+		color: #f59e0b;
+		background: rgba(245, 158, 11, 0.15);
+	}
+
+	.bookmarks-quick-toggle-btn.is-bookmarked .icon-outline {
+		display: none;
+	}
+
+	.bookmarks-quick-toggle-btn.is-bookmarked .icon-filled {
+		display: block;
+	}
+
+	/* 2. Open Modal Trigger Button */
+	.bookmarks-trigger-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		height: 1.9rem;
+		padding: 0 0.5rem 0 0.35rem;
+		border-radius: 9999px;
+		border: none;
+		background: transparent;
+		color: var(--sl-color-gray-3);
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.bookmarks-trigger-btn:hover {
+		background: var(--sl-color-gray-5);
+		color: var(--sl-color-white);
+	}
+
+	.trigger-icon {
+		display: block;
+	}
+
+	/* Counter Badge */
+	.bookmark-count-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.15rem;
+		height: 1.15rem;
+		padding: 0 0.25rem;
+		border-radius: 999px;
+		background: var(--sl-color-gray-5);
+		color: var(--sl-color-gray-3);
+		font-size: 0.675rem;
+		font-weight: 700;
+		line-height: 1;
+		transition: all 0.2s ease;
+	}
+
+	.bookmark-count-badge.has-bookmarks {
+		background: #f59e0b;
+		color: #000000;
+		font-weight: 800;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	}
+
+	/* Dialog / Modal */
+	dialog.bookmarks-dialog {
+		position: fixed;
+		inset: 0;
+		margin: auto !important;
+		padding: 0;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem !important;
+		background: var(--sl-color-gray-7, #0f172a);
+		color: var(--sl-color-gray-1);
+		max-width: min(92vw, 32rem) !important;
+		width: 32rem !important;
+		height: auto !important;
+		max-height: 82vh !important;
+		box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
+	}
+
+	dialog.bookmarks-dialog::backdrop {
+		background: rgba(0, 0, 0, 0.65);
+		backdrop-filter: blur(4px);
+	}
+
+	.dialog-content {
+		display: flex;
+		flex-direction: column;
+		max-height: 82vh;
+	}
+
+	.dialog-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem 1.25rem;
+		border-bottom: 1px solid var(--sl-color-gray-6);
+	}
+
+	.header-title-group {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.title-icon {
+		color: #f59e0b;
+	}
+
+	.dialog-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin: 0;
+		color: var(--sl-color-white);
+	}
+
+	.dialog-count-tag {
+		font-size: 0.75rem;
+		padding: 0.1rem 0.45rem;
+		border-radius: 999px;
+		background: var(--sl-color-gray-5);
+		color: var(--sl-color-gray-2);
+		font-weight: 500;
+	}
+
+	.dialog-close-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.85rem;
+		height: 1.85rem;
+		border-radius: 0.375rem;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--sl-color-gray-3);
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.dialog-close-btn:hover {
+		color: var(--sl-color-white);
+		background: var(--sl-color-gray-6);
+	}
+
+	/* Current Page Bar */
+	.current-page-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.65rem 1.25rem;
+		background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.03));
+		border-bottom: 1px solid var(--sl-color-gray-6);
+	}
+
+	.current-page-info {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-width: 0;
+		flex: 1;
+	}
+
+	.current-page-label {
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-4);
+		flex-shrink: 0;
+	}
+
+	.current-page-title-val {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.current-page-toggle-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.3rem 0.65rem;
+		border-radius: 0.375rem;
+		border: 1px solid var(--sl-color-accent);
+		background: var(--sl-color-accent-low, rgba(14, 165, 233, 0.1));
+		color: var(--sl-color-accent-high, #38bdf8);
+		font-size: 0.775rem;
+		font-weight: 500;
+		cursor: pointer;
+		flex-shrink: 0;
+		transition: all 0.2s ease;
+	}
+
+	.current-page-toggle-btn:hover {
+		background: var(--sl-color-accent);
+		color: #ffffff;
+	}
+
+	.current-page-toggle-btn .cp-icon-remove {
+		display: none;
+	}
+
+	.current-page-toggle-btn.is-bookmarked {
+		border-color: #f59e0b;
+		background: rgba(245, 158, 11, 0.15);
+		color: #fbbf24;
+	}
+
+	.current-page-toggle-btn.is-bookmarked:hover {
+		background: #f59e0b;
+		color: #000000;
+	}
+
+	.current-page-toggle-btn.is-bookmarked .cp-icon-add {
+		display: none;
+	}
+
+	.current-page-toggle-btn.is-bookmarked .cp-icon-remove {
+		display: block;
+	}
+
+	/* Search Bar */
+	.dialog-search-bar {
+		position: relative;
+		padding: 0.75rem 1.25rem 0.5rem;
+		align-items: center;
+	}
+
+	.search-icon {
+		position: absolute;
+		inset-inline-start: 1.9rem;
+		color: var(--sl-color-gray-4);
+		pointer-events: none;
+	}
+
+	.search-input {
+		width: 100%;
+		height: 2.25rem;
+		padding: 0 1rem;
+		padding-inline-start: 2.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-white);
+		font-size: 0.85rem;
+		outline: none;
+		transition: border-color 0.2s ease;
+	}
+
+	.search-input:focus {
+		border-color: var(--sl-color-accent);
+	}
+
+	/* View Mode Switcher */
+	.dialog-view-bar {
+		display: flex;
+		align-items: center;
+		padding: 0 1.25rem 0.5rem;
+	}
+
+	.view-segmented-control {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.04));
+		border: 1px solid var(--sl-color-gray-5, rgba(255, 255, 255, 0.08));
+		border-radius: 0.5rem;
+		padding: 2px;
+		gap: 2px;
+	}
+
+	.view-seg-btn {
+		flex: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		height: 1.85rem;
+		padding: 0 0.5rem;
+		border-radius: 0.375rem;
+		border: none;
+		background: transparent;
+		color: var(--sl-color-gray-3);
+		font-size: 0.775rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		white-space: nowrap;
+		user-select: none;
+	}
+
+	.view-seg-btn:hover {
+		color: var(--sl-color-white);
+		background: var(--sl-color-gray-5, rgba(255, 255, 255, 0.06));
+	}
+
+	.view-seg-btn.active {
+		background: var(--sl-color-accent);
+		color: #ffffff;
+		font-weight: 600;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	}
+
+	/* Dialog Body */
+	.dialog-body {
+		padding: 0.75rem 1.25rem;
+		overflow-y: auto;
+		min-height: 13rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Empty State */
+	.bookmarks-empty {
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 2rem 1rem;
+		gap: 0.6rem;
+	}
+
+	.empty-icon-wrap {
+		color: var(--sl-color-gray-4);
+		margin-bottom: 0.25rem;
+	}
+
+	.empty-title {
+		font-size: 0.975rem;
+		font-weight: 600;
+		color: var(--sl-color-gray-2);
+		margin: 0;
+	}
+
+	.empty-desc {
+		font-size: 0.825rem;
+		color: var(--sl-color-gray-4);
+		max-width: 22rem;
+		margin: 0;
+		line-height: 1.5;
+	}
+
+	.empty-add-btn {
+		margin-top: 0.5rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.5rem 1.1rem;
+		border-radius: 0.5rem;
+		border: 1px solid #f59e0b;
+		background: #f59e0b;
+		color: #000000;
+		font-size: 0.825rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+	}
+
+	.empty-add-btn:hover {
+		background: #d97706;
+		border-color: #d97706;
+		transform: translateY(-1px);
+	}
+
+	/* Bookmarks List */
+	.bookmarks-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.no-match-msg {
+		text-align: center;
+		padding: 2rem 1rem;
+		color: var(--sl-color-gray-4);
+		font-size: 0.85rem;
+	}
+
+	/* Bookmark Grouping */
+	.bookmark-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin-bottom: 0.85rem;
+	}
+
+	.bookmark-group:last-child {
+		margin-bottom: 0;
+	}
+
+	.group-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.4rem 0.65rem;
+		background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.03));
+		border-radius: 0.375rem;
+		border-inline-start: 3px solid var(--sl-color-accent);
+	}
+
+	.group-title-wrap {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		flex-wrap: wrap;
+		min-width: 0;
+	}
+
+	.group-icon {
+		color: var(--sl-color-accent);
+		flex-shrink: 0;
+	}
+
+	.group-title {
+		font-size: 0.825rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.group-count-badge {
+		font-size: 0.7rem;
+		padding: 0.05rem 0.4rem;
+		border-radius: 999px;
+		background: var(--sl-color-gray-5, rgba(255, 255, 255, 0.08));
+		color: var(--sl-color-gray-3);
+		font-weight: 500;
+	}
+
+	.group-colon {
+		color: var(--sl-color-gray-4);
+		font-weight: 700;
+		font-size: 0.8rem;
+		margin-inline: 0.1rem;
+		user-select: none;
+	}
+
+	.group-items-list,
+	.bookmarks-flat-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	.page-tag {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.7rem;
+		font-weight: 600;
+		padding: 0.1rem 0.45rem;
+		border-radius: 0.25rem;
+		background: var(--sl-color-gray-5, rgba(255, 255, 255, 0.08));
+		color: var(--sl-color-gray-2);
+		flex-shrink: 0;
+		line-height: 1.2;
+		max-width: 14rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.page-badge {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.675rem;
+		font-weight: 600;
+		padding: 0.05rem 0.35rem;
+		border-radius: 0.25rem;
+		background: rgba(14, 165, 233, 0.15);
+		color: #38bdf8;
+		flex-shrink: 0;
+		line-height: 1.2;
+	}
+
+	.bookmark-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.65rem 0.85rem;
+		border-radius: 0.5rem;
+		background: var(--sl-color-gray-6, rgba(255, 255, 255, 0.03));
+		border: 1px solid var(--sl-color-gray-5, rgba(255, 255, 255, 0.08));
+		transition: all 0.2s ease;
+		gap: 0.75rem;
+	}
+
+	.bookmark-item:hover {
+		border-color: var(--sl-color-accent);
+		background: var(--sl-color-gray-5, rgba(255, 255, 255, 0.06));
+	}
+
+	.item-content {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		flex: 1;
+	}
+
+	.item-main-row {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		column-gap: 0.4rem;
+		row-gap: 0.25rem;
+		min-width: 0;
+		line-height: 1.45;
+	}
+
+	.portal-tag {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.7rem;
+		font-weight: 600;
+		padding: 0.1rem 0.45rem;
+		border-radius: 0.25rem;
+		background: rgba(14, 165, 233, 0.15);
+		color: #38bdf8;
+		flex-shrink: 0;
+		line-height: 1.2;
+	}
+
+	.tag-namaz {
+		background: rgba(6, 182, 212, 0.15);
+		color: #22d3ee;
+	}
+
+	.tag-ereb-tili {
+		background: rgba(16, 185, 129, 0.15);
+		color: #34d399;
+	}
+
+	.tag-aile {
+		background: rgba(244, 63, 94, 0.15);
+		color: #fb7185;
+	}
+
+	.tag-100hedis, .tag-40hedis {
+		background: rgba(245, 158, 11, 0.15);
+		color: #fbbf24;
+	}
+
+	.tag-dua {
+		background: rgba(168, 85, 247, 0.15);
+		color: #c084fc;
+	}
+
+	.tag-hayat {
+		background: rgba(20, 184, 166, 0.15);
+		color: #2dd4bf;
+	}
+
+	.title-sep {
+		color: var(--sl-color-gray-4);
+		font-weight: 600;
+		font-size: 0.775rem;
+		margin: 0 0.15rem;
+		flex-shrink: 0;
+		user-select: none;
+	}
+
+	.item-title {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		color: var(--sl-color-white);
+		text-decoration: none !important;
+		transition: color 0.15s ease;
+		word-break: break-word;
+	}
+
+	.item-title:hover {
+		color: var(--sl-color-accent);
+		text-decoration: none !important;
+	}
+
+	.item-time {
+		font-size: 0.6875rem;
+		color: var(--sl-color-gray-4);
+		flex-shrink: 0;
+		white-space: nowrap;
+		unicode-bidi: isolate;
+		margin-inline-start: 0.35rem;
+	}
+
+	.delete-item-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.65rem;
+		height: 1.65rem;
+		border-radius: 0.375rem;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--sl-color-gray-4);
+		cursor: pointer;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+	}
+
+	.delete-item-btn:hover {
+		color: #f87171;
+		background: rgba(239, 68, 68, 0.1);
+	}
+
+	/* Dialog Footer */
+	.dialog-footer {
+		display: flex;
+		justify-content: flex-end;
+		padding: 0.75rem 1.25rem;
+		border-top: 1px solid var(--sl-color-gray-6);
+	}
+
+	.clear-all-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.35rem 0.65rem;
+		border-radius: 0.375rem;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--sl-color-gray-4);
+		font-size: 0.75rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.clear-all-btn:hover {
+		color: #f87171;
+		background: rgba(239, 68, 68, 0.08);
+	}
+
+	/* Floating Toast */
+	.bookmark-toast {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%) translateY(20px);
+		white-space: nowrap;
+		background: #0f172a;
+		color: #ffffff;
+		padding: 0.55rem 1.2rem;
+		border-radius: 9999px;
+		font-size: 0.85rem;
+		font-weight: 500;
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(245, 158, 11, 0.5);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.25s ease, transform 0.25s ease;
+		z-index: 999999;
+	}
+
+	.bookmark-toast.show {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+</style>

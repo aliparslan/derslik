@@ -10,6 +10,8 @@ const isDua = id.startsWith('dua') || pathname.includes('/dua');
 const isPeyghemberler = id.startsWith('peyghemberler') || pathname.includes('/peyghemberler');
 const isAile = id.startsWith('aile') || pathname.includes('/aile');
 const isErebTili = id.startsWith('ereb-tili') || pathname.includes('/ereb-tili');
+const isNamaz = id.startsWith('namaz') || pathname.includes('/namaz');
+const isHayat = id.startsWith('hayat') || pathname.includes('/hayat');
 
 if (is2000 && Astro.locals.starlightRoute.pagination) {
 	if (
@@ -131,6 +133,42 @@ if (isErebTili && Astro.locals.starlightRoute.pagination) {
 		Astro.locals.starlightRoute.pagination.next &&
 		(!Astro.locals.starlightRoute.pagination.next.href ||
 			!Astro.locals.starlightRoute.pagination.next.href.includes('/ereb-tili'))
+	) {
+		Astro.locals.starlightRoute.pagination.next = undefined;
+	}
+}
+
+if (isNamaz && Astro.locals.starlightRoute.pagination) {
+	if (
+		Astro.locals.starlightRoute.pagination.prev &&
+		(!Astro.locals.starlightRoute.pagination.prev.href ||
+			!Astro.locals.starlightRoute.pagination.prev.href.includes('/namaz') ||
+			pathname === '/namaz/' || pathname === '/namaz')
+	) {
+		Astro.locals.starlightRoute.pagination.prev = undefined;
+	}
+	if (
+		Astro.locals.starlightRoute.pagination.next &&
+		(!Astro.locals.starlightRoute.pagination.next.href ||
+			!Astro.locals.starlightRoute.pagination.next.href.includes('/namaz'))
+	) {
+		Astro.locals.starlightRoute.pagination.next = undefined;
+	}
+}
+
+if (isHayat && Astro.locals.starlightRoute.pagination) {
+	if (
+		Astro.locals.starlightRoute.pagination.prev &&
+		(!Astro.locals.starlightRoute.pagination.prev.href ||
+			!Astro.locals.starlightRoute.pagination.prev.href.includes('/hayat') ||
+			pathname === '/hayat/' || pathname === '/hayat')
+	) {
+		Astro.locals.starlightRoute.pagination.prev = undefined;
+	}
+	if (
+		Astro.locals.starlightRoute.pagination.next &&
+		(!Astro.locals.starlightRoute.pagination.next.href ||
+			!Astro.locals.starlightRoute.pagination.next.href.includes('/hayat'))
 	) {
 		Astro.locals.starlightRoute.pagination.next = undefined;
 	}

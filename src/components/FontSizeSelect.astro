@@ -1,0 +1,276 @@
+---
+const { lang } = Astro.locals.starlightRoute;
+const isEn = lang === 'en';
+
+const labels = {
+	decrease: isEn ? 'Decrease font size' : 'خەتنى كىچىكلىتىش',
+	increase: isEn ? 'Increase font size' : 'خەتنى چوڭايتىش',
+	label: isEn ? 'Font size' : 'خەت چوڭلۇقى',
+	options: [
+		{ value: 'sm', label: isEn ? '88% Small' : '88% كىچىك', pct: '88%' },
+		{ value: 'md', label: isEn ? '100% Normal' : '100% نورمال', pct: '100%' },
+		{ value: 'lg', label: isEn ? '115% Large' : '115% چوڭ', pct: '115%' },
+		{ value: 'xl', label: isEn ? '130% X-Large' : '130% ئەڭ چوڭ', pct: '130%' },
+		{ value: '2xl', label: isEn ? '145% Huge' : '145% غايەت چوڭ', pct: '145%' },
+	],
+};
+---
+
+<starlight-font-size-select class="font-size-widget">
+	<div class="font-size-group">
+		<button
+			type="button"
+			class="step-btn decrease-btn"
+			data-action="decrease"
+			aria-label={labels.decrease}
+			title={labels.decrease}
+		>
+			<span class="btn-text" aria-hidden="true">A<span class="sign">−</span></span>
+		</button>
+
+		<div class="select-box">
+			<label class="sr-only" for="font-size-select-input">{labels.label}</label>
+			<select id="font-size-select-input" aria-label={labels.label} autocomplete="off">
+				{labels.options.map((opt) => (
+					<option value={opt.value} selected={opt.value === 'md'}>
+						{opt.label}
+					</option>
+				))}
+			</select>
+			<span class="current-value" aria-hidden="true">100%</span>
+			<svg class="caret" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+				<path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/>
+			</svg>
+		</div>
+
+		<button
+			type="button"
+			class="step-btn increase-btn"
+			data-action="increase"
+			aria-label={labels.increase}
+			title={labels.increase}
+		>
+			<span class="btn-text" aria-hidden="true">A<span class="sign">+</span></span>
+		</button>
+	</div>
+</starlight-font-size-select>
+
+<script>
+	type FontSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+	const SIZES: FontSize[] = ['sm', 'md', 'lg', 'xl', '2xl'];
+	const PCT_MAP: Record<FontSize, string> = {
+		'sm': '88%',
+		'md': '100%',
+		'lg': '115%',
+		'xl': '130%',
+		'2xl': '145%',
+	};
+	const STORAGE_KEY = 'starlight-font-size';
+
+	const parseFontSize = (val: unknown): FontSize =>
+		SIZES.includes(val as FontSize) ? (val as FontSize) : 'md';
+
+	const loadFontSize = (): FontSize =>
+		parseFontSize(typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : 'md');
+
+	const storeFontSize = (size: FontSize): void => {
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem(STORAGE_KEY, size);
+		}
+	};
+
+	function applyFontSize(size: FontSize, updateStorage = true): void {
+		document.documentElement.dataset.fontSize = size;
+		if (updateStorage) storeFontSize(size);
+		window.dispatchEvent(new CustomEvent('starlight-font-size-change', { detail: { size } }));
+	}
+
+	class StarlightFontSizeSelect extends HTMLElement {
+		private select: HTMLSelectElement | null = null;
+		private currentVal: HTMLElement | null = null;
+		private decBtn: HTMLButtonElement | null = null;
+		private incBtn: HTMLButtonElement | null = null;
+
+		connectedCallback() {
+			this.select = this.querySelector('select');
+			this.currentVal = this.querySelector('.current-value');
+			this.decBtn = this.querySelector('[data-action="decrease"]');
+			this.incBtn = this.querySelector('[data-action="increase"]');
+
+			const initial = loadFontSize();
+			this.updateUi(initial);
+
+			this.select?.addEventListener('change', (e) => {
+				if (e.currentTarget instanceof HTMLSelectElement) {
+					applyFontSize(parseFontSize(e.currentTarget.value));
+				}
+			});
+
+			this.decBtn?.addEventListener('click', () => {
+				const curr = parseFontSize(document.documentElement.dataset.fontSize || loadFontSize());
+				const idx = SIZES.indexOf(curr);
+				if (idx > 0) {
+					applyFontSize(SIZES[idx - 1]);
+				}
+			});
+
+			this.incBtn?.addEventListener('click', () => {
+				const curr = parseFontSize(document.documentElement.dataset.fontSize || loadFontSize());
+				const idx = SIZES.indexOf(curr);
+				if (idx < SIZES.length - 1) {
+					applyFontSize(SIZES[idx + 1]);
+				}
+			});
+
+			window.addEventListener('starlight-font-size-change', ((e: CustomEvent<{ size: FontSize }>) => {
+				this.updateUi(e.detail.size);
+			}) as EventListener);
+		}
+
+		private updateUi(size: FontSize) {
+			if (this.select) this.select.value = size;
+			if (this.currentVal) this.currentVal.textContent = PCT_MAP[size] || '100%';
+
+			const idx = SIZES.indexOf(size);
+			if (this.decBtn) {
+				this.decBtn.disabled = idx <= 0;
+				this.decBtn.setAttribute('aria-disabled', String(idx <= 0));
+			}
+			if (this.incBtn) {
+				this.incBtn.disabled = idx >= SIZES.length - 1;
+				this.incBtn.setAttribute('aria-disabled', String(idx >= SIZES.length - 1));
+			}
+		}
+	}
+
+	if (!customElements.get('starlight-font-size-select')) {
+		customElements.define('starlight-font-size-select', StarlightFontSizeSelect);
+	}
+</script>
+
+<style>
+	.font-size-widget {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.font-size-group {
+		display: inline-flex;
+		align-items: center;
+		height: 2rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		background-color: var(--sl-color-gray-6, rgba(255, 255, 255, 0.04));
+		padding: 0 0.15rem;
+		transition: border-color 0.2s ease, background-color 0.2s ease;
+		color: var(--sl-color-gray-2);
+		user-select: none;
+	}
+
+	:root[data-theme='light'] .font-size-group {
+		background-color: var(--sl-color-gray-7, #f1f5f9);
+		border-color: var(--sl-color-gray-5, #cbd5e1);
+		color: var(--sl-color-gray-2, #475569);
+	}
+
+	.font-size-group:hover,
+	.font-size-group:focus-within {
+		border-color: var(--sl-color-accent);
+	}
+
+	.step-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.65rem;
+		height: 1.65rem;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		cursor: pointer;
+		border-radius: 0.35rem;
+		padding: 0;
+		transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+		font-family: var(--sl-font-system, system-ui, sans-serif);
+	}
+
+	.step-btn:hover:not(:disabled) {
+		background-color: var(--sl-color-accent-low);
+		color: var(--sl-color-accent-high);
+	}
+
+	:root[data-theme='light'] .step-btn:hover:not(:disabled) {
+		background-color: var(--sl-color-accent-low, #e0f2fe);
+		color: var(--sl-color-accent-high, #0284c7);
+	}
+
+	.step-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
+
+	.btn-text {
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.decrease-btn .btn-text {
+		font-size: 0.72rem;
+	}
+
+	.increase-btn .btn-text {
+		font-size: 0.84rem;
+	}
+
+	.sign {
+		font-size: 0.68rem;
+		margin-inline-start: 1px;
+	}
+
+	.select-box {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding-inline: 0.35rem 0.25rem;
+		height: 100%;
+		cursor: pointer;
+	}
+
+	.current-value {
+		font-size: 0.75rem;
+		font-weight: 600;
+		font-family: var(--sl-font-system, system-ui, sans-serif);
+		color: inherit;
+		min-width: 2.25rem;
+		text-align: center;
+		line-height: 1;
+	}
+
+	.caret {
+		margin-inline-start: 0.2rem;
+		opacity: 0.7;
+		pointer-events: none;
+	}
+
+	select {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		cursor: pointer;
+		appearance: none;
+		border: 0;
+		background: transparent;
+	}
+
+	option {
+		background-color: var(--sl-color-bg-nav);
+		color: var(--sl-color-gray-1);
+		font-size: 0.9rem;
+	}
+</style>

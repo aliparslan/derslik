@@ -143,6 +143,9 @@ def main():
     sitetitle = (BASE_DIR / "src" / "components" / "SiteTitle.astro").read_text(encoding="utf-8")
     pagination = (BASE_DIR / "src" / "components" / "Pagination.astro").read_text(encoding="utf-8")
     sidebar = (BASE_DIR / "src" / "components" / "Sidebar.astro").read_text(encoding="utf-8")
+    lang_select = (BASE_DIR / "src" / "components" / "LanguageSelect.astro").read_text(encoding="utf-8")
+    header = (BASE_DIR / "src" / "components" / "Header.astro").read_text(encoding="utf-8")
+    mobile_footer = (BASE_DIR / "src" / "components" / "MobileMenuFooter.astro").read_text(encoding="utf-8")
 
     isolation_errors = []
     if "directory: 'ereb-tili/03-3-qisim'" not in astro_cfg:
@@ -155,9 +158,15 @@ def main():
         isolation_errors.append("Sidebar.astro missing isErebTili check")
     if "otherPortalsForErebTili" not in sidebar:
         isolation_errors.append("Sidebar.astro missing otherPortalsForErebTili group")
+    if "isErebTili" not in lang_select or "hideLanguage = " not in lang_select or "isErebTili" not in lang_select.split("hideLanguage = ")[1].split("\n")[0]:
+        isolation_errors.append("LanguageSelect.astro missing isErebTili in hideLanguage")
+    if "!isErebTili" not in header:
+        isolation_errors.append("Header.astro missing !isErebTili check on LanguageSelect")
+    if "!isErebTili" not in mobile_footer:
+        isolation_errors.append("MobileMenuFooter.astro missing !isErebTili check on LanguageSelect")
 
     if not isolation_errors:
-        print("  [PASS] Complete Sidebar & Component navigation isolation confirmed.")
+        print("  [PASS] Complete Sidebar, Component navigation, and LanguageSelect removal isolation confirmed.")
         passed += 1
     else:
         print(f"  [FAIL] Navigation isolation errors: {isolation_errors}")
@@ -188,6 +197,20 @@ def main():
             passed += 1
         else:
             print(f"  [FAIL] Expected 17 compiled HTML files in dist/ereb-tili/, found {len(html_files)}.")
+            failed += 1
+
+        # Check that language select is completely removed from all ereb-tili HTML pages
+        pages_with_lang_select = []
+        for hf in html_files:
+            html_text = hf.read_text(encoding="utf-8")
+            if "starlight-lang-select" in html_text:
+                pages_with_lang_select.append(str(hf.relative_to(DIST_DIR)))
+
+        if not pages_with_lang_select:
+            print("  [PASS] Zero language selection dropdowns found across all compiled ereb-tili pages.")
+            passed += 1
+        else:
+            print(f"  [FAIL] Language select unexpectedly present in: {pages_with_lang_select}")
             failed += 1
     else:
         print("  [INFO] dist/ereb-tili/ does not exist yet (run pnpm build to generate).")

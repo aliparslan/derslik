@@ -1,0 +1,173 @@
+---
+const { lang } = Astro.locals.starlightRoute;
+const isEn = lang === 'en';
+const label = isEn ? 'Return to top' : 'يۇقىرىغا قايتىش';
+---
+
+<starlight-return-to-top>
+	<a
+		href="#_top"
+		class="return-to-top-btn"
+		id="return-to-top"
+		aria-label={label}
+		title={label}
+		role="button"
+	>
+		<svg
+			width="20"
+			height="20"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<line x1="12" y1="19" x2="12" y2="5"></line>
+			<polyline points="5 12 12 5 19 12"></polyline>
+		</svg>
+		<span class="sr-only">{label}</span>
+	</a>
+</starlight-return-to-top>
+
+<script>
+	class StarlightReturnToTop extends HTMLElement {
+		private btn: HTMLAnchorElement | null = null;
+		private ticking = false;
+
+		connectedCallback() {
+			this.btn = this.querySelector<HTMLAnchorElement>('.return-to-top-btn');
+			if (!this.btn) return;
+
+			this.btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				window.scrollTo({
+					top: 0,
+					behavior: 'smooth',
+				});
+				if (window.location.hash && history.replaceState) {
+					history.replaceState(null, '', window.location.pathname + window.location.search);
+				}
+			});
+
+			const handleScroll = () => {
+				if (!this.ticking) {
+					window.requestAnimationFrame(() => {
+						const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
+						if (scrolled > 280) {
+							this.btn?.classList.add('is-visible');
+						} else {
+							this.btn?.classList.remove('is-visible');
+						}
+						this.ticking = false;
+					});
+					this.ticking = true;
+				}
+			};
+
+			window.addEventListener('scroll', handleScroll, { passive: true });
+			handleScroll();
+		}
+	}
+
+	if (!customElements.get('starlight-return-to-top')) {
+		customElements.define('starlight-return-to-top', StarlightReturnToTop);
+	}
+</script>
+
+<style>
+	starlight-return-to-top {
+		display: contents;
+	}
+
+	.return-to-top-btn {
+		position: fixed;
+		bottom: 2rem;
+		inset-inline-end: 2rem;
+		z-index: 95;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 9999px;
+		background: var(--sl-color-gray-6, #1e293b);
+		border: 1px solid var(--sl-color-gray-5, rgba(255, 255, 255, 0.12));
+		color: var(--sl-color-gray-2, #cbd5e1);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(14px) scale(0.9);
+		transition:
+			opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+			background-color 0.2s ease,
+			border-color 0.2s ease,
+			color 0.2s ease,
+			box-shadow 0.2s ease;
+		text-decoration: none !important;
+		cursor: pointer;
+		outline: none;
+	}
+
+	.return-to-top-btn:focus-visible {
+		outline: 2px solid var(--sl-color-accent);
+		outline-offset: 2px;
+	}
+
+	.return-to-top-btn.is-visible {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0) scale(1);
+	}
+
+	.return-to-top-btn:hover {
+		background: var(--sl-color-accent);
+		color: #ffffff;
+		border-color: var(--sl-color-accent);
+		transform: translateY(-2px) scale(1.05);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+		text-decoration: none !important;
+	}
+
+	.return-to-top-btn:active {
+		transform: translateY(0) scale(0.95);
+	}
+
+	.return-to-top-btn svg {
+		display: block;
+		flex-shrink: 0;
+		transition: transform 0.2s ease;
+	}
+
+	.return-to-top-btn:hover svg {
+		transform: translateY(-2px);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+
+	@media (max-width: 640px) {
+		.return-to-top-btn {
+			bottom: 1.5rem;
+			inset-inline-end: 1.25rem;
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+
+		.return-to-top-btn svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+</style>
